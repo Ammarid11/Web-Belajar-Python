@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Odyssey - Ultimate Masterclass: 100 Levels Enterprise Edition</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col selection:bg-indigo-500 selection:text-white">
+
+    <!-- Header / Navbar -->
+    <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex flex-wrap justify-between items-center gap-4">
+            <div class="flex items-center space-x-3">
+                <div class="bg-gradient-to-tr from-indigo-500 to-cyan-400 p-2.5 rounded-xl shadow-lg shadow-indigo-500/20">
+                    <svg class="w-6 h-6 text-slate-950 font-bold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+                </div>
+                <div>
+                    <h1 class="text-xl font-extrabold tracking-tight bg-gradient-to-r from-indigo-400 via-sky-300 to-cyan-400 bg-clip-text text-transparent">Python Odyssey</h1>
+                    <p class="text-xs text-slate-400">Enterprise Edition: 100 Levels Grandmaster Edition</p>
+                </div>
+            </div>
+            
+            <!-- Statistik User / Gamification -->
+            <div class="flex items-center gap-6 bg-slate-900/90 border border-slate-800 px-5 py-2 rounded-2xl shadow-inner">
+                <div class="flex items-center gap-2">
+                    <span class="text-amber-400 text-lg">⚡</span>
+                    <div>
+                        <p class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold">Total XP</p>
+                        <p id="total-xp" class="text-sm font-bold text-amber-300">0 XP</p>
+                    </div>
+                </div>
+                <div class="h-6 w-px bg-slate-800"></div>
+                <div class="flex items-center gap-2">
+                    <span class="text-emerald-400 text-lg">🏆</span>
+                    <div>
+                        <p class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold">Progress</p>
+                        <p id="progress-text" class="text-sm font-bold text-emerald-300">0 / 100 Level</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Layout -->
+    <main class="flex-1 max-w-7xl w-full mx-auto p-4 md:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        <!-- Sidebar Daftar Level -->
+        <aside class="lg:col-span-4 bg-slate-900/60 border border-slate-800/80 rounded-2xl p-4 flex flex-col h-[500px] lg:h-[calc(100vh-140px)] lg:sticky lg:top-24">
+            <h2 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3 px-2">Peta Kurikulum Enterprise (100 Level)</h2>
+            <div id="level-list" class="space-y-2 overflow-y-auto pr-1 flex-1">
+                <!-- Level list di-generate via JavaScript -->
+            </div>
+        </aside>
+
+        <!-- Area Belajar & Coding Utama -->
+        <section class="lg:col-span-8 flex flex-col gap-6">
+            
+            <!-- Modul Materi & Penjelasan Mendalam -->
+            <div class="bg-slate-900/60 border border-slate-800/80 rounded-2xl p-6 md:p-8 shadow-xl relative overflow-hidden">
+                <div class="absolute top-0 right-0 p-8 opacity-5 pointer-events-none">
+                    <span id="bg-level-watermark" class="text-9xl font-extrabold font-mono">01</span>
+                </div>
+                
+                <div class="flex items-center justify-between mb-4">
+                    <span id="badge-category" class="px-3 py-1 bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-semibold rounded-full uppercase tracking-wider">Beginner</span>
+                    <div class="flex items-center gap-2">
+                        <span id="badge-subtask" class="text-xs font-mono text-cyan-300 bg-cyan-500/10 border border-cyan-500/20 px-2.5 py-1 rounded-full">Soal 1 dari 10</span>
+                        <span id="badge-xp" class="text-xs font-mono text-amber-400 font-bold bg-amber-500/10 border border-amber-500/20 px-2.5 py-1 rounded-full">+100 XP</span>
+                    </div>
+                </div>
+
+                <h2 id="level-title" class="text-2xl md:text-3xl font-bold text-white mb-3">Memuat Judul...</h2>
+                <div id="level-desc" class="text-slate-300 text-sm md:text-base leading-relaxed space-y-3 mb-6">
+                    <!-- Penjelasan Materi -->
+                </div>
+
+                <!-- Contoh Kode Referensi -->
+                <div class="mb-6">
+                    <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Contoh Referensi Kode:</p>
+                    <div class="bg-slate-950 border border-slate-800 rounded-xl p-4 overflow-x-auto code-font text-xs md:text-sm text-cyan-300" id="level-example">
+                        <!-- Contoh kode -->
+                    </div>
+                </div>
+
+                <!-- Tugas / Tantangan -->
+                <div class="bg-indigo-950/30 border border-indigo-500/20 rounded-xl p-4 md:p-5 flex flex-col gap-3">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-sm font-bold text-indigo-300 uppercase tracking-wider flex items-center gap-2">
+                            <span>🎯</span> Tantangan / Soal Saat Ini:
+                        </h3>
+                        <button onclick="nextSubTask()" class="text-xs bg-indigo-600/40 hover:bg-indigo-600 text-indigo-200 px-3 py-1.5 rounded-lg transition font-semibold flex items-center gap-1">
+                            <span>🔄 Ganti Variasi Soal Lainnya</span>
+                        </button>
+                    </div>
+                    <p id="level-task" class="text-slate-200 text-sm leading-relaxed"></p>
+                </div>
+            </div>
+
+            <!-- Bagian Interactive Code Editor & Output -->
+            <div class="bg-slate-900/60 border border-slate-800/80 rounded-2xl p-6 shadow-xl flex flex-col gap-4">
+                <div class="flex justify-between items-center">
+                    <div class="flex items-center gap-2">
+                        <div class="w-3 h-3 rounded-full bg-rose-500"></div>
+                        <div class="w-3 h-3 rounded-full bg-amber-500"></div>
+                        <div class="w-3 h-3 rounded-full bg-emerald-500"></div>
+                        <span class="text-xs font-mono text-slate-400 ml-2">main.py</span>
+                    </div>
+                    <button onclick="resetCurrentCode()" class="text-xs text-slate-400 hover:text-slate-200 underline transition">Kosongkan / Reset Kode</button>
+                </div>
+
+                <!-- Textarea Code Input -->
+                <div>
+                    <textarea id="code-input" rows="6" class="w-full bg-slate-950 border border-slate-800 focus:border-indigo-500 rounded-xl p-4 code-font text-sm text-slate-200 focus:outline-none transition shadow-inner resize-y" placeholder="# Tulis kode Python solusi kamu di sini..."></textarea>
+                </div>
+
+                <!-- Tombol Eksekusi -->
+                <div class="flex flex-wrap items-center justify-between gap-4">
+                    <div class="flex items-center gap-3">
+                        <button onclick="runPythonCode()" class="px-6 py-3 bg-gradient-to-r from-indigo-600 to-cyan-500 hover:from-indigo-500 hover:to-cyan-400 text-white font-bold text-sm rounded-xl shadow-lg shadow-indigo-500/25 transition transform active:scale-95 flex items-center gap-2">
+                            <span>▶</span> Jalankan Kode
+                        </button>
+                        <button onclick="showHint()" class="px-4 py-3 bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-sm rounded-xl transition">
+                            💡 Petunjuk
+                        </button>
+                    </div>
+                    <button onclick="completeLevel()" class="px-6 py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm rounded-xl shadow-lg shadow-emerald-500/25 transition transform active:scale-95 flex items-center gap-2">
+                        <span>✔</span> Selesaikan Level & Lanjut
+                    </button>
+                </div>
+
+                <!-- Terminal / Output Box -->
+                <div class="mt-2">
+                    <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Terminal Output:</p>
+                    <div id="code-output" class="bg-slate-950 border border-slate-800 rounded-xl p-4 code-font text-xs md:text-sm text-emerald-400 min-h-[90px] max-h-48 overflow-y-auto">
+                        <span class="text-slate-500">// Output program akan muncul di sini setelah dijalankan...</span>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+    <!-- JavaScript Link -->
+    <script src="app.js"></script>
+</body>
+</html>
