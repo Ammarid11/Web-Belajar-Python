@@ -1309,6 +1309,57 @@ const levelsData = [
         ]
     },
     {
+        id: 78, category: "AI Engineering", title: "Level 78: Hugging Face Transformers & Local LLMs (Ollama / HuggingFaceHub)", xp: 12500,
+        desc: "<b>Definisi Konsep Mendalam:</b> Menggunakan model open-source mutakhir dari pustaka <code>transformers</code> Hugging Face serta menjalankan LLM lokal via <code>Ollama</code>.<br><br><b>Poin Penting:</b><br>• Memuat pipeline Hugging Face.<br>• Menghubungkan model lokal Ollama ke Python.",
+        example: `from transformers import pipeline\n\ngenerator = pipeline('text-generation', model='gpt2')\nprint(generator("Python adalah", max_length=20))`,
+        tasks: [
+            { task: "Impor pipeline dari pustaka transformers, buat pipa generator teks menggunakan model pra-latih ringan 'gpt2'.", hint: "generator = pipeline('text-generation', model='gpt2')", validate: c => c.includes("pipeline") && c.includes("gpt2") },
+            { task: "Jalankan inferensi teks menggunakan pipeline untuk menghasilkan kelanjutan kalimat.", hint: "output = generator('Artificial Intelligence adalah', max_length=30)", validate: c => c.includes("generator(") },
+            { task: "Impor AutoTokenizer dan AutoModelForCausalLM untuk memuat model transformer secara manual.", hint: "from transformers import AutoTokenizer, AutoModelForCausalLM", validate: c => c.includes("autotokenizer") && c.includes("automodelforcausallm") },
+            { task: "Muat tokenizer dan model bahasa open-source dari repositori Hugging Face Hub.", hint: "tokenizer = AutoTokenizer.from_pretrained('model_name')", validate: c => c.includes("from_pretrained") },
+            { task: "Tokenisasi teks masukan menggunakan tokenizer dengan argumen return_tensors='pt'.", hint: "inputs = tokenizer('Halo dunia', return_tensors='pt')", validate: c => c.includes("return_tensors") },
+            { task: "Hasilkan token teks baru menggunakan model.generate() dari PyTorch tensor.", hint: "outputs = model.generate(**inputs, max_new_tokens=50)", validate: c => c.includes("model.generate") },
+            { task: "Dekode kembali token hasil keluaran model menjadi string teks keterbacaan manusia.", hint: "tokenizer.decode(outputs[0], skip_special_tokens=True)", validate: c => c.includes("tokenizer.decode") },
+            { task: "Hubungkan model bahasa lokal yang berjalan di server Ollama menggunakan modul langchain_community.llms Ollama.", hint: "from langchain_community.llms import Ollama; llm = Ollama(model='qwen2.5')", validate: c => c.includes("ollama") },
+            { task: "Kirim permintaan kueri teks ke model lokal Ollama melalui pemanggilan .invoke().", hint: "response = llm.invoke('Halo dari Python lokal!')", validate: c => c.includes(".invoke(") },
+            { task: "Tulis ringkasan integrasi model open-source lokal vs model komersial cloud.", hint: "Bandingkan keunggulan privasi lokal vs performa cloud.", validate: c => c.length > 5 }
+        ]
+    },
+    {
+        id: 79, category: "DevOps", title: "Level 79: Environment Management & Configuration (python-dotenv, Pydantic Settings)", xp: 13000,
+        desc: "<b>Definisi Konsep Mendalam:</b> Mengelola konfigurasi lingkungan aplikasi secara aman dan terstruktur menggunakan variabel lingkungan (environment variables) serta pustaka Pydantic Settings.<br><br><b>Poin Penting:</b><br>• Memuat file `.env` via <code>python-dotenv</code>.<br>• Validasi tipe data konfigurasi otomatis dengan <code>BaseSettings</code>.",
+        example: `from pydantic_settings import BaseSettings\n\nclass Settings(BaseSettings):\n    app_name: str\n    database_url: str\n    class Config:\n        env_file = ".env"`,
+        tasks: [
+            { task: "Impor load_dotenv dari pustaka python-dotenv, lalu muat konfigurasi dari file .env ke dalam sistem.", hint: "from dotenv import load_dotenv; load_dotenv()", validate: c => c.includes("load_dotenv") },
+            { task: "Ambil nilai variabel lingkungan menggunakan fungsi os.getenv('NAMA_VARIABEL', default).", hint: "import os; api_key = os.getenv('API_KEY', 'default_val')", validate: c => c.includes("os.getenv") },
+            { task: "Impor BaseSettings dari pydantic_settings untuk membuat class konfigurasi terstruktur.", hint: "class Settings(BaseSettings): port: int = 8000", validate: c => c.includes("basesettings") },
+            { task: "Atur konfigurasi kelas dalam BaseSettings untuk membaca file '.env' secara otomatis.", hint: "class Config: env_file = '.env'", validate: c => c.includes("env_file") },
+            { task: "Inisialisasi objek pengaturan konfigurasi aplikasi utama.", hint: "settings = Settings()", validate: c => c.includes("settings") },
+            { task: "Berikan validasi tipe data port (int) dan debug mode (bool) pada Pydantic Settings.", hint: "Pydantic otomatis memvalidasi tipe data dari environment string.", validate: c => c.includes("int") || c.includes("bool") },
+            { task: "Sembunyikan kredensial sensitif agar tidak tercetak saat debugging objek pengaturan.", hint: "Gunakan Field(..., exclude=True) jika diperlukan.", validate: c => c.includes("field") },
+            { task: "Atur nilai default cadangan untuk variabel lingkungan opsional.", hint: "Sertakan nilai default pada atribut class Settings.", validate: c => c.includes("=") },
+            { task: "Simulasikan penimpaan variabel lingkungan (override) via environment sistem operasi.", hint: "Variabel sistem operasi memiliki prioritas di atas file .env.", validate: c => c.length > 5 },
+            { task: "Uji integritas konfigurasi aplikasi saat startup untuk mencegah kegagalan runtime.", hint: "Validasi settings saat aplikasi pertama kali dijalankan.", validate: c => c.length > 5 }
+        ]
+    },
+    {
+        id: 80, category: "DevOps", title: "Level 80: Dockerization: Menulis Dockerfile Optimal untuk Python", xp: 13500,
+        desc: "<b>Definisi Konsep Mendalam:</b> Mengemas aplikasi Python dan seluruh dependensinya ke dalam kontainer Docker mandiri menggunakan Dockerfile yang optimal dan aman.<br><br><b>Poin Penting:</b><br>• Menggunakan base image resmi <code>python:3.11-slim</code>.<br>• Menerapkan tahapan multi-stage build untuk memperkecil ukuran image.",
+        example: `# Contoh Dockerfile dasar\nFROM python:3.11-slim\nWORKDIR /app\nCOPY requirements.txt .\nRUN pip install --no-cache-dir -r requirements.txt\nCOPY . .\nCMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]`,
+        tasks: [
+            { task: "Tulis baris instruksi FROM menggunakan image resmi Python slim untuk ukuran yang lebih ringkas.", hint: "FROM python:3.11-slim", validate: c => c.includes("from") },
+            { task: "Atur direktori kerja utama di dalam kontainer menggunakan instruksi WORKDIR /app.", hint: "WORKDIR /app", validate: c => c.includes("workdir") },
+            { task: "Salin file daftar dependensi requirements.txt terlebih dahulu sebelum menyalin seluruh kode sumber.", hint: "requirements.txt", validate: c => c.includes("copy") && c.includes("requirements") },
+            { task: "Jalankan instalasi paket pip dengan opsi --no-cache-dir untuk menghindari penumpukan ukuran cache image.", hint: "RUN pip install --no-cache-dir -r requirements.txt", validate: c => c.includes("run") && c.includes("pip") },
+            { task: "Salin seluruh sisa file kode proyek Python ke direktori kerja kontainer.", hint: "COPY . .", validate: c => c.includes("copy") },
+            { task: "Buat user non-root di dalam Dockerfile untuk meningkatkan aspek keamanan sistem kontainer.", hint: "RUN useradd -u 1000 appuser && chown -R appuser /app", validate: c => c.includes("useradd") || c.includes("chown") },
+            { task: "Tetapkan perintah eksekusi default kontainer menggunakan instruksi CMD.", hint: "CMD [\"python\", \"main.py\"]", validate: c => c.includes("cmd") },
+            { task: "Buat file .dockerignore untuk mengecualikan direktori seperti venv, __pycache__, dan file git.", hint: "Tuliskan venv/ dan __pycache__/ di dalam .dockerignore.", validate: c => c.length > 3 },
+            { task: "Bangun image Docker lokal melalui perintah terminal docker build.", hint: "docker build -t my-python-app .", validate: c => c.includes("docker build") },
+            { task: "Jalankan kontainer Docker secara lokal dengan melakukan port forwarding ke port host.", hint: "docker run -p 8000:8000 my-python-app", validate: c => c.includes("docker run") }
+        ]
+    },
+    {
         id: 81, category: "DevOps", title: "Level 81: Docker Compose untuk Layanan Multi-Container (Web + DB + Redis)", xp: 14000,
         desc: "<b>Definisi Konsep Mendalam:</b> Menjalankan dan mengelola arsitektur aplikasi multi-kontainer (Aplikasi Web FastAPI + PostgreSQL + Redis) secara terpadu via <code>docker-compose.yml</code>.<br><br><b>Poin Penting:</b><br>• Definisi layanan (services), jaringan (networks), dan volume.",
         example: `version: '3.8'\nservices:\n  web:\n    build: .\n    ports:\n      - "8000:8000"\n    depends_on:\n      - redis\n  redis:\n    image: redis:alpine`,
