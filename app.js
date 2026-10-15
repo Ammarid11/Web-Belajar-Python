@@ -1,6 +1,12 @@
+/* =====================================================================
+   PYTHON ODYSSEY - app.js
+   Bagian 1: Kurikulum (levelsData, 100 level x 10 soal)
+   Bagian 2: Logika aplikasi (lihat komentar "LOGIKA APLIKASI" di bawah)
+   ===================================================================== */
+
 const levelsData = [
     {
-        id: 1, category: "Beginner", title: "Level 1: Variabel & Tipe Data", xp: 100,
+        id: 1, category: "Beginner", title: "Level 1: Variabel & Tipe Data",
         desc: "<b>Definisi Konsep Mendalam:</b> Variabel adalah simbol penamaan atau wadah yang dialokasikan di dalam memori komputer untuk menyimpan nilai data tertentu. Dalam Python, kita tidak perlu mendeklarasikan tipe data secara eksplisit berkat sistem <i>dynamic typing</i> yang otomatis mengenali nilai.<br><br><b>Analisis Rinci Tipe Data Fundamental:</b><br>• <b>Integer (<code>int</code>):</b> Bilangan bulat tanpa komponen desimal, baik positif, negatif, maupun nol (contoh: <code>25</code>, <code>-5</code>).<br>• <b>Float (<code>float</code>):</b> Bilangan desimal atau pecahan yang menggunakan tanda titik <code>.</code> sebagai pemisah (contoh: <code>3.14</code>, <code>175.5</code>).<br>• <b>String (<code>str</code>):</b> Teks atau karakter alfanumerik yang wajib diapit dengan tanda kutip tunggal atau ganda (contoh: <code>\"Ammar\"</code>).<br>• <b>Boolean (<code>bool</code>):</b> Nilai logika biner yang bernilai benar (<code>True</code>) atau salah (<code>False</code>) dengan huruf kapital di awal.",
         example: `nama = "Budi"\numur = 20\npi = 3.14\nis_active = True\nprint(nama, umur, pi, is_active)`,
         tasks: [
@@ -17,7 +23,7 @@ const levelsData = [
         ]
     },
     {
-        id: 2, category: "Beginner", title: "Level 2: Operator Aritmatika", xp: 150,
+        id: 2, category: "Beginner", title: "Level 2: Operator Aritmatika",
         desc: "<b>Definisi Konsep Mendalam:</b> Operator aritmatika adalah simbol khusus untuk mengeksekusi perhitungan matematika pada variabel atau nilai data di dalam program.<br><br><b>Analisis Rinci Operator:</b><br>• <code>+</code> & <code>-</code>: Operasi dasar penambahan dan pengurangan.<br>• <code>*</code>: Perkalian nilai.<br>• <code>/</code>: Pembagian riil yang menghasilkan tipe data desimal (float).<br>• <code>//</code> (Floor Division): Pembagian bulat yang otomatis membulatkan hasil ke bawah.<br>• <code>%</code> (Modulo): Sisa hasil pembagian suatu bilangan.<br>• <code>**</code> (Pangkat): Perpangkatan basis dengan nilai eksponen.",
         example: `panjang = 10\nlebar = 5\nluas = panjang * lebar\nprint("Luas:", luas)`,
         tasks: [
@@ -34,7 +40,7 @@ const levelsData = [
         ]
     },
     {
-        id: 3, category: "Beginner", title: "Level 3: String Manipulation & F-String", xp: 200,
+        id: 3, category: "Beginner", title: "Level 3: String Manipulation & F-String",
         desc: "<b>Definisi Konsep Mendalam:</b> Manipulasi string adalah teknik pengolahan teks. <b>Formatted String (f-string)</b> adalah fitur modern Python untuk menyisipkan variabel atau ekspresi secara langsung dan dinamis ke dalam teks.<br><br><b>Poin Penting Sintaks:</b><br>• Diawali dengan huruf <code>f</code> sebelum tanda kutip pembuka.<br>• Variabel diselipkan langsung di dalam kurung kurawal <code>{nama_variabel}</code>.",
         example: `hobi = "Membaca"\nprint(f"Hobi saya adalah {hobi}")`,
         tasks: [
@@ -51,7 +57,7 @@ const levelsData = [
         ]
     },
     {
-        id: 4, category: "Beginner", title: "Level 4: Percabangan If-Else", xp: 250,
+        id: 4, category: "Beginner", title: "Level 4: Percabangan If-Else",
         desc: "<b>Definisi Konsep Mendalam:</b> Struktur alur logika percabangan membuat program dapat mengambil keputusan otonom berdasarkan evaluasi kondisi boolean.<br><br><b>Poin Penting:</b><br>• <code>if kondisi:</code> Blok kode dieksekusi jika kondisi benar (<code>True</code>).<br>• <code>else:</code> Jalur alternatif pengaman jika kondisi salah (<code>False</code>).<br>• <b>Indentasi:</b> Aturan spasi menjorok ke dalam wajib diperhatikan.",
         example: `nilai = 75\nif nilai >= 70:\n    print("Lulus")\nelse:\n    print("Remidi")`,
         tasks: [
@@ -68,7 +74,7 @@ const levelsData = [
         ]
     },
     {
-        id: 5, category: "Beginner", title: "Level 5: Percabangan Bertingkat (Elif)", xp: 300,
+        id: 5, category: "Beginner", title: "Level 5: Percabangan Bertingkat (Elif)",
         desc: "<b>Definisi Konsep Mendalam:</b> Digunakan untuk menguji banyak jalur kondisi percabangan secara berurutan dan sistematis.<br><br><b>Poin Penting:</b><br>• Kata kunci <code>elif</code> ditempatkan di antara <code>if</code> dan <code>else</code>.<br>• Program memeriksa dari atas ke bawah dan langsung mengeksekusi blok kode pertama yang bernilai benar.",
         example: `skor = 85\nif skor >= 90:\n    print("A")\nelif skor >= 80:\n    print("B")\nelse:\n    print("C")`,
         tasks: [
@@ -85,7 +91,7 @@ const levelsData = [
         ]
     },
     {
-        id: 6, category: "Beginner", title: "Level 6: Perulangan For Loop", xp: 350,
+        id: 6, category: "Beginner", title: "Level 6: Perulangan For Loop",
         desc: "<b>Definisi Konsep Mendalam:</b> Perulangan terstruktur untuk mengulang blok kode sejumlah kali tertentu secara deterministik.<br><br><b>Poin Penting:</b><br>• Menggunakan fungsi <code>range(start, stop, step)</code> untuk menghasilkan deretan angka iterasi.<br>• Dapat langsung mengiterasi elemen karakter dari sebuah string.",
         example: `for i in range(1, 4):\n    print("Hitungan ke:", i)`,
         tasks: [
@@ -102,7 +108,7 @@ const levelsData = [
         ]
     },
     {
-        id: 7, category: "Beginner", title: "Level 7: Perulangan While Loop", xp: 400,
+        id: 7, category: "Beginner", title: "Level 7: Perulangan While Loop",
         desc: "<b>Definisi Konsep Mendalam:</b> Perulangan dinamis yang berjalan terus-menerus selama kondisi evaluasinya bernilai <code>True</code>.<br><br><b>Poin Penting:</b><br>• Wajib menyertakan variabel pengubah nilai di dalam loop agar kondisi pada suatu saat bernilai <code>False</code>.<br>• Kelalaian ini menyebabkan <b>infinite loop</b> (program tergantung abadi).",
         example: `i = 1\nwhile i <= 3:\n    print(i)\n    i += 1`,
         tasks: [
@@ -119,7 +125,7 @@ const levelsData = [
         ]
     },
     {
-        id: 8, category: "Intermediate", title: "Level 8: Fungsi Dasar (Def & Return)", xp: 450,
+        id: 8, category: "Intermediate", title: "Level 8: Fungsi Dasar (Def & Return)",
         desc: "<b>Definisi Konsep Mendalam:</b> Fungsi adalah blok kode modular yang dirancang untuk membungkus tugas spesifik agar dapat digunakan kembali secara efisien.<br><br><b>Poin Penting:</b><br>• Didefinisikan dengan kata kunci <code>def nama_fungsi(parameter):</code>.<br>• Menggunakan kata kunci <code>return</code> untuk mengeluarkan hasil akhir pemrosesan.",
         example: `def sapa(nama):\n    return f"Halo {nama}"\n\nprint(sapa("Rian"))`,
         tasks: [
@@ -136,7 +142,7 @@ const levelsData = [
         ]
     },
     {
-        id: 9, category: "Intermediate", title: "Level 9: List (Daftar Data)", xp: 500,
+        id: 9, category: "Intermediate", title: "Level 9: List (Daftar Data)",
         desc: "<b>Definisi Konsep Mendalam:</b> Struktur data majemuk untuk menampung banyak data terurut dalam satu variabel tunggal.<br><br><b>Poin Penting:</b><br>• Bersifat <b>mutable</b> (isinya dapat dimodifikasi).<br>• Posisi indeks elemen dimulai dari angka <code>0</code>.<br>• Method penting: <code>.append()</code>, <code>.insert()</code>, <code>.remove()</code>, <code>.sort()</code>.",
         example: `warna = ["merah", "hijau", "biru"]\nwarna.append("kuning")\nprint(warna[0])`,
         tasks: [
@@ -153,24 +159,24 @@ const levelsData = [
         ]
     },
     {
-        id: 10, category: "Intermediate", title: "Level 10: Tuple & Set", xp: 550,
+        id: 10, category: "Intermediate", title: "Level 10: Tuple & Set",
         desc: "<b>Definisi Konsep Mendalam:</b> Koleksi data pendukung selain list.<br><br><b>Poin Penting:</b><br>• <b>Tuple:</b> Bersifat <i>immutable</i> (tidak bisa diubah setelah dibuat), ditulis dengan tanda <code>()</code>.<br>• <b>Set:</b> Kumpulan data unik tanpa urutan yang otomatis menyaring elemen duplikat, ditulis dengan tanda <code>{}</code>.",
         example: `koordinat = (10, 20)\nangka_unik = {1, 2, 2, 3}\nprint(angka_unik)`,
         tasks: [
             { task: "Buat set berisi angka 5, 2, 5, 1, 3 (ada duplikat), lalu cetak set untuk melihat keunikan datanya.", hint: "Set otomatis menghapus elemen duplikat.", validate: c => c.includes("{") && c.includes("}") },
-            { task: "Buat tuple berisi koordinat (x=100, y=200), lalu cetak elemen x (indeks 0).", hint: "Akses tuple menggunakan kurung siku tuple[0].", validate: c => c.includes("(") && c.includes(")") },
+            { task: "Buat tuple berisi koordinat (x=100, y=200), lalu cetak elemen x (indeks 0).", hint: "Akses tuple menggunakan kurung siku tuple[0].", validate: c => /=\s*\([^)]*,[^)]*\)/.test(c) },
             { task: "Buat set warna {'merah', 'hijau'}, tambahkan warna baru dengan .add('biru'), lalu cetak.", hint: "Gunakan method .add() pada set.", validate: c => c.includes("add") },
             { task: "Buat tuple berisi nama-nama hari dalam seminggu, lalu cetak panjang tuple dengan len().", hint: "Gunakan fungsi len(tuple).", validate: c => c.includes("len(") },
             { task: "Buat set angka {1, 2, 3} dan {3, 4, 5}, lakukan operasi union (|) atau gabungkan, lalu cetak.", hint: "Gunakan operator union set (|).", validate: c => c.includes("|") },
-            { task: "Buat tuple berisi data diri (nama, umur, kota), lalu akses elemen umur (indeks 1).", hint: "Gunakan indeks tuple [1].", validate: c => c.includes("(") && c.includes(")") },
+            { task: "Buat tuple berisi data diri (nama, umur, kota), lalu akses elemen umur (indeks 1).", hint: "Gunakan indeks tuple [1].", validate: c => /=\s*\([^)]*,[^)]*\)/.test(c) },
             { task: "Buat set berisi huruf-huruf dari kata 'PROGRAM', lalu cetak set tersebut.", hint: "Set akan memecah kata menjadi huruf unik.", validate: c => c.includes("{") && c.includes("}") },
             { task: "Buat set angka {10, 20, 30, 40}, hapus angka 20 menggunakan .remove(20), lalu cetak.", hint: "Gunakan .remove() pada set.", validate: c => c.includes("remove") },
             { task: "Buat tuple berisi nilai pecahan (0.5, 1.5, 2.5), lalu cetak elemen terakhir.", hint: "Gunakan indeks [-1].", validate: c => c.includes("[-1]") },
-            { task: "Buat set hewan {'kucing', 'anjing'}, periksa apakah 'kucing' ada di dalam set menggunakan 'in'.", hint: "Gunakan 'kucing' in nama_set", validate: c => c.includes("in") }
+            { task: "Buat set hewan {'kucing', 'anjing'}, periksa apakah 'kucing' ada di dalam set menggunakan 'in'.", hint: "Gunakan 'kucing' in nama_set", validate: c => /\bin\b/.test(c) }
         ]
     },
     {
-        id: 11, category: "Intermediate", title: "Level 11: Dictionary (Key-Value)", xp: 600,
+        id: 11, category: "Intermediate", title: "Level 11: Dictionary (Key-Value)",
         desc: "<b>Definisi Konsep Mendalam:</b> Struktur data asosiatif yang menyimpan data berpasangan antara Kunci (<i>key</i>) dan Nilai (<i>value</i>).<br><br><b>Poin Penting:</b><br>• Ditulis dengan format <code>{\"kunci\": nilai}</code>.<br>• Kunci bersifat unik sebagai identifikasi data.<br>• Method pendukung: <code>.keys()</code>, <code>.values()</code>, <code>.get()</code>.",
         example: `siswa = {"nama": "Siti", "nilai": 90}\nprint(siswa["nama"])`,
         tasks: [
@@ -180,20 +186,20 @@ const levelsData = [
             { task: "Buat dictionary nilai siswa, hapus salah satu kunci menggunakan del, lalu cetak.", hint: "Gunakan del dictionary[\"kunci\"]", validate: c => c.includes("del") },
             { task: "Buat dictionary menu makanan, tampilkan semua kunci menggunakan method .keys().", hint: "Gunakan method .keys()", validate: c => c.includes("keys") },
             { task: "Buat dictionary menu minuman, tampilkan semua nilai menggunakan method .values().", hint: "Gunakan method .values()", validate: c => c.includes("values") },
-            { task: "Buat dictionary biodata, periksa apakah kunci 'email' ada di dalam dictionary menggunakan 'in'.", hint: "Gunakan 'email' in biodata", validate: c => c.includes("in") },
+            { task: "Buat dictionary biodata, periksa apakah kunci 'email' ada di dalam dictionary menggunakan 'in'.", hint: "Gunakan 'email' in biodata", validate: c => /\bin\b/.test(c) },
             { task: "Buat dictionary toko, ambil nilai dengan method .get('nama_toko') untuk keamanan akses.", hint: "Gunakan dictionary.get('kunci')", validate: c => c.includes("get") },
             { task: "Buat dictionary nilai mata pelajaran, hitung jumlah item menggunakan fungsi len().", hint: "Gunakan len(dictionary)", validate: c => c.includes("len(") },
             { task: "Buat dictionary karyawan, cetak string f-string berisi nama dan jabatan karyawan tersebut.", hint: "Gabungkan kunci dictionary dalam f-string.", validate: c => c.includes("f\"") || c.includes("f'") }
         ]
     },
     {
-        id: 12, category: "Intermediate", title: "Level 12: Advanced String Formatting & Alignment", xp: 630,
-        desc: "<b>Definisi Konsep Mendalam:</b> Mengatur presisi angka desimal, format pemisah ribuan, dan perataan tata letak teks string secara profesional.<br><br><b>Poin Penting:</b><br>• Presisi desimal: <code>{pi:.2f}</code><br>• Format ribuan: <code>{angka:,}</code><br>• Perataan teks: <code><</code> (kiri), <code>></code> (kanan), <code>^</code> (tengah).",
+        id: 12, category: "Intermediate", title: "Level 12: Advanced String Formatting & Alignment",
+        desc: "<b>Definisi Konsep Mendalam:</b> Mengatur presisi angka desimal, format pemisah ribuan, dan perataan tata letak teks string secara profesional.<br><br><b>Poin Penting:</b><br>• Presisi desimal: <code>{pi:.2f}</code><br>• Format ribuan: <code>{angka:,}</code><br>• Perataan teks: <code>&lt;</code> (kiri), <code>&gt;</code> (kanan), <code>^</code> (tengah).",
         example: `pi = 3.14159\nprint(f"Pi: {pi:.2f}")\nprint(f"{'Teks':<10} - Kiri")`,
         tasks: [
             { task: "Cetak nilai pi 3.14159 dengan format presisi 2 angka di belakang koma menggunakan f-string.", hint: "Gunakan format {nilai:.2f}", validate: c => c.includes(":.2f") },
             { task: "Format angka 1500000 menjadi format ribuan menggunakan pemisah koma: {1500000:,}.", hint: "Gunakan koma di dalam kurung kurawal f-string {1500000:,}.", validate: c => c.includes(":,") },
-            { task: "Cetak persentase 0.758 menjadi format persen dua desimal {0.758:.1%}.", hint: "Gunakan akhiran % pada format f-string.", validate: c => c.includes(":%") || c.includes(":.1%") },
+            { task: "Cetak persentase 0.758 dengan format persen satu desimal {0.758:.1%}.", hint: "Gunakan akhiran % pada format f-string.", validate: c => /:\.?\d*%/.test(c) },
             { task: "Ratakan teks 'Python' ke kanan dengan lebar total 10 karakter menggunakan '{'Python':>10}'.", hint: "Gunakan operator perataan >.", validate: c => c.includes(">") },
             { task: "Ratakan teks 'Data' ke tengah dengan lebar total 12 karakter menggunakan '{'Data':^12}'.", hint: "Gunakan operator perataan ^.", validate: c => c.includes("^") },
             { task: "Cetak angka 5 dengan padding angka nol di depan menjadi 4 digit '{5:04d}'.", hint: "Gunakan format 04d.", validate: c => c.includes("04d") },
@@ -204,7 +210,7 @@ const levelsData = [
         ]
     },
     {
-        id: 13, category: "Intermediate", title: "Level 13: Flexible Arguments (*args & **kwargs)", xp: 660,
+        id: 13, category: "Intermediate", title: "Level 13: Flexible Arguments (*args & **kwargs)",
         desc: "<b>Definisi Konsep Mendalam:</b> Membangun fungsi yang dapat menerima jumlah argumen masukan secara fleksibel dan dinamis.<br><br><b>Poin Penting:</b><br>• <code>*args</code>: Menampung kumpulan argumen posisi ke dalam bentuk tuple.<br>• <code>**kwargs</code>: Menampung argumen kata kunci berpasangan ke dalam bentuk dictionary.",
         example: `def total_semua(*args):\n    return sum(args)\n\nprint(total_semua(1, 2, 3, 4))`,
         tasks: [
@@ -221,7 +227,7 @@ const levelsData = [
         ]
     },
     {
-        id: 14, category: "Intermediate", title: "Level 14: Functional Programming (Map & Filter)", xp: 690,
+        id: 14, category: "Intermediate", title: "Level 14: Functional Programming (Map & Filter)",
         desc: "<b>Definisi Konsep Mendalam:</b> Paradigma pemrograman fungsional untuk memproses koleksi data secara bersih.<br><br><b>Poin Penting:</b><br>• <code>map()</code>: Mentransformasi setiap elemen data dalam koleksi.<br>• <code>filter()</code>: Menyaring elemen berdasarkan uji logika kondisi.<br>• Sering dipadukan dengan fungsi anonim berbaris tunggal <code>lambda</code>.",
         example: `angka = [1, 2, 3, 4]\nkuadrat = list(map(lambda x: x**2, angka))\nprint(kuadrat)`,
         tasks: [
@@ -238,7 +244,7 @@ const levelsData = [
         ]
     },
     {
-        id: 15, category: "Intermediate", title: "Level 15: Exception Handling (Try-Except)", xp: 720,
+        id: 15, category: "Intermediate", title: "Level 15: Exception Handling (Try-Except)",
         desc: "<b>Definisi Konsep Mendalam:</b> Mekanisme pengamanan program untuk menangani error runtime secara elegan tanpa membuat aplikasi crash.<br><br><b>Poin Penting:</b><br>• <code>try</code>: Blok kode yang dipantau dari error.<br>• <code>except</code>: Menangkap jenis eksepsi error tertentu.<br>• <code>finally</code>: Blok kode yang dijamin selalu dieksekusi di akhir.",
         example: `try:\n    hasil = 10 / 0\nexcept ZeroDivisionError:\n    print("Tidak bisa dibagi nol!")`,
         tasks: [
@@ -255,7 +261,7 @@ const levelsData = [
         ]
     },
     {
-        id: 16, category: "Advanced", title: "Level 16: List & Dictionary Comprehension", xp: 750,
+        id: 16, category: "Advanced", title: "Level 16: List & Dictionary Comprehension",
         desc: "<b>Definisi Konsep Mendalam:</b> Cara elegan dan ringkas untuk membangun koleksi data baru dari iterable yang sudah ada dalam satu baris kode.<br><br><b>Poin Penting:</b><br>• Format List: <code>[ekspresi for item in iterable]</code>.<br>• Format Dictionary: <code>{key: val for item in iterable}</code>.<br>• Dapat disaring menggunakan kondisi logika tambahan <code>if</code>.",
         example: `kuadrat = {x: x**2 for x in range(1, 4)}\nprint(kuadrat)`,
         tasks: [
@@ -272,7 +278,7 @@ const levelsData = [
         ]
     },
     {
-        id: 17, category: "Advanced", title: "Level 17: Custom Context Managers", xp: 780,
+        id: 17, category: "Advanced", title: "Level 17: Custom Context Managers",
         desc: "<b>Definisi Konsep Mendalam:</b> Mengelola alokasi dan pembersihan sumber daya sistem secara terstruktur menggunakan keyword <code>with</code>.<br><br><b>Poin Penting:</b><br>• Dibangun melalui class dengan mengimplementasikan metode spesial <code>__enter__</code> dan <code>__exit__</code>.",
         example: `class Timer:\n    def __enter__(self):\n        print("Mulai")\n    def __exit__(self, exc_type, exc_val, exc_tb):\n        print("Selesai")\n\nwith Timer():\n    pass`,
         tasks: [
@@ -289,7 +295,7 @@ const levelsData = [
         ]
     },
     {
-        id: 18, category: "Advanced", title: "Level 18: Dunder / Magic Methods (Object Customization)", xp: 810,
+        id: 18, category: "Advanced", title: "Level 18: Dunder / Magic Methods (Object Customization)",
         desc: "<b>Definisi Konsep Mendalam:</b> Metode spesial (<i>double underscore</i>) untuk menyesuaikan perilaku objek class agar kompatibel dengan fungsi bawaan Python.<br><br><b>Poin Penting:</b><br>• <code>__str__</code>: Representasi string objek.<br>• <code>__len__</code>: Menghitung panjang ukuran objek.<br>• <code>__add__</code>: Melakukan overloading operator aritmatika (+).",
         example: `class Buku:\n    def __init__(self, judul):\n        self.judul = judul\n    def __str__(self):\n        return f"Buku: {self.judul}"\n\nb = Buku("Python")\nprint(b)`,
         tasks: [
@@ -306,7 +312,7 @@ const levelsData = [
         ]
     },
     {
-        id: 19, category: "Advanced", title: "Level 19: Dataclasses & Typed Data Structures", xp: 830,
+        id: 19, category: "Advanced", title: "Level 19: Dataclasses & Typed Data Structures",
         desc: "<b>Definisi Konsep Mendalam:</b> Dekorator <code>@dataclass</code> untuk membuat class penyimpanan data murni secara instan tanpa menulis kode konstruktor manual.<br><br><b>Poin Penting:</b><br>• Otomatis meng-generate metode <code>__init__</code>, <code>__repr__</code>, dan <code>__eq__</code>.",
         example: `from dataclasses import dataclass\n\n@dataclass\nclass Produk:\n    nama: str\n    harga: int\n\np = Produk("Laptop", 5000000)\nprint(p)`,
         tasks: [
@@ -323,7 +329,7 @@ const levelsData = [
         ]
     },
     {
-        id: 20, category: "Advanced", title: "Level 20: Property Getters, Setters, & Encapsulation", xp: 850,
+        id: 20, category: "Advanced", title: "Level 20: Property Getters, Setters, & Encapsulation",
         desc: "<b>Definisi Konsep Mendalam:</b> Enkapsulasi data privat objek dengan kontrol validasi akses baca dan ubah melalui dekorator.<br><br><b>Poin Penting:</b><br>• <code>@property</code>: Berfungsi sebagai getter pembaca nilai.<br>• <code>@nama.setter</code>: Berfungsi sebagai pengontrol validasi saat atribut diubah.",
         example: `class Akun:\n    def __init__(self, saldo):\n        self._saldo = saldo\n    @property\n    def saldo(self):\n        return self._saldo\n\na = Akun(1000)\nprint(a.saldo)`,
         tasks: [
@@ -340,7 +346,7 @@ const levelsData = [
         ]
     },
     {
-        id: 21, category: "Expert", title: "Level 21: Descriptors Protocol", xp: 880,
+        id: 21, category: "Expert", title: "Level 21: Descriptors Protocol",
         desc: "<b>Definisi Konsep Mendalam:</b> Mekanisme internal OOP Python untuk mengontrol manajemen akses atribut objek secara terpusat.<br><br><b>Poin Penting:</b><br>• Diimplementasikan melalui metode spesial <code>__get__</code> dan <code>__set__</code>.",
         example: `class ValidasiAngka:\n    def __get__(self, instance, owner):\n        return self._val\n    def __set__(self, instance, value):\n        if value < 0: raise ValueError("Harus positif")\n        self._val = value`,
         tasks: [
@@ -357,7 +363,7 @@ const levelsData = [
         ]
     },
     {
-        id: 22, category: "Expert", title: "Level 22: Closures & Nested Scopes", xp: 910,
+        id: 22, category: "Expert", title: "Level 22: Closures & Nested Scopes",
         desc: "<b>Definisi Konsep Mendalam:</b> Fungsi bagian dalam (<i>nested function</i>) yang mempertahankan dan mengingat state variabel dari fungsi luar meskipun fungsi luar telah selesai dieksekusi.<br><br><b>Poin Penting:</b><br>• Menggunakan kata kunci <code>nonlocal</code> untuk memodifikasi variabel di cakupan luar.",
         example: `def pengali(faktor):\n    def kali(x):\n        return x * faktor\n    return kali\n\ndua_kali = pengali(2)\nprint(dua_kali(5))`,
         tasks: [
@@ -374,13 +380,13 @@ const levelsData = [
         ]
     },
     {
-        id: 23, category: "Expert", title: "Level 23: File I/O (Membaca & Menulis Teks)", xp: 940,
+        id: 23, category: "Expert", title: "Level 23: File I/O (Membaca & Menulis Teks)",
         desc: "<b>Definisi Konsep Mendalam:</b> Operasi membaca dan menulis berkas teks ke media penyimpanan eksternal komputer.<br><br><b>Poin Penting:</b><br>• Mode tulis: <code>'w'</code> (overwrite) atau <code>'a'</code> (append).<br>• Mode baca: <code>'r'</code>.<br>• Menggunakan context manager <code>with</code> agar file dijamin tertutup otomatis.",
         example: `with open("test.txt", "w") as f:\n    f.write("Belajar File I/O")`,
         tasks: [
-            { task: "Simulasikan penulisan string ke file 'catatan.txt' dengan mode 'w' dan isi 'Python Sangat Seru!'. Cetak sukses.", hint: "Gunakan with open(\"catatan.txt\", \"w\") as f:", validate: c => c.includes("open") && c.includes("w") },
-            { task: "Simulasikan pembuatan file 'data.txt' dengan mode tulis ('w') dan isi 'Halo Dunia'.", hint: "Gunakan f.write(\"...\") di dalam blok with.", validate: c => c.includes("open") && c.includes("w") },
-            { task: "Tulis kode untuk membuka file 'info.txt' dengan mode tambah ('a') untuk menyisipkan baris baru.", hint: "Gunakan mode 'a' (append) untuk menambah teks.", validate: c => c.includes("open") && c.includes("a") },
+            { task: "Simulasikan penulisan string ke file 'catatan.txt' dengan mode 'w' dan isi 'Python Sangat Seru!'. Cetak sukses.", hint: "Gunakan with open(\"catatan.txt\", \"w\") as f:", validate: c => /open\([^)]*['"]w['"]/.test(c) },
+            { task: "Simulasikan pembuatan file 'data.txt' dengan mode tulis ('w') dan isi 'Halo Dunia'.", hint: "Gunakan f.write(\"...\") di dalam blok with.", validate: c => /open\([^)]*['"]w['"]/.test(c) },
+            { task: "Tulis kode untuk membuka file 'info.txt' dengan mode tambah ('a') untuk menyisipkan baris baru.", hint: "Gunakan mode 'a' (append) untuk menambah teks.", validate: c => /open\([^)]*['"]a['"]/.test(c) },
             { task: "Simulasikan pembacaan file teks menggunakan method f.read() di dalam context manager.", hint: "Gunakan mode 'r' dan f.read().", validate: c => c.includes("open") && c.includes("read") },
             { task: "Simulasikan pembacaan file baris per baris menggunakan method f.readlines().", hint: "Gunakan f.readlines() untuk mendapatkan list baris.", validate: c => c.includes("open") && c.includes("readlines") },
             { task: "Buat struktur pengecekan keberadaan file teks sebelum dibaca menggunakan blok try-except.", hint: "Gabungkan FileNotFoundError dengan open().", validate: c => c.includes("try") && c.includes("open") },
@@ -391,7 +397,7 @@ const levelsData = [
         ]
     },
     {
-        id: 24, category: "Expert", title: "Level 24: Generator & Yield", xp: 970,
+        id: 24, category: "Expert", title: "Level 24: Generator & Yield",
         desc: "<b>Definisi Konsep Mendalam:</b> Fungsi khusus yang menghasilkan deretan data secara efisien satu per satu tanpa memenuhi kapasitas memori RAM.<br><br><b>Poin Penting:</b><br>• Menggunakan kata kunci <code>yield</code> alih-alih <code>return</code>.<br>• Menerapkan evaluasi malas (<i>lazy evaluation</i>).",
         example: `py_gen = (x for x in range(3))\nfor val in py_gen: print(val)`,
         tasks: [
@@ -408,7 +414,7 @@ const levelsData = [
         ]
     },
     {
-        id: 25, category: "Expert", title: "Level 25: Asynchronous Programming (Asyncio)", xp: 1000,
+        id: 25, category: "Expert", title: "Level 25: Asynchronous Programming (Asyncio)",
         desc: "<b>Definisi Konsep Mendalam:</b> Model eksekusi tugas konkuren secara <i>non-blocking</i> untuk operasi I/O jaringan yang lambat.<br><br><b>Poin Penting:</b><br>• Gunakan <code>async def</code> mendefinisikan coroutine.<br>• Gunakan <code>await</code> untuk menunda eksekusi tanpa memblokir thread utama.",
         example: `import asyncio\nasync def main():\n    await asyncio.sleep(0.1)\n    print("Async Selesai")`,
         tasks: [
@@ -425,25 +431,25 @@ const levelsData = [
         ]
     },
     {
-        id: 26, category: "Grandmaster", title: "Level 26: Regular Expressions (Modul re)", xp: 1100,
+        id: 26, category: "Master", title: "Level 26: Regular Expressions (Modul re)",
         desc: "<b>Definisi Konsep Mendalam:</b> Notasi pola karakter tingkat lanjut menggunakan modul <code>re</code> untuk pencarian, validasi, dan ekstraksi string.<br><br><b>Poin Penting:</b><br>• <code>re.findall()</code>: Mencari seluruh kecocokan pola teks.<br>• <code>re.sub()</code>: Menyensor atau mengganti teks berbasis pola.<br>• Pola digit angka: <code>\\d+</code>.",
         example: `import re\nhasil = re.findall(r'\\d+', 'Umur saya 25 tahun')\nprint(hasil)`,
         tasks: [
-            { task: "Gunakan modul re untuk mencari semua angka dari teks 'Kode pos 12345 dan 67890' menggunakan pola r'\\d+'.", hint: "Gunakan re.findall(r'\\d+', teks)", validate: c => c.includes("re") && c.includes("findall") },
-            { task: "Gunakan modul re untuk mencari kata yang diawali huruf 'P' dari teks 'Python dan PHP sangat populer'.", hint: "Gunakan pola r'P\\w*'", validate: c => c.includes("re") },
-            { task: "Gunakan modul re.search() untuk mencari keberadaan kata 'admin' dalam sebuah teks.", hint: "Gunakan re.search(r'admin', teks)", validate: c => c.includes("re") && c.includes("search") },
-            { task: "Gunakan modul re.sub() untuk menyensor kata kasar 'bad' menjadi '***' dalam sebuah kalimat.", hint: "Gunakan re.sub(r'bad', '***', teks)", validate: c => c.includes("re") && c.includes("sub") },
-            { task: "Gunakan modul re untuk memvalidasi atau mencocokkan format ekstensi file '.jpg' dari string nama file.", hint: "Gunakan re.findall(r'\\.jpg', nama_file)", validate: c => c.includes("re") },
-            { task: "Gunakan modul re untuk mengekstrak alamat email sederhana dari teks kontak menggunakan pola khusus.", hint: "Gunakan pola r'[\\w.-]+@[\\w.-]+'", validate: c => c.includes("re") },
-            { task: "Gunakan modul re.split() untuk memisahkan teks berdasarkan tanda baca koma atau spasi.", hint: "Gunakan re.split(r'[, ]+', teks)", validate: c => c.includes("re") && c.includes("split") },
-            { task: "Gunakan modul re untuk mencari seluruh kata yang memiliki tepat 4 huruf (r'\\b\\w{4}\\b').", hint: "Gunakan boundary \\b dan kuantifikator {4}.", validate: c => c.includes("re") },
-            { task: "Gunakan modul re untuk mendeteksi apakah suatu string berisikan nomor telepon dengan pola digit.", hint: "Gunakan re.findall(r'\\d{3}-\\d{4}', teks)", validate: c => c.includes("re") },
-            { task: "Gunakan modul re untuk mencari seluruh huruf kapital di dalam string.", hint: "Gunakan pola regex [A-Z]+", validate: c => c.includes("re") }
+            { task: "Gunakan modul re untuk mencari semua angka dari teks 'Kode pos 12345 dan 67890' menggunakan pola r'\\d+'.", hint: "Gunakan re.findall(r'\\d+', teks)", validate: c => /\bre\b/.test(c) && c.includes("findall") },
+            { task: "Gunakan modul re untuk mencari kata yang diawali huruf 'P' dari teks 'Python dan PHP sangat populer'.", hint: "Gunakan pola r'P\\w*'", validate: c => /\bre\b/.test(c) },
+            { task: "Gunakan modul re.search() untuk mencari keberadaan kata 'admin' dalam sebuah teks.", hint: "Gunakan re.search(r'admin', teks)", validate: c => /\bre\b/.test(c) && c.includes("search") },
+            { task: "Gunakan modul re.sub() untuk menyensor kata kasar 'bad' menjadi '***' dalam sebuah kalimat.", hint: "Gunakan re.sub(r'bad', '***', teks)", validate: c => /\bre\b/.test(c) && c.includes("sub") },
+            { task: "Gunakan modul re untuk memvalidasi atau mencocokkan format ekstensi file '.jpg' dari string nama file.", hint: "Gunakan re.findall(r'\\.jpg', nama_file)", validate: c => /\bre\b/.test(c) },
+            { task: "Gunakan modul re untuk mengekstrak alamat email sederhana dari teks kontak menggunakan pola khusus.", hint: "Gunakan pola r'[\\w.-]+@[\\w.-]+'", validate: c => /\bre\b/.test(c) },
+            { task: "Gunakan modul re.split() untuk memisahkan teks berdasarkan tanda baca koma atau spasi.", hint: "Gunakan re.split(r'[, ]+', teks)", validate: c => /\bre\b/.test(c) && c.includes("split") },
+            { task: "Gunakan modul re untuk mencari seluruh kata yang memiliki tepat 4 huruf (r'\\b\\w{4}\\b').", hint: "Gunakan boundary \\b dan kuantifikator {4}.", validate: c => /\bre\b/.test(c) },
+            { task: "Gunakan modul re untuk mendeteksi apakah suatu string berisikan nomor telepon dengan pola digit.", hint: "Gunakan re.findall(r'\\d{3}-\\d{4}', teks)", validate: c => /\bre\b/.test(c) },
+            { task: "Gunakan modul re untuk mencari seluruh huruf kapital di dalam string.", hint: "Gunakan pola regex [A-Z]+", validate: c => /\bre\b/.test(c) }
         ]
     },
     {
-        id: 27, category: "Grandmaster", title: "Level 27: Unit Testing & Assert", xp: 1250,
-        desc: "<b>Definisi Konsep Mendalam:</b> Validasi kebenaran logika kode secara otomatis menggunakan perintah pengujian.<br><br><b>Poin Penting:</b><br>• Menggunakan kata kunci <code>assert kondisi</code>.<br>• Memicu error <code>AssertionError</code> jika asumsi program meleset dari ekspetasi.",
+        id: 27, category: "Master", title: "Level 27: Unit Testing & Assert",
+        desc: "<b>Definisi Konsep Mendalam:</b> Validasi kebenaran logika kode secara otomatis menggunakan perintah pengujian.<br><br><b>Poin Penting:</b><br>• Menggunakan kata kunci <code>assert kondisi</code>.<br>• Memicu error <code>AssertionError</code> jika asumsi program meleset dari ekspektasi.",
         example: `def kali(a, b): return a * b\nassert kali(2, 3) == 6\nprint("Test Lolos!")`,
         tasks: [
             { task: "Buat fungsi 'pangkat_dua(x)' yang mengembalikan x ** 2. Buat assert untuk menguji pangkat_dua(4) == 16.", hint: "Gunakan assert fungsi(input) == output", validate: c => c.includes("assert") },
@@ -459,7 +465,7 @@ const levelsData = [
         ]
     },
     {
-        id: 28, category: "Grandmaster", title: "Level 28: OOP Lanjutan: Pewarisan (Inheritance)", xp: 1400,
+        id: 28, category: "Master", title: "Level 28: OOP Lanjutan: Pewarisan (Inheritance)",
         desc: "<b>Definisi Konsep Mendalam:</b> Konsep OOP di mana class anak mewarisi seluruh atribut dan metode dari class induk.<br><br><b>Poin Penting:</b><br>• Sintaks: <code>class Anak(Induk):</code>.<br>• Gunakan <code>super().__init__()</code> untuk memanggil konstruktor induk.",
         example: `class Induk:\n    sifat = "Ramah"\nclass Anak(Induk): pass\nprint(Anak.sifat)`,
         tasks: [
@@ -476,7 +482,7 @@ const levelsData = [
         ]
     },
     {
-        id: 29, category: "Grandmaster", title: "Level 29: Memory Management & Garbage Collection", xp: 1550,
+        id: 29, category: "Master", title: "Level 29: Memory Management & Garbage Collection",
         desc: "<b>Definisi Konsep Mendalam:</b> Sistem pengelolaan alokasi memori RAM dan pembersihan objek mati secara otomatis.<br><br><b>Poin Penting:</b><br>• Python melacak referensi objek (<i>reference counting</i>).<br>• Modul <code>gc</code> mengelola pembersihan siklus referensi melingkar.",
         example: `import sys\nx = [1, 2, 3]\nprint(sys.getrefcount(x))`,
         tasks: [
@@ -493,7 +499,7 @@ const levelsData = [
         ]
     },
     {
-        id: 30, category: "Grandmaster", title: "Level 30: Advanced Decorators with Arguments", xp: 1700,
+        id: 30, category: "Master", title: "Level 30: Advanced Decorators with Arguments",
         desc: "<b>Definisi Konsep Mendalam:</b> Dekorator fungsi tingkat lanjut yang mampu menerima argumen kustom eksternal.<br><br><b>Poin Penting:</b><br>• Mengharuskan struktur 3 fungsi bersarang (<i>three-nested functions</i>).",
         example: `def ulang(n):\n    def dekorator(func):\n        def wrapper(*args, **kwargs):\n            for _ in range(n):\n                func(*args, **kwargs)\n        return wrapper\n    return dekorator`,
         tasks: [
@@ -510,7 +516,7 @@ const levelsData = [
         ]
     },
     {
-        id: 31, category: "Professional", title: "Level 31: Concurrent Execution: ThreadPoolExecutor", xp: 1850,
+        id: 31, category: "Professional", title: "Level 31: Concurrent Execution: ThreadPoolExecutor",
         desc: "<b>Definisi Konsep Mendalam:</b> Eksekusi tugas konkuren secara paralel berbasis thread untuk optimalisasi proses I/O.<br><br><b>Poin Penting:</b><br>• Menggunakan pustaka standar <code>concurrent.futures</code>.<br>• Sangat optimal untuk proses yang sering menunggu respon jaringan atau file.",
         example: `from concurrent.futures import ThreadPoolExecutor\n\ndef tugas(n):\n    return n * 2\n\nwith ThreadPoolExecutor(max_workers=3) as executor:\n    hasil = list(executor.map(tugas, [1, 2, 3]))\nprint(hasil)`,
         tasks: [
@@ -527,7 +533,7 @@ const levelsData = [
         ]
     },
     {
-        id: 32, category: "Professional", title: "Level 32: Concurrent Execution: ProcessPoolExecutor", xp: 2000,
+        id: 32, category: "Professional", title: "Level 32: Concurrent Execution: ProcessPoolExecutor",
         desc: "<b>Definisi Konsep Mendalam:</b> Pemanfaatan multi-core CPU secara maksimal untuk komputasi berat (CPU-bound) melalui proses terpisah.<br><br><b>Poin Penting:</b><br>• Melewati batasan GIL (Global Interpreter Lock) Python.",
         example: `from concurrent.futures import ProcessPoolExecutor\n\ndef hitung_berat(n):\n    return n ** 5\n\nwith ProcessPoolExecutor() as ex:\n    print(list(ex.map(hitung_berat, [2, 3, 4])))`,
         tasks: [
@@ -544,7 +550,7 @@ const levelsData = [
         ]
     },
     {
-        id: 33, category: "Professional", title: "Level 33: Type Hinting & Static Analysis (typing)", xp: 2150,
+        id: 33, category: "Professional", title: "Level 33: Type Hinting & Static Analysis (typing)",
         desc: "<b>Definisi Konsep Mendalam:</b> Anotasi tipe data eksplisit pada parameter fungsi dan variabel untuk standar kode enterprise.<br><br><b>Poin Penting:</b><br>• Membantu analisis statis kode.<br>• Modul bawaan: <code>List</code>, <code>Dict</code>, <code>Optional</code>, <code>Union</code>.",
         example: `from typing import List, Dict\n\ndef proses_data(skor: List[int]) -> float:\n    return sum(skor) / len(skor)`,
         tasks: [
@@ -552,7 +558,7 @@ const levelsData = [
             { task: "Impor List dari typing, buat fungsi yang menerima parameter List[int] dan mengembalikan nilai int.", hint: "Gunakan anotasi parameter list angka.", validate: c => c.includes("List") },
             { task: "Impor Optional dari typing untuk parameter fungsi yang boleh bernilai string atau None.", hint: "Gunakan Optional[str].", validate: c => c.includes("Optional") },
             { task: "Impor Union dari typing untuk fungsi yang menerima parameter bertipe int atau float.", hint: "Gunakan Union[int, float].", validate: c => c.includes("Union") },
-            { task: "Impor Dict dari typing untuk fungsi yang menerima parameter berformat Dict[str, int].", hint: "Animasikan dictionary dengan key str dan value int.", validate: c => c.includes("Dict") },
+            { task: "Impor Dict dari typing untuk fungsi yang menerima parameter berformat Dict[str, int].", hint: "Anotasikan dictionary dengan key str dan value int.", validate: c => c.includes("Dict") },
             { task: "Buat fungsi dengan anotasi tipe data untuk koordinat (x: float, y: float) -> tuple.", hint: "Berikan anotasi pada setiap parameter fungsi.", validate: c => c.includes("float") },
             { task: "Impor Callable dari typing untuk fungsi yang menerima fungsi lain sebagai parameter.", hint: "Gunakan Callable[[int], int].", validate: c => c.includes("Callable") },
             { task: "Buat class dengan atribut yang diberikan tipe data eksplisit (Type Hinting pada class).", hint: "Contoh: umur: int di dalam class.", validate: c => c.includes("class") },
@@ -561,7 +567,7 @@ const levelsData = [
         ]
     },
     {
-        id: 34, category: "Professional", title: "Level 34: Data Serialization (Pickle vs JSON)", xp: 2300,
+        id: 34, category: "Professional", title: "Level 34: Data Serialization (Pickle vs JSON)",
         desc: "<b>Definisi Konsep Mendalam:</b> Proses mengonversi struktur objek data menjadi format biner atau teks standar untuk penyimpanan dan transmisi.<br><br><b>Poin Penting:</b><br>• <code>json</code>: Format universal web yang ramah dibaca manusia.<br>• <code>pickle</code>: Serialisasi biner murni khusus objek Python.",
         example: `import json\n\ndata = {"nama": "Ammar", "level": 34}\njs_str = json.dumps(data)\nprint(js_str)`,
         tasks: [
@@ -578,7 +584,7 @@ const levelsData = [
         ]
     },
     {
-        id: 35, category: "Professional", title: "Level 35: Network Sockets & TCP/IP Communication", xp: 2450,
+        id: 35, category: "Professional", title: "Level 35: Network Sockets & TCP/IP Communication",
         desc: "<b>Definisi Konsep Mendalam:</b> Membangun aplikasi jaringan komputer tingkat rendah berbasis protokol TCP/IP.<br><br><b>Poin Penting:</b><br>• Menggunakan modul bawaan <code>socket</code>.<br>• Melibatkan alur koneksi <i>bind</i>, <i>listen</i>, dan <i>connect</i>.",
         example: `import socket\n\ns = socket.socket(socket.AF_INET, socket.SOCK_STREAM)\nprint("Socket TCP berhasil dibuat!")`,
         tasks: [
@@ -595,7 +601,7 @@ const levelsData = [
         ]
     },
     {
-        id: 36, category: "Grandmaster", title: "Level 36: Metaclasses & Class Factories", xp: 2600,
+        id: 36, category: "Grandmaster", title: "Level 36: Metaclasses & Class Factories",
         desc: "<b>Definisi Konsep Mendalam:</b> Metaclass adalah 'class dari sebuah class' yang mengontrol aturan penciptaan dan validasi struktur class saat didefinisikan.<br><br><b>Poin Penting:</b><br>• Mengatur struktur atribut sebelum objek diinstansiasi.",
         example: `class MetaKetat(type):\n    def __new__(cls, name, bases, attrs):\n        if 'id' not in attrs:\n            raise TypeError("Class wajib punya atribut id")\n        return super().__new__(cls, name, bases, attrs)`,
         tasks: [
@@ -612,7 +618,7 @@ const levelsData = [
         ]
     },
     {
-        id: 37, category: "Grandmaster", title: "Level 37: Performance Profiling & Benchmarking", xp: 2750,
+        id: 37, category: "Grandmaster", title: "Level 37: Performance Profiling & Benchmarking",
         desc: "<b>Definisi Konsep Mendalam:</b> Menganalisis bagian kode program yang paling lambat (bottleneck) untuk keperluan optimasi performa.<br><br><b>Poin Penting:</b><br>• <code>timeit</code>: Mengukur kecepatan waktu eksekusi kode.<br>• <code>cProfile</code>: Melacak fungsi yang memakan waktu CPU terbanyak.",
         example: `import timeit\n\nwaktu = timeit.timeit("sum(range(100))", number=1000)\nprint(f"Waktu eksekusi: {waktu}")`,
         tasks: [
@@ -629,7 +635,7 @@ const levelsData = [
         ]
     },
     {
-        id: 38, category: "Grandmaster", title: "Level 38: Custom Iterators & Iterables Protocols", xp: 2900,
+        id: 38, category: "Grandmaster", title: "Level 38: Custom Iterators & Iterables Protocols",
         desc: "<b>Definisi Konsep Mendalam:</b> Memahami mekanisme protokol perulangan di balik layar Python.<br><br><b>Poin Penting:</b><br>• Implementasi manual metode <code>__iter__()</code> dan <code>__next__()</code>.<br>• Menghentikan perulangan iterasi menggunakan exception <code>StopIteration</code>.",
         example: `class HitungMaju:\n    def __init__(self, batas):\n        self.batas = batas\n        self.sekarang = 0\n    def __iter__(self):\n        return self\n    def __next__(self):\n        if self.sekarang >= self.batas: raise StopIteration\n        val = self.sekarang\n        self.sekarang += 1\n        return val`,
         tasks: [
@@ -646,7 +652,7 @@ const levelsData = [
         ]
     },
     {
-        id: 39, category: "Grandmaster", title: "Level 39: Advanced Logging & Debugging (pdb)", xp: 3100,
+        id: 39, category: "Grandmaster", title: "Level 39: Advanced Logging & Debugging (pdb)",
         desc: "<b>Definisi Konsep Mendalam:</b> Sistem pencatatan log enterprise bertingkat serta investigasi error interaktif.<br><br><b>Poin Penting:</b><br>• Modul <code>logging</code> dengan level bertingkat (INFO, WARNING, ERROR).<br>• Python Debugger (<code>pdb</code>) untuk memasang breakpoint saat runtime.",
         example: `import logging\n\nlogging.basicConfig(level=logging.INFO)\nlogging.info("Aplikasi berjalan normal")`,
         tasks: [
@@ -663,7 +669,7 @@ const levelsData = [
         ]
     },
     {
-        id: 40, category: "Grandmaster", title: "Level 40: Ultimate Architecture & Clean Code Patterns", xp: 3500,
+        id: 40, category: "Grandmaster", title: "Level 40: Ultimate Architecture & Clean Code Patterns",
         desc: "<b>Definisi Konsep Mendalam:</b> Puncak masterclass penggabungan seluruh prinsip arsitektur perangkat lunak skala enterprise.<br><br><b>Poin Penting:</b><br>• Menerapkan Dependency Injection.<br>• Menggunakan Abstract Base Classes (ABC).<br>• Standar kode bersih (Clean Code) berstandar industri.",
         example: `class EngineInterface:\n    def start(self) -> str: pass\n\nclass Car:\n    def __init__(self, engine: EngineInterface):\n        self.engine = engine\n    def drive(self) -> str:\n        return self.engine.start()`,
         tasks: [
@@ -680,7 +686,7 @@ const levelsData = [
         ]
     },
     {
-        id: 41, category: "Architecture", title: "Level 41: Creational Design Patterns (Singleton, Factory, Builder)", xp: 3700,
+        id: 41, category: "Architecture", title: "Level 41: Creational Design Patterns (Singleton, Factory, Builder)",
         desc: "<b>Definisi Konsep Mendalam:</b> Pola perancangan objek creational tingkat lanjut untuk mengelola instansiasi yang kompleks.<br><br><b>Poin Penting:</b><br>• <b>Singleton:</b> Membatasi instansiasi class hanya 1 objek tunggal di memori.<br>• <b>Factory:</b> Memproduksi objek berdasarkan parameter.<br>• <b>Builder:</b> Merakit objek kompleks secara bertahap.",
         example: `class Singleton:\n    _instance = None\n    def __new__(cls):\n        if cls._instance is None:\n            cls._instance = super().__new__(cls)\n        return cls._instance`,
         tasks: [
@@ -692,12 +698,12 @@ const levelsData = [
             { task: "Buat class Builder untuk merakit profil pengguna dengan berbagai konfigurasi opsional.", hint: "Bangun objek secara bertahap lalu panggil method .build().", validate: c => c.includes("class") },
             { task: "Implementasikan Singleton untuk konfigurasi koneksi database global aplikasi.", hint: "Batasi pembuatan objek koneksi berulang kali.", validate: c => c.includes("__new__") },
             { task: "Buat Abstract Factory pattern sederhana untuk membuat keluarga komponen UI.", hint: "Sediakan interface pembuatan objek terkait.", validate: c => c.includes("class") },
-            { task: "Buat Builder pattern untuk membuat query SQL secara dinamis (SELECT, WHERE, ORDER BY).", hint: "Rangki perintah query dengan method chaining.", validate: c => c.includes("class") },
-            { task: "Uji seluruh implementasi Creational Patterns menggunakan unit testing assert.", hint: "Pastikan objek terbangun sesuai ekspetasi.", validate: c => c.includes("assert") }
+            { task: "Buat Builder pattern untuk membuat query SQL secara dinamis (SELECT, WHERE, ORDER BY).", hint: "Rangkai perintah query dengan method chaining.", validate: c => c.includes("class") },
+            { task: "Uji seluruh implementasi Creational Patterns menggunakan unit testing assert.", hint: "Pastikan objek terbangun sesuai ekspektasi.", validate: c => c.includes("assert") }
         ]
     },
     {
-        id: 42, category: "Architecture", title: "Level 42: Structural Design Patterns (Adapter, Decorator, Facade)", xp: 3900,
+        id: 42, category: "Architecture", title: "Level 42: Structural Design Patterns (Adapter, Decorator, Facade)",
         desc: "<b>Definisi Konsep Mendalam:</b> Mengatur struktur relasi dan antarmuka antar class agar sistem mudah diintegrasikan.<br><br><b>Poin Penting:</b><br>• <b>Adapter:</b> Menjembatani interface lama agar kompatibel.<br>• <b>Facade:</b> Menyederhanakan kompleksitas subsistem di balik satu pintu.",
         example: `class Facade:\n    def __init__(self): self.sub1 = Sub1(); self.sub2 = Sub2()\n    def operation(self): return self.sub1.action() + " & " + self.sub2.action()`,
         tasks: [
@@ -714,7 +720,7 @@ const levelsData = [
         ]
     },
     {
-        id: 43, category: "Architecture", title: "Level 43: Behavioral Design Patterns (Observer, Strategy, Command)", xp: 4100,
+        id: 43, category: "Architecture", title: "Level 43: Behavioral Design Patterns (Observer, Strategy, Command)",
         desc: "<b>Definisi Konsep Mendalam:</b> Mengatur pola komunikasi dan pembagian tugas perilaku antar objek.<br><br><b>Poin Penting:</b><br>• <b>Observer:</b> Sistem notifikasi event otomatis ke pelanggan.<br>• <b>Strategy:</b> Memilih algoritma secara dinamis saat runtime.<br>• <b>Command:</b> Enkapsulasi permintaan aksi.",
         example: `class StrategyContext:\n    def __init__(self, strategy): self.strategy = strategy\n    def execute(self, val): return self.strategy(val)`,
         tasks: [
@@ -731,7 +737,7 @@ const levelsData = [
         ]
     },
     {
-        id: 44, category: "Architecture", title: "Level 44: Dependency Injection & Inversion of Control (IoC)", xp: 4300,
+        id: 44, category: "Architecture", title: "Level 44: Dependency Injection & Inversion of Control (IoC)",
         desc: "<b>Definisi Konsep Mendalam:</b> Melepaskan ketergantungan kaku antar komponen kode (<i>loosely coupled</i>).<br><br><b>Poin Penting:</b><br>• Menyuntikkan objek dependensi melalui parameter konstruktor (<code>__init__</code>).<br>• Meningkatkan kemudahan unit testing dan fleksibilitas arsitektur.",
         example: `class Service:\n    def run(self): return "OK"\nclass Client:\n    def __init__(self, service): self.service = service`,
         tasks: [
@@ -748,7 +754,7 @@ const levelsData = [
         ]
     },
     {
-        id: 45, category: "Architecture", title: "Level 45: SOLID Principles in Python (Praktik Nyata)", xp: 4500,
+        id: 45, category: "Architecture", title: "Level 45: SOLID Principles in Python (Praktik Nyata)",
         desc: "<b>Definisi Konsep Mendalam:</b> Lima prinsip dasar perancangan perangkat lunak berorientasi objek yang bersih dan maintainable.<br><br><b>Poin Penting:</b><br>• <b>S</b>RP: Single Responsibility | <b>O</b>CP: Open/Closed | <b>L</b>SP: Liskov Substitution | <b>I</b>SP: Interface Segregation | <b>D</b>IP: Dependency Inversion.",
         example: `# Single Responsibility Principle\nclass UserReport:\n    def generate(self, user): return f"Laporan {user}"`,
         tasks: [
@@ -765,7 +771,7 @@ const levelsData = [
         ]
     },
     {
-        id: 46, category: "Architecture", title: "Level 46: Domain-Driven Design (DDD) & Clean Architecture Basics", xp: 4700,
+        id: 46, category: "Architecture", title: "Level 46: Domain-Driven Design (DDD) & Clean Architecture Basics",
         desc: "<b>Definisi Konsep Mendalam:</b> Memisahkan domain bisnis inti secara ketat dari ketergantungan framework eksternal maupun infrastruktur teknis.<br><br><b>Poin Penting:</b><br>• Menerapkan Entity dan Value Object murni.<br>• Arah dependensi selalu mengarah ke dalam (domain).",
         example: `class OrderEntity:\n    def __init__(self, items): self.items = items\n    def calculate_total(self): return sum(i.price for i in self.items)`,
         tasks: [
@@ -782,7 +788,7 @@ const levelsData = [
         ]
     },
     {
-        id: 47, category: "Architecture", title: "Level 47: Repository & Unit of Work Patterns", xp: 5000,
+        id: 47, category: "Architecture", title: "Level 47: Repository & Unit of Work Patterns",
         desc: "<b>Definisi Konsep Mendalam:</b> Pola enterprise untuk mengelola persistensi data dan manajemen transaksi secara terpusat.<br><br><b>Poin Penting:</b><br>• <b>Repository:</b> Abstraksi akses koleksi data CRUD.<br>• <b>Unit of Work:</b> Mengelola transaksi commit/rollback secara atomik.",
         example: `class UnitOfWork:\n    def __enter__(self): self.repo = REPO(); return self\n    def __exit__(self, *args): pass`,
         tasks: [
@@ -799,7 +805,7 @@ const levelsData = [
         ]
     },
     {
-        id: 48, category: "Architecture", title: "Level 48: Metaprogramming Lanjutan & AST (Abstract Syntax Trees)", xp: 5300,
+        id: 48, category: "Architecture", title: "Level 48: Metaprogramming Lanjutan & AST (Abstract Syntax Trees)",
         desc: "<b>Definisi Konsep Mendalam:</b> Puncak arsitektur enterprise untuk memanipulasi struktur kode program Python saat runtime.<br><br><b>Poin Penting:</b><br>• Menggunakan modul <code>ast</code> untuk mem-parse string kode menjadi pohon sintaks (Abstract Syntax Trees) serta melakukan transformasi node.",
         example: `import ast\n\ntree = ast.parse("x = 1 + 2")\nprint(ast.dump(tree))`,
         tasks: [
@@ -816,7 +822,7 @@ const levelsData = [
         ]
     },
     {
-        id: 49, category: "Web API", title: "Level 49: FastAPI: Routing, Path & Query Parameters", xp: 3750,
+        id: 49, category: "Web API", title: "Level 49: FastAPI: Routing, Path & Query Parameters",
         desc: "<b>Definisi Konsep Mendalam:</b> FastAPI adalah kerangka kerja web modern berkinerja tinggi untuk membangun API dengan Python berdasarkan standar tipe data type hints.<br><br><b>Poin Penting:</b><br>• <code>Path Parameters</code>: Variabel bagian dari URL endpoint.<br>• <code>Query Parameters</code>: Parameter tambahan setelah tanda tanya (<code>?</code>) di URL.",
         example: `from fastapi import FastAPI\n\napp = FastAPI()\n\n@app.get("/items/{item_id}")\nasync def read_item(item_id: int, q: str = None):\n    return {"item_id": item_id, "q": q}`,
         tasks: [
@@ -833,7 +839,7 @@ const levelsData = [
         ]
     },
     {
-        id: 50, category: "Web API", title: "Level 50: Pydantic v2: Advanced Data Validation & Settings", xp: 3900,
+        id: 50, category: "Web API", title: "Level 50: Pydantic v2: Advanced Data Validation & Settings",
         desc: "<b>Definisi Konsep Mendalam:</b> Pydantic v2 adalah pustaka validasi data secepat kilat di Python menggunakan type hinting standar untuk memastikan integritas struktur data.<br><br><b>Poin Penting:</b><br>• Menggunakan turunan class <code>BaseModel</code>.<br>• Fitur validasi kustom via dekorator <code>@field_validator</code>.",
         example: `from pydantic import BaseModel, field_validator\n\nclass User(BaseModel):\n    username: str\n    age: int\n\n    @field_validator('age')\n    def validate_age(cls, v):\n        if v < 18: raise ValueError("Harus dewasa")\n        return v`,
         tasks: [
@@ -850,7 +856,7 @@ const levelsData = [
         ]
     },
     {
-        id: 51, category: "Web API", title: "Level 51: SQLAlchemy ORM: Models & Sessions", xp: 4100,
+        id: 51, category: "Web API", title: "Level 51: SQLAlchemy ORM: Models & Sessions",
         desc: "<b>Definisi Konsep Mendalam:</b> SQLAlchemy adalah pemetaan objek relasional (ORM) tangguh untuk menghubungkan class Python dengan tabel database relasional secara elegan.<br><br><b>Poin Penting:</b><br>• Menggunakan <code>Mapped</code> dan <code>mapped_column</code> (gaya SQLAlchemy 2.0).",
         example: `from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column\n\nclass Base(DeclarativeBase): pass\n\nclass User(Base):\n    __tablename__ = "users"\n    id: Mapped[int] = mapped_column(primary_key=True)\n    name: Mapped[str]`,
         tasks: [
@@ -860,14 +866,14 @@ const levelsData = [
             { task: "Buat sessionmaker untuk mengelola sesi transaksi database aktif.", hint: "Impor sessionmaker dari sqlalchemy.orm.", validate: c => c.includes("sessionmaker") },
             { task: "Buat tabel database secara otomatis menggunakan Base.metadata.create_all(engine).", hint: "Panggil create_all dengan engine aktif.", validate: c => c.includes("create_all") },
             { task: "Simulasikan penambahan record data user baru ke database melalui session.add() dan session.commit().", hint: "Tambahkan objek user lalu commit.", validate: c => c.includes("add") && c.includes("commit") },
-            { task: "Lakukan query pencarian data user dari database menggunakan session.query(User).all().", hint: "Gunakan .all() untuk mengambil seluruh data.", validate: c => c.includes("query") },
+            { task: "Lakukan query pencarian data user dari database dengan gaya SQLAlchemy 2.0: session.scalars(select(User)).all().", hint: "Impor select dari sqlalchemy, lalu gunakan session.scalars(select(User)).all().", validate: c => c.includes("select") || c.includes("query") },
             { task: "Lakukan filter pencarian data berdasarkan kriteria username tertentu.", hint: "Gunakan .filter_by(username='...').first().", validate: c => c.includes("filter_by") },
             { task: "Simulasikan pembaruan (update) data record yang sudah ada di database.", hint: "Ubah atribut objek lalu lakukan session.commit().", validate: c => c.includes("commit") },
             { task: "Simulasikan penghapusan (delete) record data user dari database.", hint: "Gunakan session.delete(user) lalu commit.", validate: c => c.includes("delete") }
         ]
     },
     {
-        id: 52, category: "Web API", title: "Level 52: Database Migrations dengan Alembic", xp: 4300,
+        id: 52, category: "Web API", title: "Level 52: Database Migrations dengan Alembic",
         desc: "<b>Definisi Konsep Mendalam:</b> Alembic adalah alat migrasi skema database resmi untuk SQLAlchemy guna mengelola perubahan versi struktur tabel secara aman.<br><br><b>Poin Penting:</b><br>• Inisialisasi proyek migrasi dengan <code>alembic init</code>.<br>• Membuat revisi skema dengan <code>alembic revision --autogenerate</code>.",
         example: `# Contoh perintah terminal Alembic\n# alembic init alembic\n# alembic revision --autogenerate -m "Add user table"\n# alembic upgrade head`,
         tasks: [
@@ -884,8 +890,8 @@ const levelsData = [
         ]
     },
     {
-        id: 53, category: "Web API", title: "Level 53: Authentication & Authorization (JWT, OAuth2, Password Hashing)", xp: 4500,
-        desc: "<b>Definisi Konsep Mendalam:</b> Mengamankan aplikasi web menggunakan token JWT (JSON Web Tokens), enkripsi password passlib/bcrypt, dan skema OAuth2.<br><br><b>Poin Penting:</b><br>• Hashing sandi dengan <code>Passlib</code>.<br>• Enkode dan dekode token dengan pustaka <code>PyJWT</code>.",
+        id: 53, category: "Web API", title: "Level 53: Authentication & Authorization (JWT, OAuth2, Password Hashing)",
+        desc: "<b>Definisi Konsep Mendalam:</b> Mengamankan aplikasi web menggunakan token JWT (JSON Web Tokens), hashing password (passlib/bcrypt), dan skema OAuth2.<br><br><b>Poin Penting:</b><br>• Hashing sandi dengan <code>Passlib</code>.<br>• Enkode dan dekode token dengan pustaka <code>PyJWT</code>.",
         example: `from passlib.context import CryptContext\n\npwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")\nhashed = pwd_context.hash("rahasia123")`,
         tasks: [
             { task: "Impor CryptContext dari passlib, buat konfigurasi hashing sandi berbasis bcrypt.", hint: "CryptContext(schemes=['bcrypt'])", validate: c => c.includes("CryptContext") },
@@ -895,13 +901,13 @@ const levelsData = [
             { task: "Buat fungsi dekode dan verifikasi validitas token JWT masuk.", hint: "Gunakan jwt.decode(token, secret_key, algorithms=['HS256']).", validate: c => c.includes("jwt") && c.includes("decode") },
             { task: "Gunakan OAuth2PasswordBearer dari FastAPI untuk mengambil token dari header rute.", hint: "Impor dari fastapi.security.", validate: c => c.includes("OAuth2PasswordBearer") },
             { task: "Buat dependensi FastAPI 'get_current_user' untuk memvalidasi token JWT pengguna aktif.", hint: "Dekode token dan ambil data user dari database.", validate: c => c.includes("def") },
-            { task: "Lindungi endpoint API dengan menyematkan dependensi keamanan OAuth2.", hint: "Gunakan parameter depends=[Depends(get_current_user)].", validate: c => c.includes("Depends") },
+            { task: "Lindungi endpoint API dengan menyematkan dependensi keamanan OAuth2.", hint: "Gunakan parameter dependencies=[Depends(get_current_user)] pada dekorator rute.", validate: c => c.includes("Depends") },
             { task: "Buat endpoint autentikasi login '/token' yang mengeluarkan token akses JWT.", hint: "Validasi user dan password lalu return token.", validate: c => c.includes("FastAPI") || c.includes("token") },
             { task: "Uji otorisasi token pada Swagger UI FastAPI menggunakan tombol Authorize.", hint: "Masukkan token bearer pada form otorisasi FastAPI.", validate: c => c.length > 0 }
         ]
     },
     {
-        id: 54, category: "Web API", title: "Level 54: WebSockets & Real-time Communication di FastAPI", xp: 4750,
+        id: 54, category: "Web API", title: "Level 54: WebSockets & Real-time Communication di FastAPI",
         desc: "<b>Definisi Konsep Mendalam:</b> WebSockets memungkinkan komunikasi dupleks dua arah secara real-time antara klien dan server secara persistik.<br><br><b>Poin Penting:</b><br>• Menggunakan class <code>WebSocket</code> di FastAPI.<br>• Pengelolaan koneksi aktif via Connection Manager.",
         example: `from fastapi import FastAPI, WebSocket\n\napp = FastAPI()\n\n@app.websocket("/ws")\nasync def websocket_endpoint(websocket: WebSocket):\n    await websocket.accept()\n    while True:\n        data = await websocket.receive_text()\n        await websocket.send_text(f"Pesan diterima: {data}")`,
         tasks: [
@@ -918,7 +924,7 @@ const levelsData = [
         ]
     },
     {
-        id: 55, category: "Web API", title: "Level 55: API Testing dengan Pytest, TestClient, & Fixtures", xp: 5000,
+        id: 55, category: "Web API", title: "Level 55: API Testing dengan Pytest, TestClient, & Fixtures",
         desc: "<b>Definisi Konsep Mendalam:</b> Pengujian otomatis endpoint API menggunakan pustaka <code>pytest</code> dan <code>TestClient</code> FastAPI.<br><br><b>Poin Penting:</b><br>• Memanfaatkan pytest <code>fixtures</code> untuk setup state pengujian database/klien.",
         example: `from fastapi.testclient import TestClient\nfrom my_app import app\n\nclient = TestClient(app)\n\ndef test_read_main():\n    response = client.get("/")\n    assert response.status_code == 200`,
         tasks: [
@@ -935,7 +941,7 @@ const levelsData = [
         ]
     },
     {
-        id: 56, category: "Web API", title: "Level 56: Celery & Redis: Background Tasks & Message Queues", xp: 5250,
+        id: 56, category: "Web API", title: "Level 56: Celery & Redis: Background Tasks & Message Queues",
         desc: "<b>Definisi Konsep Mendalam:</b> Celery adalah sistem antrean tugas (task queue) terdistribusi asinkron berbasis pengiriman pesan broker seperti Redis.<br><br><b>Poin Penting:</b><br>• Mendeklarasikan background task dengan dekorator <code>@celery.task</code>.",
         example: `from celery import Celery\n\napp = Celery('tasks', broker='redis://localhost:6379/0')\n\n@app.task\ndef add(x, y):\n    return x + y`,
         tasks: [
@@ -952,7 +958,7 @@ const levelsData = [
         ]
     },
     {
-        id: 57, category: "Web API", title: "Level 57: Caching Strategies dengan Redis & Python", xp: 5500,
+        id: 57, category: "Web API", title: "Level 57: Caching Strategies dengan Redis & Python",
         desc: "<b>Definisi Konsep Mendalam:</b> Strategi caching menggunakan Redis untuk menyimpan hasil kueri berat di memori kilat demi skalabilitas aplikasi.<br><br><b>Poin Penting:</b><br>• Menggunakan klien Python <code>redis-py</code>.<br>• Menerapkan TTL (Time-To-Live) kedaluwarsa data.",
         example: `import redis\n\nclient = redis.Redis(host='localhost', port=6379, db=0)\nclient.set('kunci', 'nilai', ex=60)`,
         tasks: [
@@ -969,14 +975,14 @@ const levelsData = [
         ]
     },
     {
-        id: 58, category: "Web API", title: "Level 58: API Gateway, Rate Limiting, & CORS Security", xp: 5800,
+        id: 58, category: "Web API", title: "Level 58: API Gateway, Rate Limiting, & CORS Security",
         desc: "<b>Definisi Konsep Mendalam:</b> Mengamankan dan mengatur lalu lintas layanan mikro backend menggunakan pembatasan rate limiting, CORS, dan middleware API Gateway.<br><br><b>Poin Penting:</b><br>• Mengonfigurasi <code>CORSMiddleware</code> di FastAPI.<br>• Menerapkan rate limiting berbasis IP.",
-        example: `from fastapi.middleware.cors import CORSMiddleware\n\napp.add_middleware(\n    CORSMiddleware,\n    allow_origins=["*"],\n    allow_credentials=True,\n    allow_methods=["*"],\n    allow_headers=["*"],\n)`,
+        example: `from fastapi.middleware.cors import CORSMiddleware\n\napp.add_middleware(\n    CORSMiddleware,\n    allow_origins=["https://app.contoh.com"],  # jangan pakai "*" bersama credentials\n    allow_credentials=True,\n    allow_methods=["*"],\n    allow_headers=["*"],\n)`,
         tasks: [
             { task: "Impor CORSMiddleware dari fastapi.middleware.cors dan tambahkan ke aplikasi FastAPI Anda.", hint: "app.add_middleware(CORSMiddleware, ...)", validate: c => c.includes("CORSMiddleware") },
             { task: "Atur daftar asal domain yang diizinkan (allow_origins) pada konfigurasi CORS.", hint: "Berikan list domain web frontend yang valid.", validate: c => c.includes("allow_origins") },
             { task: "Buat middleware kustom pencatat waktu eksekusi permintaan (request timing middleware).", hint: "Gunakan @app.middleware('http') untuk intercept request.", validate: c => c.includes("middleware") },
-            { task: "Implementasikan pembatasan laju akses (Rate Limiting) berbasis Redis untuk mencegah serangan DDoS.", hint: "Hitung jumlah request per IP dalam rentang waktu tertentu.", validate: c => c.length > 0 },
+            { task: "Implementasikan pembatasan laju akses (Rate Limiting) berbasis Redis untuk membatasi penyalahgunaan API (bukan pengganti proteksi DDoS di level jaringan).", hint: "Hitung jumlah request per IP dalam rentang waktu tertentu.", validate: c => c.length > 0 },
             { task: "Buat API Gateway sederhana yang merutekan permintaan masuk ke layanan mikro backend yang sesuai.", hint: "Gunakan pustaka HTTP client seperti httpx untuk meneruskan request.", validate: c => c.includes("httpx") || c.includes("class") },
             { task: "Validasi header API Key kustom pada middleware gateway sebelum meneruskan permintaan.", hint: "Periksa keberadaan header X-API-Key.", validate: c => c.length > 0 },
             { task: "Konfigurasikan penanganan respons header keamanan HTTP standar (X-Content-Type-Options, HSTS).", hint: "Tambahkan header pengaman pada response middleware.", validate: c => c.length > 0 },
@@ -986,7 +992,7 @@ const levelsData = [
         ]
     },
     {
-        id: 59, category: "Data Engineering", title: "Level 59: Pandas Lanjutan: Groupby, Aggregations, & Window Functions", xp: 6000,
+        id: 59, category: "Data Engineering", title: "Level 59: Pandas Lanjutan: Groupby, Aggregations, & Window Functions",
         desc: "<b>Definisi Konsep Mendalam:</b> Teknik pengolahan dan analisis data tingkat lanjut menggunakan pustaka Pandas untuk agregasi kelompok dan fungsi jendela (window functions).<br><br><b>Poin Penting:</b><br>• <code>groupby()</code>: Mengelompokkan data berdasarkan kriteria tertentu.<br>• <code>agg()</code>: Menerapkan fungsi agregasi majemuk.",
         example: `import pandas as pd\n\ndf = pd.DataFrame({'kategori': ['A', 'A', 'B'], 'nilai': [10, 20, 30]})\nprint(df.groupby('kategori')['nilai'].sum())`,
         tasks: [
@@ -1003,7 +1009,7 @@ const levelsData = [
         ]
     },
     {
-        id: 60, category: "Data Engineering", title: "Level 60: Pandas Performance Optimization (Vectorization & Cython)", xp: 6250,
+        id: 60, category: "Data Engineering", title: "Level 60: Pandas Performance Optimization (Vectorization & Cython)",
         desc: "<b>Definisi Konsep Mendalam:</b> Mengoptimalkan kecepatan pemrosesan Pandas dengan teknik vektorisasi NumPy dan kompilasi Cython agar performa setara bahasa C.<br><br><b>Poin Penting:</b><br>• Menghindari perulangan baris <code>iterrows()</code>.<br>• Menggunakan operasi berbasis array NumPy.",
         example: `import pandas as pd\nimport numpy as np\n\ndf = pd.DataFrame({'a': range(1000), 'b': range(1000)})\ndf['c'] = df['a'] + df['b']  # Operasi vektor`,
         tasks: [
@@ -1020,7 +1026,7 @@ const levelsData = [
         ]
     },
     {
-        id: 61, category: "Data Engineering", title: "Level 61: PySpark Basics: RDDs & DataFrames (Big Data)", xp: 6500,
+        id: 61, category: "Data Engineering", title: "Level 61: PySpark Basics: RDDs & DataFrames (Big Data)",
         desc: "<b>Definisi Konsep Mendalam:</b> PySpark adalah antarmuka Python untuk Apache Spark, mesin komputasi klaster terdistribusi untuk pengolahan Big Data skala masif.<br><br><b>Poin Penting:</b><br>• Inisialisasi <code>SparkSession</code>.<br>• Operasi transformasi dan aksi pada DataFrame terdistribusi.",
         example: `from pyspark.sql import SparkSession\n\nspark = SparkSession.builder.appName("App").getOrCreate()\ndf = spark.createDataFrame([(1, "A"), (2, "B")], ["id", "val"])\ndf.show()`,
         tasks: [
@@ -1037,7 +1043,7 @@ const levelsData = [
         ]
     },
     {
-        id: 62, category: "Data Engineering", title: "Level 62: ETL Pipeline Development dengan Python", xp: 6750,
+        id: 62, category: "Data Engineering", title: "Level 62: ETL Pipeline Development dengan Python",
         desc: "<b>Definisi Konsep Mendalam:</b> Membangun alur kerja pipeline ETL (Extract, Transform, Load) tingkat enterprise menggunakan skrip Python murni.<br><br><b>Poin Penting:</b><br>• <code>Extract</code>: Mengambil data sumber.<br>• <code>Transform</code>: Membersihkan dan memproses data.<br>• <code>Load</code>: Menyimpan ke target penyimpanan.",
         example: `def extract(): return [{"id": 1, "val": " a "}]\ndef transform(data): return [{"id": d["id"], "val": d["val"].strip().upper()} for d in data]\ndef load(data): print("Loaded:", data)`,
         tasks: [
@@ -1054,7 +1060,7 @@ const levelsData = [
         ]
     },
     {
-        id: 63, category: "Data Engineering", title: "Level 63: Data Validation Great Expectations", xp: 7000,
+        id: 63, category: "Data Engineering", title: "Level 63: Data Validation Great Expectations",
         desc: "<b>Definisi Konsep Mendalam:</b> Memvalidasi kualitas dan integritas data otomatis menggunakan pustaka <code>Great Expectations</code> standar industri.<br><br><b>Poin Penting:</b><br>• Membuat ekspektasi aturan kolom (tidak boleh null, rentang nilai).",
         example: `import great_expectations as gx\n\ncontext = gx.get_context()\n# Validasi kualitas data berbasis ekspektasi`,
         tasks: [
@@ -1071,7 +1077,7 @@ const levelsData = [
         ]
     },
     {
-        id: 64, category: "Data Engineering", title: "Level 64: Parquet, Delta Lake, & Efficient File Formats", xp: 7250,
+        id: 64, category: "Data Engineering", title: "Level 64: Parquet, Delta Lake, & Efficient File Formats",
         desc: "<b>Definisi Konsep Mendalam:</b> Menggunakan format penyimpanan data kolom terkompresi efisien seperti Apache Parquet dan Delta Lake untuk analitik Big Data.<br><br><b>Poin Penting:</b><br>• Penyimpanan kolom berorientasi kompresi tinggi.<br>• Dukungan ACID transactions di Delta Lake.",
         example: `import pandas as pd\n\ndf = pd.DataFrame({'a': [1, 2], 'b': ['x', 'y']})\ndf.to_parquet('data.parquet', engine='pyarrow')`,
         tasks: [
@@ -1088,7 +1094,7 @@ const levelsData = [
         ]
     },
     {
-        id: 65, category: "Data Engineering", title: "Level 65: Apache Airflow Basics: DAGs & Workflow Orchestration", xp: 7500,
+        id: 65, category: "Data Engineering", title: "Level 65: Apache Airflow Basics: DAGs & Workflow Orchestration",
         desc: "<b>Definisi Konsep Mendalam:</b> Apache Airflow adalah platform orkestrasi alur kerja open-source untuk merancang, menjadwalkan, dan memantau pipeline data kompleks.<br><br><b>Poin Penting:</b><br>• Mendefinisikan DAG (Directed Acyclic Graph).<br>• Menggunakan PythonOperator.",
         example: `from airflow import DAG\nfrom airflow.operators.python import PythonOperator\nfrom datetime import datetime\n\nwith DAG('my_dag', start_date=datetime(2026, 1, 1), schedule='@daily') as dag:\n    task = PythonOperator(task_id='t1', python_callable=print)`,
         tasks: [
@@ -1105,7 +1111,7 @@ const levelsData = [
         ]
     },
     {
-        id: 66, category: "Data Engineering", title: "Level 66: Time Series Analysis dengan Pandas & NumPy", xp: 7750,
+        id: 66, category: "Data Engineering", title: "Level 66: Time Series Analysis dengan Pandas & NumPy",
         desc: "<b>Definisi Konsep Mendalam:</b> Analisis data deret waktu (time series) tingkat lanjut menggunakan indeks tanggal Pandas dan resampling frekuensi waktu.<br><br><b>Poin Penting:</b><br>• Konversi indeks ke DatetimeIndex.<br>• Resampling data harian ke bulanan.",
         example: `import pandas as pd\n\ndates = pd.date_range('2026-01-01', periods=5, freq='D')\ns = pd.Series([10, 20, 15, 30, 25], index=dates)\nprint(s.resample('W').mean())`,
         tasks: [
@@ -1122,7 +1128,7 @@ const levelsData = [
         ]
     },
     {
-        id: 67, category: "Data Engineering", title: "Level 67: Web Scraping Skala Besar (Scrapy Framework)", xp: 8000,
+        id: 67, category: "Data Engineering", title: "Level 67: Web Scraping Skala Besar (Scrapy Framework)",
         desc: "<b>Definisi Konsep Mendalam:</b> Membangun kerangka kerja web scraping asinkron berskala besar menggunakan pustaka <code>Scrapy</code> untuk mengekstrak data web secara paralel.<br><br><b>Poin Penting:</b><br>• Membuat Scrapy Spider.<br>• Mengekstrak data via XPath / CSS selectors.",
         example: `import scrapy\n\nclass QuotesSpider(scrapy.Spider):\n    name = "quotes"\n    start_urls = ['http://quotes.toscrape.com/']\n    def parse(self, response):\n        for quote in response.css('div.quote'):\n            yield {'text': quote.css('span.text::text').get()}`,
         tasks: [
@@ -1139,7 +1145,7 @@ const levelsData = [
         ]
     },
     {
-        id: 68, category: "Data Engineering", title: "Level 68: Advanced Data Visualization (Matplotlib, Seaborn, Plotly)", xp: 8500,
+        id: 68, category: "Data Engineering", title: "Level 68: Advanced Data Visualization (Matplotlib, Seaborn, Plotly)",
         desc: "<b>Definisi Konsep Mendalam:</b> Visualisasi data tingkat lanjut untuk menyajikan wawasan analitik secara estetis dan interaktif menggunakan Matplotlib, Seaborn, dan Plotly.<br><br><b>Poin Penting:</b><br>• Grafik statistik Seaborn.<br>• Visualisasi interaktif Plotly.",
         example: `import matplotlib.pyplot as plt\nimport seaborn as sns\n\nsns.set_theme()\nfig, ax = plt.subplots()\nsns.lineplot(x=[1, 2, 3], y=[4, 5, 6], ax=ax)`,
         tasks: [
@@ -1156,7 +1162,7 @@ const levelsData = [
         ]
     },
     {
-        id: 69, category: "AI Engineering", title: "Level 69: Scikit-Learn: Machine Learning Pipeline Dasar", xp: 8800,
+        id: 69, category: "AI Engineering", title: "Level 69: Scikit-Learn: Machine Learning Pipeline Dasar",
         desc: "<b>Definisi Konsep Mendalam:</b> Membangun alur kerja machine learning terstruktur menggunakan pustaka <code>scikit-learn</code> untuk pra-pemrosesan data, pelatihan model, dan evaluasi.<br><br><b>Poin Penting:</b><br>• Pembagian data train-test.<br>• Pembuatan objek Pipeline.",
         example: `from sklearn.model_selection import train_test_split\nfrom sklearn.ensemble import RandomForestClassifier\n\n# X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)`,
         tasks: [
@@ -1173,24 +1179,24 @@ const levelsData = [
         ]
     },
     {
-        id: 70, category: "AI Engineering", title: "Level 70: OpenAI API & Anthropic Claude SDK Integration", xp: 9100,
+        id: 70, category: "AI Engineering", title: "Level 70: OpenAI API & Anthropic Claude SDK Integration",
         desc: "<b>Definisi Konsep Mendalam:</b> Mengintegrasikan model bahasa besar (LLM) komersial mutakhir seperti OpenAI GPT dan Anthropic Claude ke dalam aplikasi backend Python menggunakan SDK resmi.<br><br><b>Poin Penting:</b><br>• Penggunaan klien <code>OpenAI()</code>.<br>• Pengiriman parameter chat completions.",
         example: `from openai import OpenAI\n\nclient = OpenAI(api_key="api-key-anda")\nresponse = client.chat.completions.create(\n    model="gpt-4o-mini",\n    messages=[{"role": "user", "content": "Halo AI!"}]\n)`,
         tasks: [
-            { task: "Impor kelas OpenAI dari pustaka openai daninisialisasi klien API dengan kunci akses.", hint: "client = OpenAI(api_key='your_key')", validate: c => c.includes("OpenAI") },
+            { task: "Impor kelas OpenAI dari pustaka openai dan inisialisasi klien API dengan kunci akses.", hint: "client = OpenAI(api_key='your_key')", validate: c => c.includes("OpenAI") },
             { task: "Buat permintaan chat completions sederhana menggunakan model 'gpt-4o-mini'.", hint: "client.chat.completions.create(model='gpt-4o-mini', messages=[...])", validate: c => c.includes("chat.completions.create") },
             { task: "Ekstrak teks respons jawaban dari objek hasil balasan API OpenAI.", hint: "response.choices[0].message.content", validate: c => c.includes("choices") },
             { task: "Tambahkan riwayat pesan percakapan (system, user, assistant) ke dalam parameter messages.", hint: "Sertakan role system untuk mengatur persona AI.", validate: c => c.includes("messages") },
-            { task: "Aktifkan mode streaming respons token secara real-time menggunakan parameter stream=True.", hint: "Iterasi response.choices[0].delta.content.", validate: c => c.includes("stream=True") },
+            { task: "Aktifkan mode streaming respons token secara real-time menggunakan parameter stream=True.", hint: "Iterasi tiap chunk dan baca chunk.choices[0].delta.content.", validate: c => c.includes("stream=True") },
             { task: "Impor Anthropic dari pustaka anthropic untuk menginisialisasi klien Claude.", hint: "from anthropic import Anthropic; client = Anthropic()", validate: c => c.includes("Anthropic") },
-            { task: "Kirim permintaan pesan teks menggunakan method messages.create() milik SDK Anthropic Claude.", hint: "client.messages.create(model='claude-3-5-sonnet-...', max_tokens=100, messages=[...])", validate: c => c.includes("messages.create") },
+            { task: "Kirim permintaan pesan teks menggunakan method messages.create() milik SDK Anthropic Claude.", hint: "client.messages.create(model='claude-sonnet-5-5', max_tokens=100, messages=[...])", validate: c => c.includes("messages.create") },
             { task: "Atur parameter suhu (temperature) kreativitas respons model antara 0.0 hingga 1.0.", hint: "Tambahkan parameter temperature=0.7 pada pemanggilan.", validate: c => c.includes("temperature") },
             { task: "Gunakan fitur Structured Outputs (JSON Mode) OpenAI untuk memaksa model merespons berformat JSON terstruktur.", hint: "Gunakan response_format={ 'type': 'json_object' }", validate: c => c.includes("response_format") },
             { task: "Tangkap penanganan error pembatasan rate limit API menggunakan blok try-except RateLimitError.", hint: "Tangkap error API dengan try-except.", validate: c => c.includes("try") }
         ]
     },
     {
-        id: 71, category: "AI Engineering", title: "Level 71: LangChain & LlamaIndex: Framework LLM", xp: 9400,
+        id: 71, category: "AI Engineering", title: "Level 71: LangChain & LlamaIndex: Framework LLM",
         desc: "<b>Definisi Konsep Mendalam:</b> Memanfaatkan kerangka kerja aplikasi LLM tingkat lanjut seperti LangChain dan LlamaIndex untuk menyusun rantai eksekusi agen cerdas.<br><br><b>Poin Penting:</b><br>• Menggunakan prompt templates.<br>• Pembuatan rantai (Chains) pemrosesan.",
         example: `from langchain_core.prompts import ChatPromptTemplate\n\nprompt = ChatPromptTemplate.from_template("Jelaskan tentang {topik}")\nprint(prompt.format(topik="Python"))`,
         tasks: [
@@ -1207,7 +1213,7 @@ const levelsData = [
         ]
     },
     {
-        id: 72, category: "AI Engineering", title: "Level 72: Vector Databases (Chroma, Qdrant, Pinecone)", xp: 9700,
+        id: 72, category: "AI Engineering", title: "Level 72: Vector Databases (Chroma, Qdrant, Pinecone)",
         desc: "<b>Definisi Konsep Mendalam:</b> Menyimpan dan melakukan pencarian kemiripan semantik (vector similarity search) berkecepatan tinggi menggunakan basis data vektor.<br><br><b>Poin Penting:</b><br>• Menggunakan penyimpanan lokal ChromaDB.<br>• Menyimpan embedding teks.",
         example: `import chromadb\n\nclient = chromadb.Client()\ncollection = client.create_collection("dokumen")\ncollection.add(documents=["Teks 1"], ids=["id1"])`,
         tasks: [
@@ -1224,7 +1230,7 @@ const levelsData = [
         ]
     },
     {
-        id: 73, category: "AI Engineering", title: "Level 73: Retrieval-Augmented Generation (RAG) Architecture", xp: 10000,
+        id: 73, category: "AI Engineering", title: "Level 73: Retrieval-Augmented Generation (RAG) Architecture",
         desc: "<b>Definisi Konsep Mendalam:</b> Membangun arsitektur RAG (Retrieval-Augmented Generation) untuk menyuplai konteks dokumen eksternal secara akurat ke dalam prompt LLM.<br><br><b>Poin Penting:</b><br>• Proses chunking dokumen.<br>• Retrieval konteks + Generasi jawaban.",
         example: `from langchain_text_splitters import RecursiveCharacterTextSplitter\n\nsplitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=50)\nchunks = splitter.split_text("Teks panjang...")`,
         tasks: [
@@ -1233,15 +1239,15 @@ const levelsData = [
             { task: "Ubah potongan teks dokumen menjadi embedding vektor dan simpan ke dalam vector store (Chroma).", hint: "vectorstore = Chroma.from_documents(chunks, embeddings)", validate: c => c.includes("Chroma") },
             { task: "Buat objek retriever dari vector store untuk mencari dokumen berdasarkan kueri pengguna.", hint: "retriever = vectorstore.as_retriever(search_kwargs={'k': 3})", validate: c => c.includes("as_retriever") },
             { task: "Tulis fungsi kustom gabungan RAG yang mengambil dokumen relevan dari retriever.", hint: "docs = retriever.invoke(query)", validate: c => c.includes("invoke") },
-            { task: "Gabungkan isi teks dokumen hasil retrieval ke dalam string konteks prompt LLM.", hint: "context = '\n'.join([d.page_content for d in docs])", validate: c => c.includes("join") },
+            { task: "Gabungkan isi teks dokumen hasil retrieval ke dalam string konteks prompt LLM.", hint: "context = '\\n'.join([d.page_content for d in docs])", validate: c => c.includes("join") },
             { task: "Buat prompt sistem RAG yang menginstruksikan LLM hanya menjawab berdasarkan konteks yang diberikan.", hint: "prompt = f'Jawab berdasarkan konteks berikut: {context}'", validate: c => c.length > 0 },
             { task: "Kirim prompt gabungan konteks dan pertanyaan ke model LLM untuk menghasilkan jawaban final.", hint: "response = llm.invoke(prompt)", validate: c => c.includes("invoke") },
-            { task: "Bungkus seluruh alur RAG menjadi chain RetrievalQA LangChain siap pakai.", hint: "from langchain.chains import create_retrieval_chain", validate: c => c.includes("create_retrieval_chain") },
+            { task: "Bungkus seluruh alur RAG menjadi retrieval chain LangChain siap pakai (create_retrieval_chain).", hint: "from langchain.chains import create_retrieval_chain", validate: c => c.includes("create_retrieval_chain") },
             { task: "Uji performa akurasi sistem RAG dengan memberikan pertanyaan spesifik dari dokumen internal.", hint: "Verifikasi apakah jawaban LLM sesuai dengan dokumen acuan.", validate: c => c.length > 0 }
         ]
     },
     {
-        id: 74, category: "AI Engineering", title: "Level 74: Building AI Agents & Multi-Agent Systems (CrewAI / AutoGen)", xp: 10500,
+        id: 74, category: "AI Engineering", title: "Level 74: Building AI Agents & Multi-Agent Systems (CrewAI / AutoGen)",
         desc: "<b>Definisi Konsep Mendalam:</b> Membangun agen kecerdasan buatan otonom dan sistem kolaborasi multi-agen (CrewAI / AutoGen) untuk menyelesaikan tugas kompleks secara mandiri.<br><br><b>Poin Penting:</b><br>• Mendefinisikan peran Agen (Role, Goal, Backstory).<br>• Menyusun Crew tugas berurutan.",
         example: `from crewai import Agent, Task, Crew\n\npeneliti = Agent(role='Peneliti', goal='Cari data akurat', backstory='Ahli riset data')\ntugas = Task(description='Riset topik AI', expected_output='Laporan ringkas', agent=peneliti)\ncrew = Crew(agents=[peneliti], tasks=[tugas])`,
         tasks: [
@@ -1258,7 +1264,7 @@ const levelsData = [
         ]
     },
     {
-        id: 75, category: "AI Engineering", title: "Level 75: Fine-Tuning & Prompt Engineering Strategies", xp: 11000,
+        id: 75, category: "AI Engineering", title: "Level 75: Fine-Tuning & Prompt Engineering Strategies",
         desc: "<b>Definisi Konsep Mendalam:</b> Menguasai teknik rekayasa prompt tingkat lanjut (Chain-of-Thought, Few-Shot) dan persiapan dataset kustom untuk proses fine-tuning model LLM.<br><br><b>Poin Penting:</b><br>• Format dataset JSONL untuk fine-tuning OpenAI.<br>• Teknik Chain-of-Thought (CoT).",
         example: `# Contoh struktur dataset JSONL fine-tuning\n# {"messages": [{"role": "system", "content": "Bot"}, {"role": "user", "content": "Hai"}, {"role": "assistant", "content": "Halo!"}]}`,
         tasks: [
@@ -1275,7 +1281,7 @@ const levelsData = [
         ]
     },
     {
-        id: 76, category: "AI Engineering", title: "Level 76: PyTorch Basics: Tensors & Autograd (Deep Learning)", xp: 11500,
+        id: 76, category: "AI Engineering", title: "Level 76: PyTorch Basics: Tensors & Autograd (Deep Learning)",
         desc: "<b>Definisi Konsep Mendalam:</b> Dasar deep learning menggunakan PyTorch untuk mengelola operasi tensor berkecepatan tinggi dan diferensiasi otomatis (Autograd).<br><br><b>Poin Penting:</b><br>• Pembuatan PyTorch Tensors.<br>• Pelacakan gradien otomatis via <code>requires_grad=True</code>.",
         example: `import torch\n\nx = torch.tensor([2.0], requires_grad=True)\ny = x ** 3\ny.backward()\nprint(x.grad)  # Gradien dy/dx = 3*x^2 = 12`,
         tasks: [
@@ -1292,7 +1298,7 @@ const levelsData = [
         ]
     },
     {
-        id: 77, category: "AI Engineering", title: "Level 77: Building Neural Networks Sederhana dengan PyTorch", xp: 12000,
+        id: 77, category: "AI Engineering", title: "Level 77: Building Neural Networks Sederhana dengan PyTorch",
         desc: "<b>Definisi Konsep Mendalam:</b> Membangun arsitektur jaringan saraf tiruan (Neural Network) dasar menggunakan class turunan <code>torch.nn.Module</code>.<br><br><b>Poin Penting:</b><br>• Mendefinisikan lapisan Linear.<br>• Pemilihan fungsiLoss dan Optimizer.",
         example: `import torch\nimport torch.nn as nn\n\nclass SimpleNN(nn.Module):\n    def __init__(self):\n        super().__init__()\n        self.linear = nn.Linear(10, 1)\n    def forward(self, x):\n        return self.linear(x)`,
         tasks: [
@@ -1301,7 +1307,7 @@ const levelsData = [
             { task: "Definisikan method forward(self, x) untuk mengalirkan data melalui lapisan jaringan saraf.", hint: "def forward(self, x): return torch.relu(self.fc1(x))", validate: c => c.includes("forward") },
             { task: "Buat instance model jaringan saraf tiruan dan cetak struktur arsitekturnya.", hint: "model = Model(); print(model)", validate: c => c.includes("class") },
             { task: "Impor fungsi kerugian (Loss Function) Mean Squared Error dari nn.MSELoss().", hint: "criterion = nn.MSELoss()", validate: c => c.includes("MSELoss") },
-            { task: "Impor optimizer SGD atau Adam dari torch.optim untuk memperbaruibobot model.", hint: "optimizer = torch.optim.Adam(model.parameters(), lr=0.01)", validate: c => c.includes("optim") },
+            { task: "Impor optimizer SGD atau Adam dari torch.optim untuk memperbarui bobot model.", hint: "optimizer = torch.optim.Adam(model.parameters(), lr=0.01)", validate: c => c.includes("optim") },
             { task: "Tulis loop pelatihan (training loop) dasar: zero_grad, forward pass, loss calculation, backward pass, optimizer step.", hint: "optimizer.zero_grad(); loss.backward(); optimizer.step()", validate: c => c.includes("zero_grad") && c.includes("backward") },
             { task: "Kirim data masukan tensor batch ke dalam model untuk mendapatkan hasil prediksi.", hint: "outputs = model(inputs)", validate: c => c.length > 0 },
             { task: "Hitung nilai loss kesalahan antara prediksi model dan target label asli.", hint: "loss = criterion(outputs, targets)", validate: c => c.length > 0 },
@@ -1309,7 +1315,7 @@ const levelsData = [
         ]
     },
     {
-        id: 78, category: "AI Engineering", title: "Level 78: Hugging Face Transformers & Local LLMs (Ollama / HuggingFaceHub)", xp: 12500,
+        id: 78, category: "AI Engineering", title: "Level 78: Hugging Face Transformers & Local LLMs (Ollama / HuggingFaceHub)",
         desc: "<b>Definisi Konsep Mendalam:</b> Menggunakan model open-source mutakhir dari pustaka <code>transformers</code> Hugging Face serta menjalankan LLM lokal via <code>Ollama</code>.<br><br><b>Poin Penting:</b><br>• Memuat pipeline Hugging Face.<br>• Menghubungkan model lokal Ollama ke Python.",
         example: `from transformers import pipeline\n\ngenerator = pipeline('text-generation', model='gpt2')\nprint(generator("Python adalah", max_length=20))`,
         tasks: [
@@ -1326,7 +1332,7 @@ const levelsData = [
         ]
     },
     {
-        id: 79, category: "DevOps", title: "Level 79: Environment Management & Configuration (python-dotenv, Pydantic Settings)", xp: 13000,
+        id: 79, category: "DevOps", title: "Level 79: Environment Management & Configuration (python-dotenv, Pydantic Settings)",
         desc: "<b>Definisi Konsep Mendalam:</b> Mengelola konfigurasi lingkungan aplikasi secara aman dan terstruktur menggunakan variabel lingkungan (environment variables) serta pustaka Pydantic Settings.<br><br><b>Poin Penting:</b><br>• Memuat file `.env` via <code>python-dotenv</code>.<br>• Validasi tipe data konfigurasi otomatis dengan <code>BaseSettings</code>.",
         example: `from pydantic_settings import BaseSettings\n\nclass Settings(BaseSettings):\n    app_name: str\n    database_url: str\n    class Config:\n        env_file = ".env"`,
         tasks: [
@@ -1343,7 +1349,7 @@ const levelsData = [
         ]
     },
     {
-        id: 80, category: "DevOps", title: "Level 80: Dockerization: Menulis Dockerfile Optimal untuk Python", xp: 13500,
+        id: 80, category: "DevOps", title: "Level 80: Dockerization: Menulis Dockerfile Optimal untuk Python",
         desc: "<b>Definisi Konsep Mendalam:</b> Mengemas aplikasi Python dan seluruh dependensinya ke dalam kontainer Docker mandiri menggunakan Dockerfile yang optimal dan aman.<br><br><b>Poin Penting:</b><br>• Menggunakan base image resmi <code>python:3.11-slim</code>.<br>• Menerapkan tahapan multi-stage build untuk memperkecil ukuran image.",
         example: `# Contoh Dockerfile dasar\nFROM python:3.11-slim\nWORKDIR /app\nCOPY requirements.txt .\nRUN pip install --no-cache-dir -r requirements.txt\nCOPY . .\nCMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]`,
         tasks: [
@@ -1360,11 +1366,11 @@ const levelsData = [
         ]
     },
     {
-        id: 81, category: "DevOps", title: "Level 81: Docker Compose untuk Layanan Multi-Container (Web + DB + Redis)", xp: 14000,
+        id: 81, category: "DevOps", title: "Level 81: Docker Compose untuk Layanan Multi-Container (Web + DB + Redis)",
         desc: "<b>Definisi Konsep Mendalam:</b> Menjalankan dan mengelola arsitektur aplikasi multi-kontainer (Aplikasi Web FastAPI + PostgreSQL + Redis) secara terpadu via <code>docker-compose.yml</code>.<br><br><b>Poin Penting:</b><br>• Definisi layanan (services), jaringan (networks), dan volume.",
-        example: `version: '3.8'\nservices:\n  web:\n    build: .\n    ports:\n      - "8000:8000"\n    depends_on:\n      - redis\n  redis:\n    image: redis:alpine`,
+        example: `services:\n  web:\n    build: .\n    ports:\n      - "8000:8000"\n    depends_on:\n      - redis\n  redis:\n    image: redis:alpine`,
         tasks: [
-            { task: "Tulis struktur file konfigurasi dasar docker-compose.yml dengan versi skema layanan.", hint: "version: '3.8' dan blok services:", validate: c => c.includes("services") },
+            { task: "Tulis struktur file konfigurasi dasar docker-compose.yml dengan blok services.", hint: "Mulai dengan services: (properti version sudah usang di Compose v2).", validate: c => c.includes("services") },
             { task: "Tambahkan layanan kontainer 'redis' menggunakan image resmi redis:alpine.", hint: "redis: image: redis:alpine", validate: c => c.includes("redis") },
             { task: "Tambahkan layanan kontainer basis data 'db' (PostgreSQL) lengkap dengan variabel lingkungan kredensial.", hint: "db: image: postgres:15-alpine dengan environment POSTGRES_USER/PASSWORD.", validate: c => c.includes("postgres") },
             { task: "Tambahkan layanan kontainer aplikasi web 'web' yang dibangun dari Dockerfile lokal.", hint: "web: build: . dan pemetaan port 8000:8000", validate: c => c.includes("build") },
@@ -1373,11 +1379,11 @@ const levelsData = [
             { task: "Jalankan seluruh kumpulan layanan multi-kontainer di latar belakang menggunakan docker compose up -d.", hint: "docker compose up -d", validate: c => c.includes("docker compose up") },
             { task: "Periksa status kesehatan dan log keluaran seluruh kontainer aktif.", hint: "docker compose logs -f", validate: c => c.includes("docker compose logs") },
             { task: "Hentikan dan bersihkan seluruh kontainer serta jaringan terkait menggunakan docker compose down.", hint: "docker compose down", validate: c => c.includes("docker compose down") },
-            { task: "Hubungkan aplikasi Python Anda ke layanan database menggunakan hostname layanan Docker compose ('db' atau 'redis').", hint: "Gunakan URL koneksi jdbc/postgres dengan host 'db'.", validate: c => c.includes("db") || c.includes("redis") }
+            { task: "Hubungkan aplikasi Python Anda ke layanan database menggunakan hostname layanan Docker compose ('db' atau 'redis').", hint: "Gunakan URL seperti postgresql://user:pass@db:5432/nama dengan host 'db'.", validate: c => c.includes("db") || c.includes("redis") }
         ]
     },
     {
-        id: 82, category: "DevOps", title: "Level 82: CI/CD Pipelines dengan GitHub Actions untuk Python", xp: 14500,
+        id: 82, category: "DevOps", title: "Level 82: CI/CD Pipelines dengan GitHub Actions untuk Python",
         desc: "<b>Definisi Konsep Mendalam:</b> Otomatisasi pengujian kode dan penerapan berkelanjutan (CI/CD) menggunakan alur kerja GitHub Actions untuk proyek Python.<br><br><b>Poin Penting:</b><br>• Berkas konfigurasi YAML di dalam direktori `.github/workflows/`.",
         example: `name: CI\non: [push]\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - uses: actions/setup-python@v5\n        with:\n          python-version: '3.11'`,
         tasks: [
@@ -1386,15 +1392,15 @@ const levelsData = [
             { task: "Tentukan lingkungan runner mesin virtual eksekusi menggunakan runs-on: ubuntu-latest.", hint: "runs-on: ubuntu-latest", validate: c => c.includes("runs-on") },
             { task: "Gunakan action resmi actions/checkout@v4 untuk mengunduh salinan repositori kode ke runner.", hint: "- uses: actions/checkout@v4", validate: c => c.includes("actions/checkout") },
             { task: "Gunakan action actions/setup-python@v5 untuk menyiapkan versi runtime Python di lingkungan runner.", hint: "- uses: actions/setup-python@v5 dengan parameter python-version.", validate: c => c.includes("actions/setup-python") },
-            { task: "Tambahkan langkah instalasi dependensi pip dari file requirements.txt.", hint: "RUN pip install -r requirements.txt", validate: c => c.includes("pip install") },
-            { task: "Tambahkan langkah eksekusi rangkaian pengujian unit test menggunakan pytest.", hint: "RUN pytest", validate: c => c.includes("pytest") },
-            { task: "Tambahkan langkah pemindaian kualitas gaya kode menggunakan ruff atau flake8.", hint: "RUN ruff check .", validate: c => c.includes("ruff") || c.includes("flake8") },
+            { task: "Tambahkan langkah instalasi dependensi pip dari file requirements.txt.", hint: "run: pip install -r requirements.txt", validate: c => c.includes("pip install") },
+            { task: "Tambahkan langkah eksekusi rangkaian pengujian unit test menggunakan pytest.", hint: "run: pytest", validate: c => c.includes("pytest") },
+            { task: "Tambahkan langkah pemindaian kualitas gaya kode menggunakan ruff atau flake8.", hint: "run: ruff check .", validate: c => c.includes("ruff") || c.includes("flake8") },
             { task: "Simulasikan langkah proses build dan push image Docker ke container registry otomatis di dalam pipeline.", hint: "Gunakan action login dan build-push-action.", validate: c => c.includes("docker") || c.includes("build") },
             { task: "Verifikasi status centang hijau laporan keberhasilan jalankan workflow pada tab Actions repositori GitHub.", hint: "Periksa hasil eksekusi pipeline di GitHub.", validate: c => c.length > 3 }
         ]
     },
     {
-        id: 83, category: "DevOps", title: "Level 83: Logging Lanjutan, Structured Logging (structlog), & Sentry Error Tracking", xp: 15000,
+        id: 83, category: "DevOps", title: "Level 83: Logging Lanjutan, Structured Logging (structlog), & Sentry Error Tracking",
         desc: "<b>Definisi Konsep Mendalam:</b> Mengimplementasikan pencatatan log terstruktur berbasis JSON (<code>structlog</code>) serta pelacakan error produksi secara real-time via <code>Sentry</code>.<br><br><b>Poin Penting:</b><br>• Output log format JSON untuk sistem agregasi log (ELK / Datadog).<br>• Integrasi SDK Sentry untuk penangkapan exception otomatis.",
         example: `import structlog\n\nlogger = structlog.get_logger()\nlogger.info("pengguna_login", user_id=123, status="sukses")`,
         tasks: [
@@ -1411,7 +1417,7 @@ const levelsData = [
         ]
     },
     {
-        id: 84, category: "DevOps", title: "Level 84: Monitoring & Metrics dengan Prometheus & Python", xp: 15500,
+        id: 84, category: "DevOps", title: "Level 84: Monitoring & Metrics dengan Prometheus & Python",
         desc: "<b>Definisi Konsep Mendalam:</b> Mengekspos metrik kinerja performa aplikasi Python (waktu respons, jumlah permintaan HTTP) agar dapat dipantau oleh sistem Prometheus.<br><br><b>Poin Penting:</b><br>• Menggunakan pustaka <code>prometheus_client</code>.<br>• Menyediakan endpoint metrik <code>/metrics</code>.",
         example: `from prometheus_client import Counter, generate_latest, CONTENT_TYPE_LATEST\nfrom fastapi import Response\n\nREQUEST_COUNT = Counter('request_total', 'Total HTTP Requests')`,
         tasks: [
@@ -1428,7 +1434,7 @@ const levelsData = [
         ]
     },
     {
-        id: 85, category: "DevOps", title: "Level 85: Infrastructure as Code (IaC) Dasar dengan Pulumi / AWS CDK Python", xp: 16000,
+        id: 85, category: "DevOps", title: "Level 85: Infrastructure as Code (IaC) Dasar dengan Pulumi / AWS CDK Python",
         desc: "<b>Definisi Konsep Mendalam:</b> Mendefinisikan dan menyediakan infrastruktur cloud (server, storage, jaringan) menggunakan bahasa pemrograman Python murni via Pulumi atau AWS CDK.<br><br><b>Poin Penting:</b><br>• Mengelola sumber daya cloud sebagai kode (Infrastructure as Code).",
         example: `import pulumi\nimport pulumi_aws as aws\n\nbucket = aws.s3.Bucket("my-bucket", bucket="my-unique-bucket-name-2026")\npulumi.export("bucket_name", bucket.id)`,
         tasks: [
@@ -1445,7 +1451,7 @@ const levelsData = [
         ]
     },
     {
-        id: 86, category: "DevOps", title: "Level 86: Serverless Functions (AWS Lambda / Google Cloud Functions)", xp: 16500,
+        id: 86, category: "DevOps", title: "Level 86: Serverless Functions (AWS Lambda / Google Cloud Functions)",
         desc: "<b>Definisi Konsep Mendalam:</b> Membangun fungsi komputasi nir-server (serverless) berbasis event menggunakan AWS Lambda atau Google Cloud Functions dengan Python.<br><br><b>Poin Penting:</b><br>• Menulis fungsi penanganan handler (<code>event, context</code>).",
         example: `def lambda_handler(event, context):\n    return {\n        'statusCode': 200,\n        'body': 'Halo dari AWS Lambda!'\n    }`,
         tasks: [
@@ -1462,7 +1468,7 @@ const levelsData = [
         ]
     },
     {
-        id: 87, category: "DevOps", title: "Level 87: Cloud Storage Integration (AWS S3 / Google Cloud Storage via Boto3)", xp: 17000,
+        id: 87, category: "DevOps", title: "Level 87: Cloud Storage Integration (AWS S3 / Google Cloud Storage via Boto3)",
         desc: "<b>Definisi Konsep Mendalam:</b> Berinteraksi secara programatik dengan layanan penyimpanan objek cloud (AWS S3) menggunakan pustaka resmi SDK Python <code>boto3</code>.<br><br><b>Poin Penting:</b><br>• Inisialisasi klien S3 via <code>boto3.client('s3')</code>.<br>• Mengunggah dan mengunduh berkas.",
         example: `import boto3\n\ns3 = boto3.client('s3')\ns3.upload_file('lokal.txt', 'nama-bucket', 'remote.txt')`,
         tasks: [
@@ -1479,9 +1485,9 @@ const levelsData = [
         ]
     },
     {
-        id: 88, category: "DevOps", title: "Level 88: Kubernetes Basics untuk Aplikasi Python (Deployments & Services)", xp: 17500,
+        id: 88, category: "DevOps", title: "Level 88: Kubernetes Basics untuk Aplikasi Python (Deployments & Services)",
         desc: "<b>Definisi Konsep Mendalam:</b> Mengorkestrasi penyebaran kontainer aplikasi Python di klaster Kubernetes menggunakan objek manifes <code>Deployment</code> dan <code>Service</code>.<br><br><b>Poin Penting:</b><br>• Menulis file manifes YAML Kubernetes.<br>• Mengelola replika pod dan load balancing.",
-        example: `apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: python-app\nspec:\n  replicas: 3\n  selector:\n    matchLabels:\n      app: python\n  template:\n    metadata:\n      labels:\n        app: python\n    spec:\n      containers: ...`,
+        example: `apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: python-app\nspec:\n  replicas: 3\n  selector:\n    matchLabels:\n      app: python\n  template:\n    metadata:\n      labels:\n        app: python\n    spec:\n      containers:\n        - name: app\n          image: python-app:1.0\n          ports:\n            - containerPort: 8000`,
         tasks: [
             { task: "Tulis file manifes Kubernetes kind: Deployment dengan konfigurasi nama dan jumlah replika pod (replicas: 3).", hint: "Definisikan apiVersion: apps/v1 dan kind: Deployment.", validate: c => c.includes("deployment") },
             { task: "Tentukan spesifikasi kontainer aplikasi image Docker dan port layanan pada manifes Deployment.", hint: "Atur kontainer image dan port containerPort: 8000.", validate: c => c.includes("image") || c.includes("containerport") },
@@ -1496,7 +1502,7 @@ const levelsData = [
         ]
     },
     {
-        id: 89, category: "Security", title: "Level 89: Cryptography di Python: Hashing (Bcrypt) & Enkripsi Simetris/Asimetris", xp: 18000,
+        id: 89, category: "Security & Performance", title: "Level 89: Cryptography di Python: Hashing (Bcrypt) & Enkripsi Simetris/Asimetris",
         desc: "<b>Definisi Konsep Mendalam:</b> Mengamankan data sensitif menggunakan fungsi hashing aman (Bcrypt), enkripsi simetris (Fernet), serta kriptografi asimetris.<br><br><b>Poin Penting:</b><br>• Enkripsi simetris dengan pustaka <code>cryptography</code>.<br>• Hashing sandi tahan serangan brute-force.",
         example: `from cryptography.fernet import Fernet\n\nkey = Fernet.generate_key()\ncipher = Fernet(key)\ntoken = cipher.encrypt(b"Data rahasia")\nprint(cipher.decrypt(token))`,
         tasks: [
@@ -1506,20 +1512,20 @@ const levelsData = [
             { task: "Dekripsi kembali data terenkripsi menjadi teks aslinya menggunakan method .decrypt().", hint: "decrypted = cipher.decrypt(encrypted)", validate: c => c.includes("decrypt") },
             { task: "Gunakan pustaka bcrypt untuk menghasilkan hash sandi dengan salt otomatis.", hint: "import bcrypt; hashed = bcrypt.hashpw(b'password', bcrypt.gensalt())", validate: c => c.includes("bcrypt") },
             { task: "Verifikasi pencocokan sandi teks biasa dengan hash bcrypt menggunakan bcrypt.checkpw().", hint: "bcrypt.checkpw(b'password', hashed)", validate: c => c.includes("checkpw") },
-            { task: "Hasilkan hash kriptografi standar SHA-256 menggunakan modul bawaan hashlib.", hint: "import hashlib; hash_val = hashlib.sha256(b'teks').hexdigest()", validate: c => c.includes("hashlib") },
+            { task: "Hasilkan hash kriptografi standar SHA-256 menggunakan modul bawaan hashlib.", hint: "import hashlib; hash_val = hashlib.sha256(b'teks').hexdigest(). Catatan: SHA-256 cocok untuk checksum, bukan untuk menyimpan password (pakai bcrypt).", validate: c => c.includes("hashlib") },
             { task: "Simulasikan penandatanganan data (Digital Signature) menggunakan kunci privat asimetris.", hint: "Gunakan modul RSA cryptography untuk tanda tangan.", validate: c => c.length > 3 },
             { task: "Simulasikan verifikasi tanda tangan digital menggunakan kunci publik asimetris.", hint: "Verifikasi keaslian pesan tanda tangan.", validate: c => c.length > 3 },
-            { task: "Tulis praktik terbaik manajemen penyimpanan kunci rahasia (secret keys) aplikasi.", hint: "Jangan pernah merusak atau menulis kunci rahasia langsung di kode sumber.", validate: c => c.length > 3 }
+            { task: "Tulis praktik terbaik manajemen penyimpanan kunci rahasia (secret keys) aplikasi.", hint: "Jangan menulis kunci rahasia langsung di kode sumber; simpan di environment variable atau secret manager.", validate: c => c.length > 3 }
         ]
     },
     {
-        id: 90, category: "Security", title: "Level 90: Secure Coding Practices & OWASP Top 10 Mitigation", xp: 18500,
+        id: 90, category: "Security & Performance", title: "Level 90: Secure Coding Practices & OWASP Top 10 Mitigation",
         desc: "<b>Definisi Konsep Mendalam:</b> Mencegah celah kerentanan keamanan web kritis berdasarkan standar OWASP Top 10 (SQL Injection, XSS, CSRF, Broken Authentication).<br><br><b>Poin Penting:</b><br>• Menggunakan kueri berparameter ORM untuk mencegah SQL Injection.<br>• Sanitasi input pengguna.",
         example: `# Mencegah SQL Injection dengan ORM SQLAlchemy\nuser = session.query(User).filter(User.username == username).first()`,
         tasks: [
             { task: "Gunakan kueri berparameter ORM SQLAlchemy untuk mencegah kerentanan SQL Injection (hindari string formatting mentah).", hint: "Gunakan filter dengan operator perbandingan ORM.", validate: c => c.includes("filter") || c.includes("query") },
             { task: "Lakukan sanitasi dan escape input string HTML pengguna untuk mencegah serangan Cross-Site Scripting (XSS).", hint: "Gunakan pustaka escape HTML standar.", validate: c => c.includes("escape") || c.includes("html") },
-            { task: "Terapkan token pencegahan Cross-Site Request Forgery (CSRF) padaformulir web POST.", hint: "Sertakan token unik pada setiap sesi formulir.", validate: c => c.length > 3 },
+            { task: "Terapkan token pencegahan Cross-Site Request Forgery (CSRF) pada formulir web POST.", hint: "Sertakan token unik pada setiap sesi formulir.", validate: c => c.length > 3 },
             { task: "Validasi ketat tipe data masukan menggunakan Pydantic untuk mencegah celah Mass Assignment.", hint: "Gunakan model Pydantic terstruktur.", validate: c => c.includes("basemodel") },
             { task: "Pastikan cookies sesi web ditandai dengan atribut HttpOnly, Secure, dan SameSite.", hint: "Atur parameter keamanan cookies respons HTTP.", validate: c => c.includes("httponly") || c.includes("cookie") },
             { task: "Nonaktifkan fitur pemrosesan XML External Entity (XXE) yang rentan pada parser XML Python.", hint: "Gunakan parser XML aman defusedxml.", validate: c => c.includes("defusedxml") || c.includes("xml") },
@@ -1530,7 +1536,7 @@ const levelsData = [
         ]
     },
     {
-        id: 91, category: "Security", title: "Level 91: Memory Profiling & Leak Detection (tracemalloc, memory_profiler)", xp: 19000,
+        id: 91, category: "Security & Performance", title: "Level 91: Memory Profiling & Leak Detection (tracemalloc, memory_profiler)",
         desc: "<b>Definisi Konsep Mendalam:</b> Menganalisis alokasi penggunaan memori RAM serta melacak kebocoran memori (memory leak) di aplikasi Python menggunakan modul bawaan <code>tracemalloc</code>.<br><br><b>Poin Penting:</b><br>• Memulai pelacakan alokasi dengan <code>tracemalloc.start()</code>.<br>• Mengambil snapshot pembanding memori.",
         example: `import tracemalloc\n\ntracemalloc.start()\n# Blok kode yang dianalisis\nsnapshot = tracemalloc.take_snapshot()\ntop_stats = snapshot.statistics('lineno')\nfor stat in top_stats[:3]: print(stat)`,
         tasks: [
@@ -1547,7 +1553,7 @@ const levelsData = [
         ]
     },
     {
-        id: 92, category: "Security", title: "Level 92: Cython & PyPy: Mempercepat Python Mendekati Bahasa C", xp: 19500,
+        id: 92, category: "Security & Performance", title: "Level 92: Cython & PyPy: Mempercepat Python Mendekati Bahasa C",
         desc: "<b>Definisi Konsep Mendalam:</b> Mempercepat eksekusi program Python komputasi intensif menggunakan kompiler <code>Cython</code> dan interpreter JIT <code>PyPy</code>.<br><br><b>Poin Penting:</b><br>• Penulisan file ekstensi <code>.pyx</code> dengan anotasi tipe data statis C.",
         example: `# Contoh file kustom Cython .pyx\n# cpdef int jumlah(int a, int b): return a + b`,
         tasks: [
@@ -1564,7 +1570,7 @@ const levelsData = [
         ]
     },
     {
-        id: 93, category: "Security", title: "Level 93: Advanced Concurrency: Asyncio & Task Groups (Python 3.11+)", xp: 20000,
+        id: 93, category: "Security & Performance", title: "Level 93: Advanced Concurrency: Asyncio & Task Groups (Python 3.11+)",
         desc: "<b>Definisi Konsep Mendalam:</b> Mengelola konkurensi asinkron terstruktur modern menggunakan fitur <code>asyncio.TaskGroup</code> (Python 3.11+) untuk penanganan error yang aman.<br><br><b>Poin Penting:</b><br>• Pengelolaan banyak coroutine terstruktur dalam konteks <code>async with</code>.",
         example: `import asyncio\n\nasync def main():\n    async with asyncio.TaskGroup() as tg:\n        task1 = tg.create_task(tugas_satu())\n        task2 = tg.create_task(tugas_dua())\n    print("Semua tugas selesai dengan aman!")`,
         tasks: [
@@ -1581,7 +1587,7 @@ const levelsData = [
         ]
     },
     {
-        id: 94, category: "Security", title: "Level 94: Custom C Extensions untuk Python", xp: 20500,
+        id: 94, category: "Security & Performance", title: "Level 94: Custom C Extensions untuk Python",
         desc: "<b>Definisi Konsep Mendalam:</b> Menulis ekstensi bahasa C murni secara manual yang dapat dimuat dan dieksekusi langsung di dalam program interpreter Python.<br><br><b>Poin Penting:</b><br>• Menggunakan header pustaka C resmi <code>Python.h</code>.<br>• Mendefinisikan struktur metode modul C.",
         example: `# Contoh kerangka ekstensi C (module.c)\n# include <Python.h>\n// static PyObject* custom_func(PyObject* self, PyObject* args) { ... }`,
         tasks: [
@@ -1591,14 +1597,14 @@ const levelsData = [
             { task: "Gunakan fungsi PyArg_ParseTuple() untuk mengurai argumen Python ke dalam variabel tipe data C.", hint: "PyArg_ParseTuple(args, 'i', &val)", validate: c => c.includes("pyarg_parsetuple") },
             { task: "Konversikan hasil perhitungan C kembali menjadi objek Python menggunakan Py_BuildValue().", hint: "return Py_BuildValue('i', result)", validate: c => c.includes("py_buildvalue") },
             { task: "Daftarkan daftar metode fungsi modul C ke dalam struktur PyMethodDef.", hint: "static PyMethodDef MyMethods[] = { ... }", validate: c => c.includes("pymethoddef") },
-            { task: "Definisikan fungsiinisialisasi modul CPyInit_namamodul.", hint: "PyMODINIT_FUNC PyInit_mymodule(void)", validate: c => c.includes("pymodinit_func") || c.includes("pyinit_") },
+            { task: "Definisikan fungsi inisialisasi modul C PyInit_namamodul.", hint: "PyMODINIT_FUNC PyInit_mymodule(void)", validate: c => c.includes("pymodinit_func") || c.includes("pyinit_") },
             { task: "Buat file setup.py untuk mengompilasi ekstensi C secara otomatis.", hint: "from setuptools import setup, Extension; setup(ext_modules=[Extension('mymodule', sources=['module.c'])])", validate: c => c.includes("extension") },
             { task: "Kompilasi dan instal ekstensi C lokal via perintah terminal python setup.py build_ext --inplace.", hint: "Jalankan perintah build setup.py.", validate: c => c.includes("build_ext") },
             { task: "Impor dan uji fungsi ekstensi C kustom Anda di dalam skrip Python.", hint: "import mymodule; mymodule.custom_func()", validate: c => c.includes("import") }
         ]
     },
     {
-        id: 95, category: "Security", title: "Level 95: Network Security & SSL/TLS Handshake dengan Python", xp: 21000,
+        id: 95, category: "Security & Performance", title: "Level 95: Network Security & SSL/TLS Handshake dengan Python",
         desc: "<b>Definisi Konsep Mendalam:</b> Mengamankan komunikasi jaringan komputer melalui implementasi protokol SSL/TLS, sertifikat digital, dan enkripsi socket.<br><br><b>Poin Penting:</b><br>• Menggunakan modul <code>ssl</code> Python.<br>• Membungkus socket TCP biasa menjadi secure socket.",
         example: `import socket\nimport ssl\n\ncontext = ssl.create_default_context()\nwith socket.create_connection(('www.python.org', 443)) as sock:\n    with context.wrap_socket(sock, server_hostname='www.python.org') as ssock:\n        print(ssock.version())`,
         tasks: [
@@ -1610,12 +1616,12 @@ const levelsData = [
             { task: "Ambil detail informasi sertifikat digital server menggunakan secure_sock.getpeercert().", hint: "cert = secure_sock.getpeercert()", validate: c => c.includes("getpeercert") },
             { task: "Konfigurasikan server socket Python untuk menerima koneksi masuk terenkripsi SSL.", hint: "context.wrap_socket(server_sock, server_side=True)", validate: c => c.includes("server_side") },
             { task: "Muat file sertifikat publik (.crt) dan kunci privat (.key) kustom ke dalam konteks SSL.", hint: "context.load_cert_chain(certfile='server.crt', keyfile='server.key')", validate: c => c.includes("load_cert_chain") },
-            { task: "Atur penegکان validasi sertifikat ketat untuk mencegah serangan Man-in-the-Middle (MitM).", hint: "Atur verify_mode ke CERT_REQUIRED.", validate: c => c.includes("verify_mode") || c.includes("cert_required") },
+            { task: "Atur penegakan validasi sertifikat ketat untuk mencegah serangan Man-in-the-Middle (MitM).", hint: "Atur verify_mode ke CERT_REQUIRED.", validate: c => c.includes("verify_mode") || c.includes("cert_required") },
             { task: "Uji penanganan error sertifikat kedaluwarsa atau tidak valid pada klien.", hint: "Tangkap exception ssl.SSLError saat handshake gagal.", validate: c => c.includes("sslerror") || c.includes("try") }
         ]
     },
     {
-        id: 96, category: "Security", title: "Level 96: Static Security Analysis (Bandit, Flake8, Black, Ruff)", xp: 21500,
+        id: 96, category: "Security & Performance", title: "Level 96: Static Security Analysis (Bandit, Flake8, Black, Ruff)",
         desc: "<b>Definisi Konsep Mendalam:</b> Melakukan analisis keamanan statis otomatis serta pemindaian kerentanan kode menggunakan alat industri <code>Bandit</code>, <code>Ruff</code>, dan <code>Black</code>.<br><br><b>Poin Penting:</b><br>• Pemindaian celah keamanan kode dengan <code>Bandit</code>.<br>• Pemeriksaan gaya dan format kode otomatis.",
         example: `# Contoh perintah terminal pemindaian keamanan\n# bandit -r .\n# ruff check .`,
         tasks: [
@@ -1632,7 +1638,7 @@ const levelsData = [
         ]
     },
     {
-        id: 97, category: "Enterprise Mastery", title: "Level 97: Enterprise Microservices Architecture dengan Python", xp: 22000,
+        id: 97, category: "Enterprise Mastery", title: "Level 97: Enterprise Microservices Architecture dengan Python",
         desc: "<b>Definisi Konsep Mendalam:</b> Merancang arsitektur sistem layanan terdistribusi (microservices) menggunakan Python untuk memecah aplikasi monolitik menjadi layanan independen.<br><br><b>Poin Penting:</b><br>• Komunikasi antar layanan via HTTP/gRPC.<br>• Service discovery dan API Gateway.",
         example: `from fastapi import FastAPI\n\napp = FastAPI(title=\"UserService\")\n\n@app.get(\"/users/{id}\")\ndef get_user(id: int):\n    return {\"user_id\": id, \"service\": \"user-microservice\"}`,
         tasks: [
@@ -1649,7 +1655,7 @@ const levelsData = [
         ]
     },
     {
-        id: 98, category: "Enterprise Mastery", title: "Level 98: Event-Driven Architecture (RabbitMQ / Kafka dengan Python)", xp: 22500,
+        id: 98, category: "Enterprise Mastery", title: "Level 98: Event-Driven Architecture (RabbitMQ / Kafka dengan Python)",
         desc: "<b>Definisi Konsep Mendalam:</b> Membangun arsitektur berbasis event (Event-Driven Architecture) menggunakan RabbitMQ atau Apache Kafka untuk komunikasi data asinkron berskala masif.<br><br><b>Poin Penting:</b><br>• Menggunakan pustaka <code>pika</code> (RabbitMQ) atau <code>kafka-python</code>.<br>• Pola Publisher-Subscriber dan Message Queues.",
         example: `import pika\n\nconnection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))\nchannel = connection.channel()\nchannel.queue_declare(queue='task_queue')\nchannel.basic_publish(exchange='', routing_key='task_queue', body='Hello Event!')`,
         tasks: [
@@ -1666,7 +1672,7 @@ const levelsData = [
         ]
     },
     {
-        id: 99, category: "Enterprise Mastery", title: "Level 99: Full-Stack Enterprise System Integration Test", xp: 23000,
+        id: 99, category: "Enterprise Mastery", title: "Level 99: Full-Stack Enterprise System Integration Test",
         desc: "<b>Definisi Konsep Mendalam:</b> Melakukan pengujian integrasi sistem skala penuh (End-to-End & Integration Testing) yang menggabungkan API, Database, Redis, dan Message Queue.<br><br><b>Poin Penting:</b><br>• Menggunakan pytest dengan kontainer uji Testcontainers atau Docker Compose.<br>• Pengujian skenario bisnis nyata secara otomatis.",
         example: `import pytest\n\ndef test_enterprise_workflow(test_client, db_session):\n    response = test_client.post(\"/api/v1/orders\", json={\"item\": \"SaaS\"})\n    assert response.status_code == 201`,
         tasks: [
@@ -1683,7 +1689,7 @@ const levelsData = [
         ]
     },
     {
-        id: 100, category: "Enterprise Mastery", title: "Level 100: Capstone Grandmaster Project: Membangun SaaS AI Berbasis Cloud Skala Penuh", xp: 25000,
+        id: 100, category: "Enterprise Mastery", title: "Level 100: Capstone Grandmaster Project: Membangun SaaS AI Berbasis Cloud Skala Penuh",
         desc: "<b>Definisi Konsep Mendalam:</b> Proyek puncak ujian akhir masterclass (Capstone Grandmaster) yang menggabungkan seluruh teknologi enterprise stack dunia (FastAPI, SQLAlchemy, Celery, Redis, LLM AI, Docker, Kubernetes, CI/CD, Security).<br><br><b>Poin Penting:</b><br>• Arsitektur SaaS AI skala penuh.<br>• Penggabungan seluruh stack teknologi modern.",
         example: `# Arsitektur SaaS AI Capstone Project\n# FastAPI Backend + PostgreSQL + Redis Cache + Celery Workers + RAG LLM + Docker Kubernetes Deployment`,
         tasks: [
@@ -1701,208 +1707,1343 @@ const levelsData = [
     }
 ];
 
-let currentLevelId = 1;
-let currentTaskIndex = 0;
-let totalXP = 0;
-let completedLevels = [];
-let completedSubTasks = {}; // Menyimpan progress soal yang selesai per level (contoh: {1: 10} artinya level 1 sudah 10 soal)
+/* =====================================================================
+   LOGIKA APLIKASI
+   ---------------------------------------------------------------------
+   Bagian di atas (levelsData) adalah kurikulum. Bagian ini berisi:
+   1. Normalisasi data (kategori & kurva XP)
+   2. Mesin Python asli (Pyodide di Web Worker, ada batas waktu)
+   3. Penyimpanan progress (localStorage)
+   4. Validasi jawaban (jalankan kode + cek struktur)
+   5. UI: sidebar, editor, terminal, toast
+   ===================================================================== */
+(function () {
+    "use strict";
 
-window.onload = function() {
-    renderLevelList();
-    loadLevel(1);
-};
+    /* ------------------------------------------------------------------
+       1. KONFIGURASI & NORMALISASI DATA
+       ------------------------------------------------------------------ */
+    const STORAGE_KEY = "pythonOdyssey.v2";
+    const PYODIDE_VERSION = "0.26.4";
+    const PYODIDE_BASE = "https://cdn.jsdelivr.net/pyodide/v" + PYODIDE_VERSION + "/full/";
+    const EXEC_LIMIT_MS = 8000;      // batas waktu eksekusi kode murid
+    const LOAD_LIMIT_MS = 90000;     // batas memuat mesin / paket Python
+    const OUTPUT_LIMIT = 60000;      // batas jumlah karakter output
+    const LEVEL_BONUS_RATE = 0.25;   // bonus XP saat 10/10 soal selesai
+    const INDENT = "    ";
 
-function renderLevelList() {
-    const listContainer = document.getElementById('level-list');
-    listContainer.innerHTML = '';
+    // Level yang soalnya berupa konfigurasi/perintah/teks (bukan kode Python valid): tidak dijalankan.
+    // Soal dengan validator "c.length > N" (soal uraian) otomatis ikut mode teks.
+    const TEXT_LEVELS = new Set([52, 80, 81, 82, 88, 92, 94, 96]);
+    // Level 1-48 memakai kata kunci Python murni: isi string diabaikan saat cek struktur
+    // (kecuali L12 format-spec dan L23 mode file yang memang berada di dalam string).
+    const STRING_BLIND_LEVELS = new Set(Array.from({ length: 48 }, function (_, i) { return i + 1; })
+        .filter(function (n) { return n !== 12 && n !== 23; }));
+    // Library yang memang tidak tersedia di browser. ImportError lain = salah ketik, bukan keterbatasan.
+    const UNAVAILABLE_LIBS = new RegExp("^(torch|tensorflow|transformers|fastapi|uvicorn|starlette|alembic|passlib|jwt|celery|redis|pyspark|airflow|great_expectations|gx|deltalake|delta|scrapy|openai|anthropic|langchain\\w*|llama_index|chromadb|qdrant_client|crewai\\w*|autogen|sentry_sdk|structlog|prometheus_client|pulumi\\w*|boto3|botocore|bcrypt|defusedxml|pika|kafka|pytest|mangum|dotenv|pydantic_settings|Cython|memory_profiler|locust|testcontainers|pybreaker|numba|seaborn|plotly|pyarrow|psycopg2|pymysql)$");
+    // Hasil cetak yang wajib muncul (kunci: "level-indeksSoal")
+    const EXPECT = {
+        "2-0": /\b24(\.0)?\b/, "2-1": /\b48\b/, "2-2": /\b81\b/, "2-3": /\b1\b/, "2-4": /\b53000\b/,
+        "2-5": /\b5\b/, "2-6": /\b85(\.0)?\b/, "2-7": /\b60\b/, "2-8": /\b7200\b/, "2-9": /\b110\b/,
+        "4-0": /sudah punya ktp/i, "4-1": /tidak lulus/i, "4-2": /hemat dulu/i, "4-3": /genap/i, "4-4": /demam/i,
+        "4-5": /habis/i, "4-6": /terlalu ngebut/i, "4-7": /belum memenuhi/i, "4-8": /malam hari/i, "4-9": /hadiah utama/i,
+        "5-0": /sejuk/i, "5-2": /berhenti/i, "5-3": /siang/i, "5-4": /kerusakan berat/i, "5-5": /rabu/i,
+        "5-6": /diskon 20%/i, "5-7": /biaya sedang/i, "5-8": /full akses/i, "5-9": /anak-anak/i
+    };
 
-    levelsData.forEach(lvl => {
-        // Cek apakah jumlah soal yang dikerjakan di level ini sudah mencapai total soal (10 soal)
-        const finishedCount = completedSubTasks[lvl.id] || 0;
-        const isCompleted = finishedCount >= lvl.tasks.length; 
-        const isCurrent = lvl.id === currentLevelId;
+    // Kurva XP yang naik rata: Level 1 = 100 XP, Level 100 = 2.080 XP.
+    // Ubah fungsi ini jika ingin kurva lain.
+    function xpForLevel(id) {
+        return 100 + (id - 1) * 20;
+    }
 
-        let statusBadge = isCompleted ? '<span class="text-emerald-400 text-xs font-bold">✔ Selesai</span>' : `<span class="text-xs text-slate-400">+${lvl.xp} XP</span>`;
-        let borderClass = isCurrent ? 'border-indigo-500 bg-indigo-950/20 shadow-lg shadow-indigo-500/10' : 'border-slate-800/80 hover:border-slate-700 bg-slate-900/40';
-
-        const item = document.createElement('div');
-        item.className = `p-3 rounded-xl border ${borderClass} cursor-pointer transition flex items-center justify-between`;
-        item.onclick = () => {
-            currentLevelId = lvl.id;
-            currentTaskIndex = completedSubTasks[lvl.id] || 0; // Lanjut ke soal terakhir yang dikerjakan
-            loadLevel(lvl.id);
-        };
-        item.innerHTML = `
-            <div>
-                <p class="text-xs text-indigo-400 font-semibold uppercase tracking-wider">${lvl.category}</p>
-                <h4 class="text-sm font-bold text-slate-200">Level ${lvl.id}</h4>
-            </div>
-            <div>${statusBadge}</div>
-        `;
-        listContainer.appendChild(item);
+    levelsData.forEach(function (lvl) {
+        lvl.tasks.forEach(function (t, i) {
+            const vsrc = String(t.validate);
+            t.needsStdout = /\bprint\b/.test(vsrc);                 // validator meminta print
+            t.needsAnyOutput = /\b(cetak|print|tampilkan)\b/i.test(t.task); // soal meminta mencetak
+            t.expect = EXPECT[lvl.id + "-" + i] || null;
+            t.noStrings = STRING_BLIND_LEVELS.has(lvl.id);
+            const lengthOnly = /^\s*c\s*=>\s*c\.length\s*>\s*\d+\s*$/.test(vsrc);
+            t.minChars = (lengthOnly && !TEXT_LEVELS.has(lvl.id)) ? 25 : 6; // soal uraian wajib dijawab dengan beberapa kalimat/baris
+            if (TEXT_LEVELS.has(lvl.id) || lengthOnly || (lvl.id === 85 && i >= 5 && i <= 8)) t.mode = "text";
+        });
+        lvl.xp = xpForLevel(lvl.id);
+        lvl.shortTitle = lvl.title.replace(/^Level\s+\d+\s*:\s*/i, "");
     });
 
-    // Menghitung jumlah level yang sudah 100% selesai
-    let totalCompletedLevels = Object.keys(completedSubTasks).filter(id => completedSubTasks[id] >= 10).length;
+    const levelById = new Map(levelsData.map(function (l) { return [l.id, l]; }));
+    const TOTAL_TASKS = levelsData.reduce(function (n, l) { return n + l.tasks.length; }, 0);
 
-    document.getElementById('total-xp').innerText = totalXP + " XP";
-    document.getElementById('progress-text').innerText = `${totalCompletedLevels} / ${levelsData.length} Level`;
-}
+    // Kelompokkan level berurutan berdasarkan kategori (untuk header sidebar)
+    const categoryGroups = [];
+    levelsData.forEach(function (lvl) {
+        const last = categoryGroups[categoryGroups.length - 1];
+        if (last && last.category === lvl.category) last.levels.push(lvl);
+        else categoryGroups.push({ category: lvl.category, levels: [lvl] });
+    });
 
-function loadLevel(id) {
-    currentLevelId = id;
-    const lvl = levelsData.find(l => l.id === id);
-    const currentTask = lvl.tasks[currentTaskIndex];
+    const RANKS = [
+        { pct: 0, name: "Pemula" },
+        { pct: 3, name: "Pelajar" },
+        { pct: 10, name: "Coder" },
+        { pct: 25, name: "Developer" },
+        { pct: 45, name: "Engineer" },
+        { pct: 70, name: "Architect" },
+        { pct: 90, name: "Grandmaster" },
+        { pct: 100, name: "Legenda" }
+    ];
 
-    document.getElementById('bg-level-watermark').innerText = id < 10 ? '0' + id : id;
-    document.getElementById('badge-category').innerText = lvl.category;
-    document.getElementById('badge-xp').innerText = `+${lvl.xp} XP`;
-    document.getElementById('badge-subtask').innerText = `Soal ${currentTaskIndex + 1} dari 10`;
-    document.getElementById('level-title').innerText = lvl.title;
-    document.getElementById('level-desc').innerHTML = `<p>${lvl.desc}</p>`;
-    document.getElementById('level-example').innerText = lvl.example;
-    document.getElementById('level-task').innerText = currentTask.task;
-    
-    document.getElementById('code-input').value = '';
-    document.getElementById('code-output').innerHTML = '<span class="text-slate-500">// Output program akan muncul di sini setelah dijalankan...</span>';
+    /* ------------------------------------------------------------------
+       2. UTILITAS
+       ------------------------------------------------------------------ */
+    function $(id) { return document.getElementById(id); }
 
-    renderLevelList();
-}
-
-function nextSubTask() {
-    const lvl = levelsData.find(l => l.id === currentLevelId);
-    currentTaskIndex = (currentTaskIndex + 1) % lvl.tasks.length;
-    loadLevel(currentLevelId);
-}
-
-function resetCurrentCode() {
-    document.getElementById('code-input').value = '';
-    document.getElementById('code-output').innerHTML = '<span class="text-slate-500">// Kolom kode dikosongkan. Silakan tulis ulang...</span>';
-}
-
-function showHint() {
-    const lvl = levelsData.find(l => l.id === currentLevelId);
-    const currentTask = lvl.tasks[currentTaskIndex];
-    const outputBox = document.getElementById('code-output');
-    outputBox.innerHTML = `<span class="text-amber-400 font-semibold">💡 Petunjuk Soal Ini:</span><br><span class="text-slate-300">${currentTask.hint}</span>`;
-}
-
-function runPythonCode() {
-    const code = document.getElementById('code-input').value;
-    const outputBox = document.getElementById('code-output');
-    
-    if (!code.trim()) {
-        outputBox.innerHTML = `<span class="text-rose-400">Error: Kolom kode masih kosong! Silakan tulis kode Python terlebih dahulu.</span>`;
-        return;
+    function el(tag, className, text) {
+        const node = document.createElement(tag);
+        if (className) node.className = className;
+        if (text !== undefined) node.textContent = text;
+        return node;
     }
 
-    outputBox.innerHTML = '<span class="text-slate-400 animate-pulse">Menjalankan kode Python...</span>';
+    function debounce(fn, ms) {
+        let t = null;
+        return function () {
+            clearTimeout(t);
+            t = setTimeout(fn, ms);
+        };
+    }
 
-    setTimeout(() => {
+    // Hapus komentar Python (#...) tanpa merusak tanda # di dalam string.
+    // Dipakai agar murid tidak bisa lolos dengan menaruh kata kunci di komentar.
+    function stripPyComments(src, blank) {
+        let out = "";
+        let i = 0;
+        let q = null; // pembuka string yang sedang aktif
+        const n = src.length;
+        while (i < n) {
+            const ch = src[i];
+            if (q) {
+                if (ch === "\\") {
+                    out += blank ? "  " : ch + (i + 1 < n ? src[i + 1] : "");
+                    i += 2;
+                    continue;
+                }
+                if (src.startsWith(q, i)) {
+                    out += q;
+                    i += q.length;
+                    q = null;
+                    continue;
+                }
+                if (q.length === 1 && ch === "\n") q = null; // string satu-baris tak tertutup
+                out += (blank && ch !== "\n") ? " " : ch; // blank=true: isi string dikosongkan
+                i++;
+                continue;
+            }
+            if (ch === "#") {
+                while (i < n && src[i] !== "\n") i++;
+                continue;
+            }
+            if (ch === '"' || ch === "'") {
+                q = src.startsWith(ch.repeat(3), i) ? ch.repeat(3) : ch;
+                out += q;
+                i += q.length;
+                continue;
+            }
+            out += ch;
+            i++;
+        }
+        return out;
+    }
+
+    /* ------------------------------------------------------------------
+       3. MESIN PYTHON (Pyodide di dalam Web Worker)
+       ------------------------------------------------------------------ */
+
+    // Fungsi ini di-stringify lalu dijalankan DI DALAM worker.
+    // Jangan merujuk variabel di luar fungsi ini.
+    function workerMain(BASE) {
+        const SETUP = [
+            "import sys, ast, builtins, inspect, os",
+            "os.environ['MPLBACKEND'] = 'Agg'",
+            "_stdin_lines = []",
+            "def _fake_input(prompt=''):",
+            "    sys.stdout.write(str(prompt))",
+            "    if not _stdin_lines:",
+            "        sys.stdout.write(chr(10))",
+            "        raise EOFError('EOF when reading a line (isi kolom Input di bawah editor jika program memakai input())')",
+            "    v = str(_stdin_lines.pop(0))",
+            "    sys.stdout.write(v + chr(10))",
+            "    return v",
+            "builtins.input = _fake_input",
+            "def _grab_figs():",
+            "    mp = sys.modules.get('matplotlib.pyplot')",
+            "    if mp is None:",
+            "        return []",
+            "    import io, base64",
+            "    out = []",
+            "    for n in mp.get_fignums():",
+            "        buf = io.BytesIO()",
+            "        mp.figure(n).savefig(buf, format='png', dpi=80, bbox_inches='tight')",
+            "        out.append(base64.b64encode(buf.getvalue()).decode())",
+            "    mp.close('all')",
+            "    return out",
+            "def _syntax_check(code):",
+            "    try:",
+            "        compile(code, '<exec>', 'exec')",
+            "        return None",
+            "    except SyntaxError as e:",
+            "        msg = type(e).__name__ + ': ' + str(e.msg)",
+            "        if e.lineno:",
+            "            msg += ' (baris ' + str(e.lineno) + ')'",
+            "        if e.text:",
+            "            msg += chr(10) + '  ' + e.text.rstrip()",
+            "            if e.offset:",
+            "                msg += chr(10) + '  ' + ' ' * max(e.offset - 1, 0) + '^'",
+            "        return msg",
+            "    except Exception as e:",
+            "        return type(e).__name__ + ': ' + str(e)",
+            "class _AsyncRunFix(ast.NodeTransformer):",
+            "    def _skip(self, node):",
+            "        return node",
+            "    visit_FunctionDef = _skip",
+            "    visit_AsyncFunctionDef = _skip",
+            "    visit_Lambda = _skip",
+            "    visit_ClassDef = _skip",
+            "    def visit_Call(self, node):",
+            "        self.generic_visit(node)",
+            "        f = node.func",
+            "        if isinstance(f, ast.Attribute) and node.args:",
+            "            owner_is_asyncio = isinstance(f.value, ast.Name) and f.value.id == 'asyncio'",
+            "            if (f.attr == 'run' and owner_is_asyncio) or f.attr == 'run_until_complete':",
+            "                return ast.copy_location(ast.Await(value=node.args[0]), node)",
+            "        return node",
+            "async def _run_user(code, g):",
+            "    import logging",
+            "    for _h in logging.root.handlers[:]:",
+            "        logging.root.removeHandler(_h)",
+            "    logging.root.setLevel(logging.WARNING)",
+            "    tree = ast.parse(code, '<exec>')",
+            "    tree = ast.fix_missing_locations(_AsyncRunFix().visit(tree))",
+            "    co = compile(tree, '<exec>', 'exec', flags=ast.PyCF_ALLOW_TOP_LEVEL_AWAIT)",
+            "    r = eval(co, g)",
+            "    if inspect.iscoroutine(r):",
+            "        await r"
+        ].join("\n");
+
+        let pyodide = null;
+        const post = function (type, text) { postMessage({ type: type, text: text }); };
+
+        const ready = (async function () {
+            importScripts(BASE + "pyodide.js");
+            pyodide = await loadPyodide({ indexURL: BASE });
+            pyodide.setStdout({ batched: function (s) { post("stdout", s + "\n"); } });
+            pyodide.setStderr({ batched: function (s) { post("stderr", s + "\n"); } });
+            pyodide.globals.set("_setup_src", SETUP);
+            pyodide.runPython("exec(compile(_setup_src, '<setup>', 'exec'), globals())");
+            postMessage({ type: "ready" });
+        })().catch(function (e) {
+            postMessage({ type: "fatal", text: String((e && e.message) || e) });
+        });
+
+        function flush() {
+            try { pyodide.runPython("import sys\nsys.stdout.flush()\nsys.stderr.flush()"); } catch (e) { /* abaikan */ }
+        }
+
+        self.onmessage = async function (ev) {
+            const id = ev.data.id;
+            const code = ev.data.code;
+            const stdin = ev.data.stdin || [];
+            await ready;
+            if (!pyodide) {
+                postMessage({ type: "result", id: id, status: "engine-failed" });
+                return;
+            }
+            let g = null;
+            try {
+                const syn = pyodide.globals.get("_syntax_check")(code);
+                if (syn) {
+                    postMessage({ type: "result", id: id, status: "syntax", message: String(syn) });
+                    return;
+                }
+                postMessage({ type: "loading", id: id });
+                try { await pyodide.loadPackagesFromImports(code); } catch (e) { /* paket tak tersedia: biarkan ImportError muncul */ }
+                postMessage({ type: "started", id: id });
+
+                pyodide.globals.set("_stdin_lines", pyodide.toPy(stdin));
+                g = pyodide.globals.get("dict")();
+                g.set("__name__", "__main__");
+                await pyodide.globals.get("_run_user")(code, g);
+                flush();
+                try {
+                    const proxy = pyodide.globals.get("_grab_figs")();
+                    const figs = proxy.toJs();
+                    proxy.destroy();
+                    figs.forEach(function (d) { postMessage({ type: "figure", data: d }); });
+                } catch (e) { /* abaikan */ }
+                postMessage({ type: "result", id: id, status: "ok" });
+            } catch (e) {
+                flush();
+                const msg = String((e && e.message) || e);
+                const lastLine = msg.trim().split("\n").pop();
+                const m = lastLine.match(/^([A-Za-z_][\w.]*)(?::|$)/);
+                const errType = (e && e.type) || (m && m[1]) || "Error";
+                if (errType === "SystemExit") {
+                    postMessage({ type: "result", id: id, status: "ok" });
+                } else {
+                    const idx = msg.indexOf('File "<exec>"');
+                    const tb = idx >= 0
+                        ? "Traceback (most recent call last):\n  " + msg.slice(idx).trim()
+                        : msg.trim();
+                    postMessage({ type: "result", id: id, status: "error", errType: errType, message: tb });
+                }
+            } finally {
+                if (g) { try { g.destroy(); } catch (e) { /* abaikan */ } }
+            }
+        };
+    }
+
+    const PyEngine = (function () {
+        let worker = null;
+        let state = "idle"; // idle | loading | ready | failed
+        let waiters = [];
+        let current = null;
+        let seq = 0;
+        let loadTimer = null;
+        const stateListeners = [];
+
+        function setState(s) {
+            state = s;
+            stateListeners.forEach(function (fn) { fn(s); });
+        }
+
+        function resolveWaiters(ok) {
+            const list = waiters;
+            waiters = [];
+            list.forEach(function (fn) { fn(ok); });
+        }
+
+        function killWorker() {
+            if (worker) {
+                worker.onmessage = null;
+                worker.onerror = null;
+                worker.terminate();
+                worker = null;
+            }
+        }
+
+        function fail() {
+            clearTimeout(loadTimer);
+            killWorker();
+            setState("failed");
+            resolveWaiters(false);
+            if (current) finishJob({ status: "engine-failed" });
+        }
+
+        function start() {
+            if (state === "loading" || state === "ready") return;
+            setState("loading");
+            try {
+                const src = "(" + workerMain.toString() + ")(" + JSON.stringify(PYODIDE_BASE) + ");";
+                const blob = new Blob([src], { type: "text/javascript" });
+                worker = new Worker(URL.createObjectURL(blob));
+            } catch (e) {
+                fail();
+                return;
+            }
+            worker.onmessage = onMessage;
+            worker.onerror = function () {
+                if (state === "loading") {
+                    fail();
+                } else if (current) {
+                    // worker mati mendadak (mis. kehabisan memori)
+                    finishJob({ status: "error", errType: "EngineCrash", message: "Mesin Python berhenti mendadak (kemungkinan kehabisan memori). Mesin dimulai ulang." });
+                    killWorker();
+                    setState("idle");
+                    start();
+                }
+            };
+            clearTimeout(loadTimer);
+            loadTimer = setTimeout(fail, LOAD_LIMIT_MS);
+        }
+
+        function whenReady() {
+            if (state === "ready") return Promise.resolve(true);
+            if (state === "failed") return Promise.resolve(false);
+            return new Promise(function (resolve) { waiters.push(resolve); });
+        }
+
+        function pushChunk(stream, text) {
+            const job = current;
+            if (!job || job.truncated) return;
+            job.size += text.length;
+            if (job.size > OUTPUT_LIMIT) {
+                job.truncated = true;
+                abort("outlimit");
+                return;
+            }
+            job.chunks.push({ stream: stream, text: text });
+            if (job.onChunk) job.onChunk(stream, text);
+        }
+
+        function envLimited(errType, message) {
+            if (errType === "ModuleNotFoundError" || errType === "ImportError") {
+                const mm = /No module named '([^']+)'/.exec(message);
+                return !!mm && UNAVAILABLE_LIBS.test(mm[1].split(".")[0]);
+            }
+            if (/^(RuntimeError|OSError|NotImplementedError|PermissionError|BlockingIOError|ConnectionError|TimeoutError)$/.test(errType)) {
+                return /thread|process|socket|fork|subprocess|not supported|not implemented|operation not permitted|network|connection|Errno (38|97|99|101|111|138)\b/i.test(message);
+            }
+            return false;
+        }
+
+        function finishJob(m) {
+            const job = current;
+            if (!job) return;
+            current = null;
+            clearTimeout(job.timer);
+            const res = {
+                status: m.status,
+                message: m.message || "",
+                errType: m.errType || "",
+                chunks: job.chunks,
+                ms: Math.round(performance.now() - job.t0),
+                hasOutput: job.chunks.some(function (c) { return c.stream === "stdout" && c.text.trim() !== ""; })
+            };
+            if (res.status === "error" && envLimited(res.errType, res.message)) {
+                const mod = /No module named '([^']+)'/.exec(res.message);
+                res.status = "limited";
+                res.detail = mod ? "library '" + mod[1] + "' tidak tersedia di browser" : "fitur sistem ini (thread/proses/jaringan) tidak didukung di browser";
+            }
+            job.resolve(res);
+        }
+
+        function abort(reason) {
+            const job = current;
+            if (!job) return;
+            const chunks = job.chunks;
+            killWorker();
+            setState("idle");
+            current = null;
+            clearTimeout(job.timer);
+            job.resolve({
+                status: "timeout",
+                reason: reason,
+                message: "",
+                errType: "",
+                chunks: chunks,
+                ms: Math.round(performance.now() - job.t0),
+                hasOutput: chunks.some(function (c) { return c.stream === "stdout" && c.text.trim() !== ""; })
+            });
+            start(); // siapkan mesin baru di latar belakang
+        }
+
+        function onMessage(ev) {
+            const m = ev.data || {};
+            switch (m.type) {
+                case "ready":
+                    clearTimeout(loadTimer);
+                    setState("ready");
+                    resolveWaiters(true);
+                    break;
+                case "fatal":
+                    fail();
+                    break;
+                case "stdout":
+                case "stderr":
+                    pushChunk(m.type, m.text);
+                    break;
+                case "loading":
+                    if (current && current.onStatus) current.onStatus("Menyiapkan paket Python yang dibutuhkan (pertama kali bisa agak lama)…");
+                    break;
+                case "started":
+                    if (current && current.id === m.id) {
+                        clearTimeout(current.timer);
+                        current.t0 = performance.now();
+                        current.timer = setTimeout(function () { abort("time"); }, EXEC_LIMIT_MS);
+                    }
+                    break;
+                case "figure":
+                    if (current && current.onFigure) current.onFigure(m.data);
+                    break;
+                case "result":
+                    if (current && current.id === m.id) finishJob(m);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        async function run(code, stdin, hooks) {
+            if (state === "idle") start();
+            if (hooks && hooks.onStatus && state === "loading") hooks.onStatus("Memuat mesin Python (sekitar 10 MB, hanya sekali)…");
+            const ok = await whenReady();
+            if (!ok) return { status: "engine-failed", chunks: [], message: "", errType: "", ms: 0, hasOutput: false };
+            return new Promise(function (resolve) {
+                const job = {
+                    id: ++seq,
+                    resolve: resolve,
+                    onChunk: hooks && hooks.onChunk,
+                    onStatus: hooks && hooks.onStatus,
+                    onFigure: hooks && hooks.onFigure,
+                    chunks: [],
+                    size: 0,
+                    truncated: false,
+                    t0: performance.now(),
+                    timer: null
+                };
+                job.timer = setTimeout(function () { abort("time"); }, LOAD_LIMIT_MS); // sebelum "started"
+                current = job;
+                worker.postMessage({ id: job.id, code: code, stdin: stdin });
+            });
+        }
+
+        return {
+            start: start,
+            run: run,
+            retry: function () { if (state === "failed") { setState("idle"); start(); } },
+            onState: function (fn) { stateListeners.push(fn); fn(state); },
+            get state() { return state; }
+        };
+    })();
+
+    /* ------------------------------------------------------------------
+       4. STATE & PENYIMPANAN PROGRESS
+       ------------------------------------------------------------------ */
+    const state = {
+        levelId: 1,
+        taskIndex: 0,
+        done: {},      // { levelId: Set(indexSoal) }
+        drafts: {},    // { "level-soal": kode }
+        settings: { lockOrder: false }
+    };
+
+    let storageWarned = false;
+
+    function serialize() {
+        const done = {};
+        Object.keys(state.done).forEach(function (id) {
+            done[id] = Array.from(state.done[id]).sort(function (a, b) { return a - b; });
+        });
+        return {
+            version: 2,
+            done: done,
+            drafts: state.drafts,
+            settings: state.settings,
+            last: { levelId: state.levelId, taskIndex: state.taskIndex }
+        };
+    }
+
+    function saveNow() {
         try {
-            let logs = [];
-            if (code.includes('print(')) {
-                let matches = code.match(/print\s*\((.*?)\)/g);
-                if (matches) {
-                    matches.forEach(m => {
-                        let content = m.replace(/print\s*\(/, '').slice(0, -1);
-                        try {
-                            let evaluated = eval(content.replace(/f["'](.*?)["']/g, (match, p1) => {
-                                return "`" + p1.replace(/\{(.*?)\}/g, "${$1}") + "`";
-                            }));
-                            logs.push(evaluated);
-                        } catch (e) {
-                            logs.push(content.replace(/['"]/g, ''));
-                        }
-                    });
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(serialize()));
+        } catch (e) {
+            if (!storageWarned) {
+                storageWarned = true;
+                toast("Penyimpanan browser tidak tersedia. Progress akan hilang saat halaman ditutup.", "warn", 6000);
+            }
+        }
+    }
+    const saveSoon = debounce(saveNow, 300);
+
+    // Terapkan data (dari localStorage / file impor) dengan validasi ketat
+    function applyData(raw) {
+        if (!raw || typeof raw !== "object") return false;
+        const done = {};
+        levelsData.forEach(function (lvl) {
+            const arr = raw.done && raw.done[lvl.id];
+            if (Array.isArray(arr)) {
+                const set = new Set(arr.filter(function (i) {
+                    return Number.isInteger(i) && i >= 0 && i < lvl.tasks.length;
+                }));
+                if (set.size) done[lvl.id] = set;
+            }
+        });
+        const drafts = {};
+        if (raw.drafts && typeof raw.drafts === "object") {
+            Object.keys(raw.drafts).forEach(function (k) {
+                if (/^\d{1,3}-\d{1,2}$/.test(k) && typeof raw.drafts[k] === "string" && raw.drafts[k].length < 20000) {
+                    drafts[k] = raw.drafts[k];
+                }
+            });
+        }
+        state.done = done;
+        state.drafts = drafts;
+        state.settings.lockOrder = !!(raw.settings && raw.settings.lockOrder);
+        const last = raw.last || {};
+        const lvl = levelById.get(last.levelId);
+        if (lvl) {
+            state.levelId = lvl.id;
+            state.taskIndex = Number.isInteger(last.taskIndex) && last.taskIndex >= 0 && last.taskIndex < lvl.tasks.length ? last.taskIndex : 0;
+        }
+        return true;
+    }
+
+    function loadState() {
+        try {
+            applyData(JSON.parse(localStorage.getItem(STORAGE_KEY)));
+        } catch (e) { /* data rusak / storage tak tersedia: mulai dari awal */ }
+    }
+
+    /* ---------- Turunan state ---------- */
+    function currentLevel() { return levelById.get(state.levelId); }
+    function currentTask() { return currentLevel().tasks[state.taskIndex]; }
+    function isTaskDone(lvl, i) { const s = state.done[lvl.id]; return !!s && s.has(i); }
+    function levelDoneCount(lvl) { const s = state.done[lvl.id]; return s ? s.size : 0; }
+    function isLevelComplete(lvl) { return levelDoneCount(lvl) >= lvl.tasks.length; }
+    function taskXp(lvl) { return Math.round(lvl.xp / lvl.tasks.length); }
+    function levelBonus(lvl) { return Math.round(lvl.xp * LEVEL_BONUS_RATE); }
+    function totalTasksDone() { return levelsData.reduce(function (n, l) { return n + levelDoneCount(l); }, 0); }
+    function completedLevelCount() { return levelsData.filter(isLevelComplete).length; }
+    function totalXp() {
+        return levelsData.reduce(function (sum, lvl) {
+            return sum + levelDoneCount(lvl) * taskXp(lvl) + (isLevelComplete(lvl) ? levelBonus(lvl) : 0);
+        }, 0);
+    }
+    function rankFor(done) {
+        const pct = (done / TOTAL_TASKS) * 100;
+        let rank = RANKS[0];
+        RANKS.forEach(function (r) { if (pct >= r.pct) rank = r; });
+        return rank.name;
+    }
+    function isLocked(lvl) {
+        return state.settings.lockOrder && lvl.id > 1 && !isLevelComplete(levelById.get(lvl.id - 1));
+    }
+    function firstUndone(lvl) {
+        for (let i = 0; i < lvl.tasks.length; i++) if (!isTaskDone(lvl, i)) return i;
+        return 0;
+    }
+    function ensureUnlocked() {
+        if (!isLocked(currentLevel())) return;
+        const target = levelsData.find(function (l) { return !isLevelComplete(l); }) || levelsData[0];
+        state.levelId = target.id;
+        state.taskIndex = firstUndone(target);
+    }
+    function draftKey() { return state.levelId + "-" + state.taskIndex; }
+
+    /* ------------------------------------------------------------------
+       5. TOAST
+       ------------------------------------------------------------------ */
+    function toast(message, kind, ms) {
+        const root = $("toast-root");
+        const node = el("div", "toast toast-" + (kind || "info"), message);
+        root.appendChild(node);
+        setTimeout(function () {
+            node.classList.add("toast-out");
+            setTimeout(function () { node.remove(); }, 320);
+        }, ms || 3500);
+    }
+
+    /* ------------------------------------------------------------------
+       6. RENDER
+       ------------------------------------------------------------------ */
+    function renderHeader() {
+        const done = totalTasksDone();
+        $("total-xp").textContent = totalXp().toLocaleString("id-ID") + " XP";
+        $("rank-text").textContent = rankFor(done);
+        $("progress-text").textContent = completedLevelCount() + " / " + levelsData.length + " Level";
+        const pct = Math.round((done / TOTAL_TASKS) * 100);
+        $("progress-bar").style.width = pct + "%";
+        $("progress-track").setAttribute("aria-valuenow", String(pct));
+    }
+
+    function levelItem(lvl) {
+        const done = levelDoneCount(lvl);
+        const total = lvl.tasks.length;
+        const complete = done >= total;
+        const locked = isLocked(lvl);
+        const active = lvl.id === state.levelId;
+
+        const btn = el("button", [
+            "w-full text-left p-2.5 rounded-xl border transition flex items-center gap-3",
+            active ? "border-indigo-500 bg-indigo-950/30 shadow-lg shadow-indigo-500/10" : "border-slate-800/80 bg-slate-900/40 hover:border-slate-600",
+            locked ? "opacity-50" : ""
+        ].join(" "));
+        btn.type = "button";
+        btn.dataset.levelId = String(lvl.id);
+        btn.title = lvl.title;
+        if (active) btn.setAttribute("aria-current", "true");
+        if (locked) btn.setAttribute("aria-disabled", "true");
+
+        const num = el("span", [
+            "shrink-0 w-9 h-9 grid place-items-center rounded-lg text-xs font-bold",
+            complete ? "bg-emerald-500/15 text-emerald-300" : active ? "bg-indigo-500/20 text-indigo-300" : "bg-slate-800 text-slate-400"
+        ].join(" "), String(lvl.id));
+
+        const mid = el("span", "flex-1 min-w-0 flex flex-col gap-1.5");
+        mid.appendChild(el("span", "text-sm font-semibold text-slate-200 truncate", lvl.shortTitle));
+        const bar = el("span", "block h-1 rounded bg-slate-800 overflow-hidden");
+        const fill = el("span", "block h-full " + (complete ? "bg-emerald-400" : "bg-indigo-400"));
+        fill.style.width = Math.round((done / total) * 100) + "%";
+        bar.appendChild(fill);
+        mid.appendChild(bar);
+
+        const status = el("span", "shrink-0 text-[11px] font-semibold " + (complete ? "text-emerald-400" : "text-slate-500"),
+            locked ? "🔒" : complete ? "✔" : done + "/" + total);
+
+        btn.append(num, mid, status);
+        btn.addEventListener("click", function () {
+            if (locked) {
+                toast("Selesaikan Level " + (lvl.id - 1) + " dulu untuk membuka level ini.", "warn");
+                return;
+            }
+            goTo(lvl.id, firstUndone(lvl));
+            closeSidebar();
+        });
+        return btn;
+    }
+
+    function renderSidebar() {
+        const list = $("level-list");
+        const q = $("level-search").value.trim().toLowerCase();
+        const scroll = list.scrollTop;
+        const frag = document.createDocumentFragment();
+        let shown = 0;
+
+        categoryGroups.forEach(function (group) {
+            const matches = group.levels.filter(function (lvl) {
+                return !q || (lvl.id + " " + lvl.category + " " + lvl.shortTitle).toLowerCase().indexOf(q) !== -1;
+            });
+            if (!matches.length) return;
+            const doneLevels = group.levels.filter(isLevelComplete).length;
+            const header = el("div", "sticky top-0 z-10 bg-slate-900/95 backdrop-blur-sm flex justify-between items-center px-2 py-1.5 text-[10px] uppercase tracking-wider font-bold text-slate-400");
+            header.append(el("span", "text-indigo-400", group.category), el("span", "", doneLevels + "/" + group.levels.length));
+            frag.appendChild(header);
+            matches.forEach(function (lvl) { frag.appendChild(levelItem(lvl)); shown++; });
+        });
+
+        if (!shown) frag.appendChild(el("p", "text-sm text-slate-500 px-2 py-4", "Tidak ada level yang cocok."));
+        list.replaceChildren(frag);
+        list.scrollTop = scroll;
+    }
+
+    function renderDots() {
+        const lvl = currentLevel();
+        const wrap = $("task-dots");
+        const dots = lvl.tasks.map(function (_, i) {
+            const done = isTaskDone(lvl, i);
+            const current = i === state.taskIndex;
+            const b = el("button", [
+                "w-8 h-8 rounded-lg text-xs font-bold border transition",
+                done ? "bg-emerald-500/15 border-emerald-500/40 text-emerald-300" : "bg-slate-900 border-slate-700 text-slate-400 hover:border-slate-500",
+                current ? "ring-2 ring-indigo-400" : ""
+            ].join(" "), String(i + 1));
+            b.type = "button";
+            b.setAttribute("aria-label", "Soal " + (i + 1) + (done ? ", sudah selesai" : ""));
+            if (current) b.setAttribute("aria-current", "step");
+            b.addEventListener("click", function () { goTo(lvl.id, i); });
+            return b;
+        });
+        wrap.replaceChildren.apply(wrap, dots);
+    }
+
+    function updateLineNumbers() {
+        const editor = $("code-input");
+        const count = editor.value.split("\n").length;
+        const nums = $("line-numbers");
+        if (nums.dataset.count !== String(count)) {
+            let s = "";
+            for (let i = 1; i <= count; i++) s += (i === 1 ? "" : "\n") + i;
+            nums.textContent = s;
+            nums.dataset.count = String(count);
+        }
+        nums.scrollTop = editor.scrollTop;
+    }
+
+    function showPlaceholder(text) {
+        const out = $("code-output");
+        out.replaceChildren(el("span", "text-slate-500", text));
+        out.dataset.ph = "1";
+    }
+
+    function renderLevel() {
+        const lvl = currentLevel();
+        const task = currentTask();
+        $("bg-level-watermark").textContent = lvl.id < 10 ? "0" + lvl.id : String(lvl.id);
+        $("badge-category").textContent = lvl.category;
+        $("badge-xp").textContent = "+" + taskXp(lvl) + " XP / soal";
+        $("badge-subtask").textContent = "Soal " + (state.taskIndex + 1) + " dari " + lvl.tasks.length;
+        $("level-title").textContent = lvl.title;
+        $("level-desc").innerHTML = "<p>" + lvl.desc + "</p>"; // konten kurikulum milik aplikasi (tepercaya)
+        $("level-example").firstElementChild.textContent = lvl.example;
+        $("level-task").textContent = task.task;
+
+        const editor = $("code-input");
+        editor.value = state.drafts[draftKey()] || "";
+        updateLineNumbers();
+        const isText = task.mode === "text";
+        $("file-label").textContent = isText ? "jawaban.txt" : "main.py";
+        editor.placeholder = isText ? "# Tulis perintah / konfigurasi / catatan jawaban di sini..." : "# Tulis kode Python solusi kamu di sini...";
+        showPlaceholder(isText
+            ? "// Soal ini berupa teks/konfigurasi: tidak dijalankan sebagai Python. Klik Periksa Jawaban untuk menilai isinya."
+            : "// Output program akan muncul di sini setelah dijalankan...");
+        renderDots();
+    }
+
+    function renderAll() {
+        renderHeader();
+        renderSidebar();
+        renderLevel();
+        $("opt-lock").checked = state.settings.lockOrder;
+    }
+
+    /* ---------- Navigasi ---------- */
+    function saveDraftNow() {
+        const code = $("code-input").value;
+        const key = draftKey();
+        if (code.trim()) state.drafts[key] = code;
+        else delete state.drafts[key];
+    }
+
+    function goTo(levelId, taskIndex) {
+        saveDraftNow();
+        const lvl = levelById.get(levelId);
+        if (!lvl) return;
+        const levelChanged = lvl.id !== state.levelId;
+        state.levelId = lvl.id;
+        state.taskIndex = Math.min(Math.max(taskIndex || 0, 0), lvl.tasks.length - 1);
+        renderAll();
+        saveSoon();
+        if (levelChanged) {
+            const active = $("level-list").querySelector('[aria-current="true"]');
+            if (active) active.scrollIntoView({ block: "nearest" });
+        }
+    }
+
+    function goNext() {
+        const lvl = currentLevel();
+        const n = lvl.tasks.length;
+        for (let k = 1; k <= n; k++) {
+            const i = (state.taskIndex + k) % n;
+            if (!isTaskDone(lvl, i)) { goTo(lvl.id, i); return; }
+        }
+        const next = levelById.get(lvl.id + 1);
+        if (next && !isLocked(next)) { goTo(next.id, firstUndone(next)); return; }
+        if (next) { toast("Level berikutnya masih terkunci. Selesaikan semua soal level ini dulu.", "warn"); return; }
+        if (completedLevelCount() === levelsData.length) { showFinish(); return; }
+        const pending = levelsData.find(function (l) { return !isLevelComplete(l) && !isLocked(l); });
+        if (pending) { toast("Ini level terakhir. Pindah ke level yang belum selesai.", "info"); goTo(pending.id, firstUndone(pending)); }
+    }
+
+    /* ---------- Sidebar mobile ---------- */
+    function openSidebar() { $("sidebar").classList.add("mobile-open"); document.body.style.overflow = "hidden"; }
+    function closeSidebar() { $("sidebar").classList.remove("mobile-open"); document.body.style.overflow = ""; }
+
+    /* ------------------------------------------------------------------
+       7. TERMINAL OUTPUT
+       ------------------------------------------------------------------ */
+    const CLS = {
+        out: "text-emerald-400",
+        err: "text-rose-400",
+        warn: "text-amber-400",
+        dim: "text-slate-500",
+        info: "text-slate-300",
+        ok: "text-emerald-400 font-bold",
+        bad: "text-rose-400 font-bold"
+    };
+
+    function outClear() { const o = $("code-output"); o.replaceChildren(); delete o.dataset.ph; }
+
+    function outAppend(text, cls) {
+        const out = $("code-output");
+        delete out.dataset.ph;
+        out.appendChild(el("span", cls, text));
+        out.scrollTop = out.scrollHeight;
+    }
+
+    function outLine(text, cls) { outAppend(text + "\n", cls); }
+
+    function outPending(text) {
+        outClear();
+        $("code-output").appendChild(el("span", "text-slate-400 animate-pulse", text));
+    }
+
+    /* ------------------------------------------------------------------
+       8. MENJALANKAN & MEMERIKSA KODE
+       ------------------------------------------------------------------ */
+    let busy = false;
+
+    function setBusy(flag) {
+        busy = flag;
+        ["btn-run", "btn-check"].forEach(function (id) {
+            const b = $(id);
+            b.disabled = flag;
+        });
+        $("btn-run").querySelector(".label").textContent = flag ? "Menjalankan…" : "Jalankan Kode";
+    }
+
+    function getStdin() {
+        const v = $("stdin-input").value;
+        return v === "" ? [] : v.split(/\r?\n/);
+    }
+
+    async function runAndRender(code) {
+        // Jika murid pindah soal selagi kode jalan, jangan tulis output ke soal yang baru.
+        const lid = state.levelId, tix = state.taskIndex;
+        const same = function () { return lid === state.levelId && tix === state.taskIndex; };
+        outPending("Menjalankan kode Python…");
+        let started = false;
+        let figures = 0;
+        function begin() { if (!started) { started = true; outClear(); } }
+        const res = await PyEngine.run(code, getStdin(), {
+            onStatus: function (text) { if (!started && same()) outPending(text); },
+            onChunk: function (stream, text) {
+                if (!same()) return;
+                begin();
+                outAppend(text, stream === "stderr" ? CLS.err : CLS.out);
+            },
+            onFigure: function (data) {
+                if (!same()) return;
+                begin();
+                figures++;
+                const img = el("img", "my-2 rounded-lg bg-white max-w-full");
+                img.alt = "Grafik hasil program";
+                img.src = "data:image/png;base64," + data;
+                $("code-output").appendChild(img);
+            }
+        });
+        res.figures = figures;
+        if (!same()) return res;
+        if (!started) outClear();
+        renderResult(res);
+        return res;
+    }
+
+    function renderResult(res) {
+        switch (res.status) {
+            case "ok":
+                if (!res.hasOutput) outLine("✔ Program selesai tanpa output. Gunakan print() untuk menampilkan hasil.", CLS.dim);
+                else outLine("\n✔ Selesai (" + res.ms + " ms)", CLS.dim);
+                break;
+            case "syntax":
+                outLine("Kode belum bisa dijalankan karena kesalahan sintaks:", CLS.bad);
+                outLine(res.message, CLS.err);
+                break;
+            case "error":
+                outLine((res.chunks.length ? "\n" : "") + res.message, CLS.err);
+                break;
+            case "timeout":
+                outLine("\n⏱ " + (res.reason === "outlimit"
+                    ? "Program dihentikan karena output terlalu banyak."
+                    : "Program dihentikan karena berjalan lebih dari " + (EXEC_LIMIT_MS / 1000) + " detik (mungkin ada loop yang tidak pernah berhenti)."), CLS.warn);
+                break;
+            case "limited":
+                outLine("\nℹ Kode ini memakai " + res.detail + ". Sintaksnya sudah benar; untuk soal seperti ini jawaban diperiksa dari sintaks dan struktur kode.", CLS.warn);
+                break;
+            case "engine-failed":
+                outLine("⚠ Mesin Python tidak dapat dimuat (periksa koneksi internet, lalu klik label status di atas editor untuk mencoba lagi). Jawaban hanya bisa diperiksa dari struktur kode.", CLS.warn);
+                break;
+            default:
+                break;
+        }
+    }
+
+    async function onRun() {
+        if (busy) return;
+        const code = $("code-input").value;
+        if (!code.trim()) {
+            outClear();
+            outLine("Kolom kode masih kosong. Tulis kode Python terlebih dahulu.", CLS.warn);
+            return;
+        }
+        if (currentTask().mode === "text") {
+            outClear();
+            outLine("ℹ Soal ini berupa konfigurasi, perintah, atau penjelasan, jadi tidak dijalankan sebagai Python. Klik “Periksa Jawaban” untuk menilai isi jawabanmu.", CLS.warn);
+            return;
+        }
+        setBusy(true);
+        try { await runAndRender(code); } finally { setBusy(false); }
+    }
+
+    function runValidator(task, lvl, src) {
+        try {
+            if (task.validate(src)) return true;
+            // Validator level 78+ ditulis huruf kecil; kode murid (mis. AutoTokenizer) dicek tanpa peka huruf besar/kecil.
+            return lvl.id >= 78 && !!task.validate(src.toLowerCase());
+        } catch (e) { return false; }
+    }
+
+    function structureOk(code, task, lvl) {
+        if (task.mode === "text") {
+            // Teks apa adanya: tanda # bermakna di Dockerfile/YAML/C, jadi komentar tidak dibuang.
+            return runValidator(task, lvl, code) && code.replace(/\s+/g, "").length >= (task.minChars || 6);
+        }
+        // Komentar dibuang; untuk level 1-48 isi string juga dikosongkan agar print("def return") tidak lolos.
+        return runValidator(task, lvl, stripPyComments(code, !!task.noStrings));
+    }
+
+    function judge(code, task, lvl, res) {
+        const structOk = structureOk(code, task, lvl);
+        const notMatching = "Kode belum memenuhi instruksi soal. Baca lagi soalnya dan gunakan 💡 Petunjuk jika perlu.";
+
+        if (task.mode === "text") {
+            return structOk
+                ? { pass: true, note: "Soal ini diperiksa dari isi teks jawabanmu (tidak dijalankan sebagai Python)." }
+                : { pass: false, reason: "Jawaban belum sesuai instruksi soal (atau terlalu singkat). Baca lagi soalnya dan gunakan 💡 Petunjuk." };
+        }
+
+        switch (res.status) {
+            case "syntax":
+                return { pass: false, reason: "Sintaks Python masih salah. Perbaiki error di terminal dulu." };
+            case "error":
+                return { pass: false, reason: "Kode menghasilkan error saat dijalankan. Baca pesan error di terminal." };
+            case "timeout":
+                return { pass: false, reason: "Kode tidak selesai tepat waktu (cek apakah ada loop yang tidak pernah berhenti)." };
+            case "ok": {
+                if (!structOk) return { pass: false, reason: "Kode berjalan tanpa error, tetapi " + notMatching.charAt(0).toLowerCase() + notMatching.slice(1) };
+                const stdout = res.chunks.filter(function (c) { return c.stream === "stdout"; }).map(function (c) { return c.text; }).join("");
+                const anyOut = res.figures > 0 || res.chunks.some(function (c) { return c.text.trim() !== ""; });
+                if (task.needsStdout && !res.hasOutput) return { pass: false, reason: "Kode berjalan, tetapi tidak menampilkan output. Pastikan memakai print() dan, jika membuat fungsi, memanggilnya." };
+                if (task.needsAnyOutput && !anyOut) return { pass: false, reason: "Soal meminta hasil dicetak, tetapi program tidak menampilkan apa pun. Gunakan print() dan panggil fungsi yang kamu buat." };
+                if (task.expect && !task.expect.test(stdout)) return { pass: false, reason: "Program berjalan, tetapi hasil yang dicetak belum sesuai dengan yang diminta soal. Cek lagi nilai dan teks yang dicetak." };
+                return { pass: true };
+            }
+            default: // limited / engine-failed
+                if (!structOk) return { pass: false, reason: notMatching };
+                return { pass: true, note: res.status === "limited"
+                    ? "Soal ini memakai library/fitur yang tidak bisa dijalankan di browser, jadi diperiksa dari sintaks dan struktur kode."
+                    : "Mesin Python tidak aktif, jadi jawaban hanya diperiksa dari struktur kode." };
+        }
+    }
+
+    function markDone(lvl, idx) {
+        let set = state.done[lvl.id];
+        if (!set) set = state.done[lvl.id] = new Set();
+        if (set.has(idx)) return { newlyDone: false };
+        set.add(idx);
+        const levelCompleted = set.size === lvl.tasks.length;
+        return { newlyDone: true, xp: taskXp(lvl), levelCompleted: levelCompleted, bonus: levelCompleted ? levelBonus(lvl) : 0 };
+    }
+
+    async function onCheck() {
+        if (busy) return;
+        const code = $("code-input").value;
+        if (!code.trim()) {
+            outClear();
+            outLine("Tulis kode solusi terlebih dahulu sebelum memeriksa jawaban.", CLS.warn);
+            return;
+        }
+        const lvl = currentLevel();
+        const idx = state.taskIndex;
+        const task = currentTask();
+
+        let res;
+        if (task.mode === "text") {
+            outClear();
+            res = { status: "text", chunks: [], figures: 0 };
+        } else {
+            setBusy(true);
+            try { res = await runAndRender(code); } finally { setBusy(false); }
+        }
+
+        // Murid mungkin berpindah soal selagi kode berjalan; jangan beri kredit ke soal yang salah.
+        if (lvl.id !== state.levelId || idx !== state.taskIndex) return;
+
+        const verdict = judge(code, task, lvl, res);
+        outLine("", CLS.dim);
+        if (!verdict.pass) {
+            outLine("❌ Jawaban belum tepat", CLS.bad);
+            outLine(verdict.reason, CLS.info);
+            toast("Jawaban belum tepat", "warn", 2200);
+            return;
+        }
+
+        const rankBefore = rankFor(totalTasksDone());
+        const result = markDone(lvl, idx);
+        saveSoon();
+        renderHeader();
+        renderSidebar();
+        renderDots();
+
+        if (result.newlyDone) {
+            outLine("🎉 Benar! Soal " + (idx + 1) + " selesai. +" + result.xp + " XP", CLS.ok);
+            toast("+" + result.xp + " XP", "xp", 2200);
+            if (result.levelCompleted) {
+                outLine("🏆 Level " + lvl.id + " tuntas! Bonus +" + result.bonus + " XP", CLS.ok);
+                toast("🏆 Level " + lvl.id + " tuntas! Bonus +" + result.bonus + " XP", "success", 4500);
+            }
+            const rankAfter = rankFor(totalTasksDone());
+            if (rankAfter !== rankBefore) toast("🎖️ Rank baru: " + rankAfter, "success", 4500);
+        } else {
+            outLine("✔ Benar! (Soal ini sudah pernah diselesaikan, tidak ada XP tambahan.)", CLS.ok);
+        }
+        if (verdict.note) outLine("ℹ " + verdict.note, CLS.warn);
+
+        const allDone = completedLevelCount() === levelsData.length;
+        if (allDone && result.levelCompleted) {
+            showFinish();
+            return;
+        }
+        const next = el("button", "mt-3 px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition", "Lanjut ke soal berikutnya →");
+        next.type = "button";
+        next.addEventListener("click", goNext);
+        $("code-output").appendChild(next);
+        $("code-output").scrollTop = $("code-output").scrollHeight;
+    }
+
+    function onHint() {
+        const out = $("code-output");
+        if (out.dataset.ph) outClear(); else outLine("", CLS.dim);
+        outLine("💡 Petunjuk untuk soal ini:", "text-amber-400 font-semibold");
+        outLine(currentTask().hint, CLS.info);
+    }
+
+    function showFinish() {
+        const dlg = $("finish-dialog");
+        if (typeof dlg.showModal === "function") dlg.showModal();
+        else toast("🏆 Selamat! Semua level sudah tuntas.", "success", 8000);
+    }
+
+    /* ------------------------------------------------------------------
+       9. EDITOR (Tab, auto-indent, nomor baris, pintasan keyboard)
+       ------------------------------------------------------------------ */
+    function insertText(editor, text) {
+        editor.focus();
+        let ok = false;
+        try { ok = document.execCommand("insertText", false, text); } catch (e) { ok = false; }
+        if (!ok) {
+            editor.setRangeText(text, editor.selectionStart, editor.selectionEnd, "end");
+            editor.dispatchEvent(new Event("input", { bubbles: true }));
+        }
+    }
+
+    function setupEditor() {
+        const editor = $("code-input");
+        let tabEscaped = false;
+
+        editor.addEventListener("input", function () {
+            updateLineNumbers();
+            saveDraftNow();
+            saveSoon();
+        });
+        editor.addEventListener("scroll", function () { $("line-numbers").scrollTop = editor.scrollTop; });
+
+        editor.addEventListener("keydown", function (e) {
+            const v = editor.value;
+            const s = editor.selectionStart;
+            const en = editor.selectionEnd;
+            const mod = e.ctrlKey || e.metaKey;
+
+            if (e.key === "Escape") { tabEscaped = true; return; }
+
+            if (mod && e.key === "Enter") {
+                e.preventDefault();
+                if (e.shiftKey) onCheck(); else onRun();
+                return;
+            }
+
+            if (e.key === "Tab" && !mod && !e.altKey) {
+                if (tabEscaped) { tabEscaped = false; return; } // biarkan fokus berpindah (aksesibilitas)
+                e.preventDefault();
+                if (s === en && !e.shiftKey) {
+                    const col = s - (v.lastIndexOf("\n", s - 1) + 1);
+                    insertText(editor, " ".repeat(INDENT.length - (col % INDENT.length)));
+                    return;
+                }
+                const lineStart = v.lastIndexOf("\n", s - 1) + 1;
+                const endRef = (en > s && v[en - 1] === "\n") ? en - 1 : en;
+                let lineEnd = v.indexOf("\n", endRef);
+                if (lineEnd === -1) lineEnd = v.length;
+                const block = v.slice(lineStart, lineEnd);
+                const lines = block.split("\n");
+                const changed = lines.map(function (line) {
+                    if (e.shiftKey) return line.replace(/^( {1,4}|\t)/, "");
+                    return line.trim() === "" ? line : INDENT + line;
+                });
+                const newBlock = changed.join("\n");
+                editor.setSelectionRange(lineStart, lineEnd);
+                insertText(editor, newBlock);
+                const firstDelta = changed[0].length - lines[0].length;
+                editor.setSelectionRange(Math.max(lineStart, s + firstDelta), en + (newBlock.length - block.length));
+                return;
+            }
+            tabEscaped = false;
+
+            if (e.key === "Enter" && !mod && !e.shiftKey && !e.altKey && s === en) {
+                e.preventDefault();
+                const lineStart = v.lastIndexOf("\n", s - 1) + 1;
+                const before = v.slice(lineStart, s);
+                const indent = before.match(/^[ \t]*/)[0];
+                const opensBlock = stripPyComments(before).trimEnd().endsWith(":");
+                insertText(editor, "\n" + indent + (opensBlock ? INDENT : ""));
+                return;
+            }
+
+            if (e.key === "Backspace" && !mod && !e.altKey && s === en && s > 0) {
+                const lineStart = v.lastIndexOf("\n", s - 1) + 1;
+                const before = v.slice(lineStart, s);
+                if (before.length > 0 && /^ +$/.test(before)) {
+                    e.preventDefault();
+                    const n = (before.length % INDENT.length) || INDENT.length;
+                    editor.setSelectionRange(s - n, s);
+                    if (!document.execCommand("delete")) {
+                        editor.setRangeText("", s - n, s, "end");
+                        editor.dispatchEvent(new Event("input", { bubbles: true }));
+                    }
                 }
             }
+        });
+    }
 
-            if (logs.length > 0) {
-                outputBox.innerHTML = `<span class="text-emerald-400">${logs.join('<br>')}</span>`;
-            } else {
-                outputBox.innerHTML = `<span class="text-cyan-300">Program berhasil dieksekusi tanpa error (Tidak ada output print).</span>`;
+    /* ------------------------------------------------------------------
+       10. KONTROL LAIN (salin contoh, ekspor/impor, reset, status mesin)
+       ------------------------------------------------------------------ */
+    async function copyText(text) {
+        try {
+            await navigator.clipboard.writeText(text);
+            return true;
+        } catch (e) {
+            const ta = el("textarea");
+            ta.value = text;
+            ta.style.position = "fixed";
+            ta.style.opacity = "0";
+            document.body.appendChild(ta);
+            ta.select();
+            let ok = false;
+            try { ok = document.execCommand("copy"); } catch (err) { ok = false; }
+            ta.remove();
+            return ok;
+        }
+    }
+
+    function exportProgress() {
+        saveDraftNow();
+        const blob = new Blob([JSON.stringify(serialize(), null, 2)], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const a = el("a");
+        a.href = url;
+        a.download = "python-odyssey-progress-" + new Date().toISOString().slice(0, 10) + ".json";
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+        toast("Progress diekspor.", "success");
+    }
+
+    function importProgress(file) {
+        if (!file) return;
+        if (file.size > 2 * 1024 * 1024) { toast("File terlalu besar untuk file progress.", "warn"); return; }
+        const reader = new FileReader();
+        reader.onload = function () {
+            try {
+                const data = JSON.parse(String(reader.result));
+                if (!applyData(data)) throw new Error("format");
+                ensureUnlocked();
+                saveNow();
+                renderAll();
+                toast("Progress berhasil diimpor.", "success");
+            } catch (e) {
+                toast("File progress tidak valid.", "warn");
             }
-        } catch (err) {
-            outputBox.innerHTML = `<span class="text-rose-400">Error: ${err.message}</span>`;
-        }
-    }, 400);
-}
-
-// --- FUNGSI VALIDASI JAWABAN BENAR/SALAH PER SOAL ---
-function completeLevel() {
-    const code = document.getElementById('code-input').value;
-    const outputBox = document.getElementById('code-output');
-
-    if (!code.trim()) {
-        outputBox.innerHTML = `<span class="text-rose-400">Error: Tulis kode solusi terlebih dahulu sebelum menyelesaikan soal ini!</span>`;
-        return;
+        };
+        reader.onerror = function () { toast("Gagal membaca file.", "warn"); };
+        reader.readAsText(file);
     }
 
-    const lvl = levelsData.find(l => l.id === currentLevelId);
-    const currentTask = lvl.tasks[currentTaskIndex];
-
-    let hintText = currentTask.hint.toLowerCase();
-    let codeLower = code.toLowerCase();
-
-    let isValid = true;
-    let validationMessage = "";
-
-    // Pengecekan kata kunci spesifik dari petunjuk (hint) soal
-    if (hintText.includes("import ") && !codeLower.includes("import")) {
-        isValid = false;
-        validationMessage = "Jawaban Belum Tepat: Kode Anda wajib menyertakan perintah <code>import</code>.";
-    } else if (hintText.includes("def ") && !codeLower.includes("def")) {
-        isValid = false;
-        validationMessage = "Jawaban Belum Tepat: Anda harus mendefinisikan sebuah fungsi menggunakan kata kunci <code>def</code>.";
-    } else if (hintText.includes("print(") && !codeLower.includes("print")) {
-        isValid = false;
-        validationMessage = "Jawaban Belum Tepat: Pastikan kode Anda menggunakan fungsi <code>print()</code>.";
-    } else if (hintText.includes("return") && !codeLower.includes("return")) {
-        isValid = false;
-        validationMessage = "Jawaban Belum Tepat: Fungsi pada soal ini memerlukan kata kunci <code>return</code>.";
-    } else if (hintText.includes("class ") && !codeLower.includes("class")) {
-        isValid = false;
-        validationMessage = "Jawaban Belum Tepat: Anda harus mendefinisikan sebuah <code>class</code>.";
-    } else {
-        // Validasi kata kunci umum berdasarkan isi hint
-        let keywords = hintText.split(/[\s;()=,]+/).filter(w => w.length > 3);
-        let matchCount = keywords.filter(kw => codeLower.includes(kw)).length;
-        if (keywords.length > 0 && matchCount === 0 && !codeLower.includes("def") && !codeLower.includes("import") && !codeLower.includes("class")) {
-            isValid = false;
-            validationMessage = "Jawaban Belum Tepat: Kode yang Anda tulis belum sesuai dengan instruksi tugas/hint.";
-        }
+    function resetProgress() {
+        if (!window.confirm("Hapus SEMUA progress, XP, dan draf kode? Tindakan ini tidak bisa dibatalkan.")) return;
+        state.done = {};
+        state.drafts = {};
+        state.levelId = 1;
+        state.taskIndex = 0;
+        try { localStorage.removeItem(STORAGE_KEY); } catch (e) { /* abaikan */ }
+        renderAll();
+        toast("Progress direset.", "info");
     }
 
-    if (!isValid) {
-        outputBox.innerHTML = `<span class="text-rose-400 font-bold">❌ Jawaban Salah:</span><br><span class="text-slate-300">${validationMessage}</span>`;
-        return;
+    function setupEngineBadge() {
+        const badge = $("engine-status");
+        PyEngine.onState(function (s) {
+            const map = {
+                idle: ["💤 Python dimuat saat pertama dijalankan", "border-slate-700 text-slate-400"],
+                loading: ["⏳ Memuat mesin Python…", "border-amber-500/40 text-amber-300"],
+                ready: ["● Python siap", "border-emerald-500/40 text-emerald-300"],
+                failed: ["⚠ Mesin Python offline (klik untuk coba lagi)", "border-rose-500/40 text-rose-300"]
+            };
+            const entry = map[s] || map.idle;
+            badge.textContent = entry[0];
+            badge.className = "text-[11px] font-semibold px-2.5 py-1 rounded-full border " + entry[1];
+        });
+        badge.addEventListener("click", function () { PyEngine.retry(); });
     }
 
-    // Catat progress sub-soal yang sudah selesai
-    if (!completedSubTasks[lvl.id]) {
-        completedSubTasks[lvl.id] = 0;
+    /* ------------------------------------------------------------------
+       11. INISIALISASI
+       ------------------------------------------------------------------ */
+    function init() {
+        loadState();
+        ensureUnlocked();
+        setupEditor();
+        setupEngineBadge();
+
+        $("btn-run").addEventListener("click", onRun);
+        $("btn-check").addEventListener("click", onCheck);
+        $("btn-hint").addEventListener("click", onHint);
+        $("btn-clear").addEventListener("click", function () {
+            const editor = $("code-input");
+            editor.value = "";
+            updateLineNumbers();
+            saveDraftNow();
+            saveSoon();
+            showPlaceholder("// Kolom kode dikosongkan. Silakan tulis ulang...");
+            editor.focus();
+        });
+        $("btn-prev-task").addEventListener("click", function () {
+            const n = currentLevel().tasks.length;
+            goTo(state.levelId, (state.taskIndex - 1 + n) % n);
+        });
+        $("btn-next-task").addEventListener("click", function () {
+            const n = currentLevel().tasks.length;
+            goTo(state.levelId, (state.taskIndex + 1) % n);
+        });
+        $("btn-copy-example").addEventListener("click", async function () {
+            const ok = await copyText(currentLevel().example);
+            toast(ok ? "Contoh kode disalin." : "Gagal menyalin. Salin manual dari kotak contoh.", ok ? "success" : "warn");
+        });
+        $("btn-use-example").addEventListener("click", function () {
+            const editor = $("code-input");
+            if (editor.value.trim() && editor.value !== currentLevel().example &&
+                !window.confirm("Ganti isi editor dengan contoh kode?")) return;
+            editor.value = currentLevel().example;
+            updateLineNumbers();
+            saveDraftNow();
+            saveSoon();
+            editor.focus();
+        });
+
+        $("level-search").addEventListener("input", renderSidebar);
+        $("opt-lock").addEventListener("change", function (e) {
+            state.settings.lockOrder = e.target.checked;
+            ensureUnlocked();
+            saveNow();
+            renderAll();
+        });
+        $("btn-menu").addEventListener("click", openSidebar);
+        $("btn-close-sidebar").addEventListener("click", closeSidebar);
+        $("btn-export").addEventListener("click", exportProgress);
+        $("btn-import").addEventListener("click", function () { $("import-file").click(); });
+        $("import-file").addEventListener("change", function (e) {
+            importProgress(e.target.files[0]);
+            e.target.value = "";
+        });
+        $("btn-reset").addEventListener("click", resetProgress);
+        $("btn-finish-close").addEventListener("click", function () { $("finish-dialog").close(); });
+
+        document.addEventListener("keydown", function (e) {
+            if (e.key === "Escape") closeSidebar();
+        });
+        window.addEventListener("beforeunload", function () { saveDraftNow(); saveNow(); });
+        document.addEventListener("visibilitychange", function () {
+            if (document.visibilityState === "hidden") { saveDraftNow(); saveNow(); }
+        });
+
+        renderAll();
+        const active = $("level-list").querySelector('[aria-current="true"]');
+        if (active) active.scrollIntoView({ block: "nearest" });
+        // Mesin Python (~10 MB) dimuat malas: saat editor pertama kali difokuskan atau saat Run/Periksa.
+        $("code-input").addEventListener("focus", function () { PyEngine.start(); }, { once: true });
     }
 
-    // Jika soal ini baru pertama kali diselesaikan, naikkan progress sub-soal dan tambahkan XP proporsional/utuh
-    if (currentTaskIndex >= completedSubTasks[lvl.id]) {
-        completedSubTasks[lvl.id] = currentTaskIndex + 1;
-        totalXP += Math.round(lvl.xp / lvl.tasks.length); // Menambah XP per soal
-    }
-
-    outputBox.innerHTML = `<span class="text-emerald-400 font-bold">🎉 Benar! Soal ${currentTaskIndex + 1} & Level ${lvl.id} tervalidasi. Lanjut ke soal berikutnya...</span>`;
-
-    renderLevelList();
-
-    setTimeout(() => {
-        if (currentTaskIndex < lvl.tasks.length - 1) {
-            currentTaskIndex++; // Lanjut ke soal berikutnya dalam level yang sama
-            loadLevel(currentLevelId);
-        } else if (currentLevelId < levelsData.length) {
-            currentTaskIndex = 0; 
-            loadLevel(currentLevelId + 1); // Lanjut ke level berikutnya
-        } else {
-            alert("Luar biasa! Kamu telah menamatkan seluruh 100 Level Python Odyssey Enterprise Grandmaster Edition!");
-        }
-    }, 1500);
-}
+    if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
+    else init();
+})();
