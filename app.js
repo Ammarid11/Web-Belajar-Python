@@ -348,7 +348,7 @@ const levelsData = [
     {
         id: 21, category: "Expert", title: "Level 21: Descriptors Protocol",
         desc: "<b>Definisi Konsep Mendalam:</b> Mekanisme internal OOP Python untuk mengontrol manajemen akses atribut objek secara terpusat.<br><br><b>Poin Penting:</b><br>• Diimplementasikan melalui metode spesial <code>__get__</code> dan <code>__set__</code>.",
-        example: `class ValidasiAngka:\n    def __get__(self, instance, owner):\n        return self._val\n    def __set__(self, instance, value):\n        if value < 0: raise ValueError("Harus positif")\n        self._val = value`,
+        example: `class ValidasiAngka:\n    def __set_name__(self, owner, name):\n        self.nama = name\n    def __get__(self, instance, owner):\n        return instance.__dict__[self.nama]\n    def __set__(self, instance, value):\n        if value < 0: raise ValueError("Harus positif")\n        instance.__dict__[self.nama] = value`,
         tasks: [
             { task: "Buat class descriptor 'DeskriptorPositif' yang memvalidasi agar nilai atribut tidak boleh negatif.", hint: "Implementasikan method __get__ dan __set__.", validate: c => c.includes("__get__") && c.includes("__set__") },
             { task: "Buat class descriptor 'DeskriptorString' yang memastikan nilai yang diset wajib bertipe string.", hint: "Gunakan isinstance(value, str) di dalam __set__.", validate: c => c.includes("__get__") && c.includes("__set__") },
@@ -399,7 +399,7 @@ const levelsData = [
     {
         id: 24, category: "Expert", title: "Level 24: Generator & Yield",
         desc: "<b>Definisi Konsep Mendalam:</b> Fungsi khusus yang menghasilkan deretan data secara efisien satu per satu tanpa memenuhi kapasitas memori RAM.<br><br><b>Poin Penting:</b><br>• Menggunakan kata kunci <code>yield</code> alih-alih <code>return</code>.<br>• Menerapkan evaluasi malas (<i>lazy evaluation</i>).",
-        example: `py_gen = (x for x in range(3))\nfor val in py_gen: print(val)`,
+        example: `def hitung(n):\n    for i in range(n):\n        yield i\n\nfor val in hitung(3):\n    print(val)\n\npy_gen = (x for x in range(3))  # generator expression`,
         tasks: [
             { task: "Buat fungsi generator 'angka_ganjil()' yang menggunakan yield 1, yield 3, dan yield 5. Cetak dengan for.", hint: "Gunakan def angka_ganjil(): lalu yield.", validate: c => c.includes("yield") },
             { task: "Buat generator sederhana menggunakan ekspresi kurung biasa (x for x in range(3)), lalu cetak nilainya.", hint: "Gunakan generator expression.", validate: c => c.includes("for") && c.includes("(") && c.includes(")") },
@@ -818,13 +818,13 @@ const levelsData = [
             { task: "Buat AST visitor sederhana untuk menghitung jumlah percabangan if di dalam kode Python.", hint: "Turunkan class dari ast.NodeVisitor.", validate: c => c.includes("ast") && c.includes("NodeVisitor") },
             { task: "Simulasikan pembuatan DSL (Domain Specific Language) ringan menggunakan parsing AST.", hint: "Terjemahkan sintaks kustom menjadi kode Python.", validate: c => c.includes("ast") },
             { task: "Uji manipulasi AST untuk validasi keamanan kode otomatis (linter kustom).", hint: "Periksa keberadaan fungsi terlarang di dalam AST.", validate: c => c.includes("ast") },
-            { task: "Selesaikan level puncak Enterprise Architecture! Selamat atas penguasaan level masterclass tertinggi!", hint: "Rangkum seluruh keahlian arsitektur tingkat lanjut Anda!", validate: c => c.length > 0 }
+            { task: "Tulis program yang mencetak ringkasan 3 pola desain yang sudah dipelajari (nama pola + satu kalimat fungsinya), satu per baris.", hint: "Gunakan print() atau for pada list berisi tuple (nama, fungsi).", validate: c => c.includes("print") && c.length > 40 }
         ]
     },
     {
         id: 49, category: "Web API", title: "Level 49: FastAPI: Routing, Path & Query Parameters",
         desc: "<b>Definisi Konsep Mendalam:</b> FastAPI adalah kerangka kerja web modern berkinerja tinggi untuk membangun API dengan Python berdasarkan standar tipe data type hints.<br><br><b>Poin Penting:</b><br>• <code>Path Parameters</code>: Variabel bagian dari URL endpoint.<br>• <code>Query Parameters</code>: Parameter tambahan setelah tanda tanya (<code>?</code>) di URL.",
-        example: `from fastapi import FastAPI\n\napp = FastAPI()\n\n@app.get("/items/{item_id}")\nasync def read_item(item_id: int, q: str = None):\n    return {"item_id": item_id, "q": q}`,
+        example: `from fastapi import FastAPI\n\napp = FastAPI()\n\n@app.get("/items/{item_id}")\nasync def read_item(item_id: int, q: str | None = None):\n    return {"item_id": item_id, "q": q}`,
         tasks: [
             { task: "Impor FastAPI, buat instance app = FastAPI(), dan buat endpoint get '@app.get(\"/\")' yang mengembalikan pesan selamat datang.", hint: "Gunakan dekorator @app.get(\"/\").", validate: c => c.includes("FastAPI") },
             { task: "Buat path parameter endpoint '/users/{user_id}' yang menerima tipe data integer dan mengembalikan id pengguna.", hint: "Definisikan parameter fungsi user_id: int.", validate: c => c.includes("FastAPI") },
@@ -841,7 +841,7 @@ const levelsData = [
     {
         id: 50, category: "Web API", title: "Level 50: Pydantic v2: Advanced Data Validation & Settings",
         desc: "<b>Definisi Konsep Mendalam:</b> Pydantic v2 adalah pustaka validasi data secepat kilat di Python menggunakan type hinting standar untuk memastikan integritas struktur data.<br><br><b>Poin Penting:</b><br>• Menggunakan turunan class <code>BaseModel</code>.<br>• Fitur validasi kustom via dekorator <code>@field_validator</code>.",
-        example: `from pydantic import BaseModel, field_validator\n\nclass User(BaseModel):\n    username: str\n    age: int\n\n    @field_validator('age')\n    def validate_age(cls, v):\n        if v < 18: raise ValueError("Harus dewasa")\n        return v`,
+        example: `from pydantic import BaseModel, field_validator\n\nclass User(BaseModel):\n    username: str\n    age: int\n\n    @field_validator('age')\n    @classmethod\n    def validate_age(cls, v):\n        if v < 18: raise ValueError("Harus dewasa")\n        return v`,
         tasks: [
             { task: "Impor BaseModel dari pydantic, buat class 'Item' dengan atribut nama (str) dan harga (float).", hint: "Turunkan class dari BaseModel.", validate: c => c.includes("BaseModel") },
             { task: "Buat validasi kustom @field_validator untuk memastikan harga tidak boleh bernilai negatif.", hint: "Raise ValueError jika nilai kurang dari 0.", validate: c => c.includes("field_validator") },
@@ -1702,10 +1702,340 @@ const levelsData = [
             { task: "Buat pipeline CI/CD GitHub Actions otomatis untuk pengujian pytest, pemindaian Bandit, dan build image Docker.", hint: "Otomatisasi proses build dan test pada setiap push.", validate: c => c.includes("jobs") || c.includes("runs-on") },
             { task: "Terapkan praktik keamanan tingkat lanjut (hash bcrypt, sanitasi input Pydantic, mitigasi OWASP Top 10).", hint: "Pastikan kode aman dari celah kerentanan.", validate: c => c.length > 3 },
             { task: "Lakukan dokumentasi teknis lengkap mengenai arsitektur, panduan instalasi, dan spesifikasi endpoint API.", hint: "Tulis README.md yang komprehensif dan profesional.", validate: c => c.length > 3 },
-            { task: "Rayakan pencapaian Anda! Selamat, Anda telah menamatkan seluruh 100 Level Python Odyssey Enterprise Grandmaster Edition!", hint: "Anda resmi menjadi seorang Master Software & AI Engineer kelas dunia!", validate: c => c.length > 0 }
+            { task: "Tulis program Python yang mencetak 5 teknologi utama yang kamu pelajari di Python Odyssey, satu per baris, memakai perulangan for.", hint: "technologies = [...]; for t in technologies: print(t)", validate: c => c.includes("for") && c.includes("print") }
         ]
     }
 ];
+
+
+levelsData.push({
+    id: 101, category: "Intermediate", title: "Level 101: OOP Dasar: Class, Object, & __init__",
+    desc: "<b>Definisi Konsep Mendalam:</b> <i>Class</i> adalah cetak biru, <i>object</i> adalah hasil cetakannya. Class menggabungkan data (atribut) dan perilaku (method) dalam satu unit.<br><br><b>Poin Penting:</b><br>• <code>class Nama:</code> mendefinisikan class.<br>• <code>__init__(self, ...)</code> adalah konstruktor yang dipanggil otomatis saat objek dibuat.<br>• <code>self</code> merujuk ke objek itu sendiri; atribut dibuat dengan <code>self.atribut = nilai</code>.",
+    example: `class Mobil:\n    def __init__(self, merk):\n        self.merk = merk\n    def info(self):\n        return f"Mobil {self.merk}"\n\nm = Mobil("Toyota")\nprint(m.info())`,
+    tasks: [
+        { task: "Buat class 'Kucing' dengan konstruktor __init__ yang menyimpan atribut 'nama'. Buat objek lalu cetak atribut nama.", hint: "self.nama = nama di dalam __init__.", validate: c => c.includes("class") && c.includes("__init__") && c.includes("self") && c.includes("print") },
+        { task: "Buat class 'Mobil' dengan atribut merk dan warna, buat dua objek berbeda, lalu cetak merk keduanya.", hint: "Setiap objek punya atribut sendiri.", validate: c => c.includes("class") && c.includes("__init__") && c.includes("print") },
+        { task: "Buat class 'Buku' dengan method 'info(self)' yang mengembalikan judul dan penulis, lalu cetak hasilnya.", hint: "Method selalu menerima self sebagai parameter pertama.", validate: c => c.includes("class") && c.includes("def info") && c.includes("return") },
+        { task: "Buat class 'Counter' dengan atribut nilai = 0 dan method 'tambah(self)' yang menaikkan nilai 1. Panggil 3 kali lalu cetak nilai.", hint: "self.nilai += 1", validate: c => c.includes("class") && c.includes("self.nilai") },
+        { task: "Buat class 'Dompet' dengan saldo awal dari parameter dan method 'setor(self, jumlah)'. Setor 5000 lalu cetak saldo.", hint: "self.saldo += jumlah", validate: c => c.includes("class") && c.includes("def setor") },
+        { task: "Buat class 'Siswa' dengan parameter default nilai=0 pada __init__. Buat objek tanpa dan dengan nilai, lalu cetak keduanya.", hint: "def __init__(self, nama, nilai=0):", validate: c => c.includes("class") && /nilai\s*=\s*0/.test(c) },
+        { task: "Buat class 'Lingkaran' dengan method 'luas(self)' yang menghitung 3.14 * r ** 2. Cetak luas untuk r = 10.", hint: "Simpan r sebagai self.r.", validate: c => c.includes("class") && c.includes("def luas") && c.includes("**") },
+        { task: "Buat class 'Hewan' dengan class variable 'kingdom' bernilai 'Animalia'. Cetak dari class maupun dari objek.", hint: "Class variable ditulis langsung di bawah class, di luar method.", validate: c => c.includes("class") && c.includes("kingdom") && c.includes("print") },
+        { task: "Buat list berisi 3 objek class 'Produk' (nama, harga), lalu loop for untuk mencetak nama dan harga tiap produk.", hint: "for p in daftar: print(p.nama, p.harga)", validate: c => c.includes("class") && c.includes("for") && c.includes("print") },
+        { task: "Buat class 'Kalkulator' dengan method 'tambah' dan 'kali' (dua parameter), panggil keduanya lalu cetak hasilnya.", hint: "Method bisa menerima parameter tambahan setelah self.", validate: c => c.includes("class") && c.includes("def tambah") && c.includes("def kali") }
+    ]
+});
+levelsData.push({
+    id: 102, category: "Advanced", title: "Level 102: Decorator Dasar (@decorator)",
+    desc: "<b>Definisi Konsep Mendalam:</b> Di Python fungsi adalah objek: bisa disimpan di variabel dan dikirim sebagai argumen. <i>Decorator</i> adalah fungsi yang menerima fungsi lain, membungkusnya dengan perilaku tambahan, lalu mengembalikan pembungkus (<i>wrapper</i>).<br><br><b>Poin Penting:</b><br>• <code>@nama</code> di atas <code>def</code> sama dengan <code>f = nama(f)</code>.<br>• Wrapper memakai <code>*args, **kwargs</code> agar cocok untuk fungsi apa saja.<br>• <code>functools.wraps</code> menjaga nama asli fungsi.",
+    example: `def log(func):\n    def wrapper(*args, **kwargs):\n        print("Memanggil", func.__name__)\n        return func(*args, **kwargs)\n    return wrapper\n\n@log\ndef tambah(a, b):\n    return a + b\n\nprint(tambah(2, 3))`,
+    tasks: [
+        { task: "Buat fungsi 'sapa()' yang mencetak 'Halo', simpan ke variabel 'f = sapa', lalu panggil f().", hint: "Tanpa tanda kurung, sapa adalah objek fungsi.", validate: c => c.includes("def") && c.includes("=") },
+        { task: "Buat fungsi 'jalankan(fungsi)' yang menerima fungsi lain lalu memanggilnya. Uji dengan fungsi sapa.", hint: "def jalankan(fungsi): fungsi()", validate: c => c.includes("def jalankan") },
+        { task: "Buat dekorator 'log' yang mencetak 'Mulai' sebelum fungsi dijalankan, lalu pasang dengan @log.", hint: "Dekorator berisi fungsi wrapper dan mengembalikan wrapper.", validate: c => c.includes("@log") && c.includes("wrapper") },
+        { task: "Buat dekorator 'selesai' yang mencetak 'Selesai' setelah fungsi dijalankan.", hint: "Cetak setelah memanggil func().", validate: c => c.includes("@selesai") && c.includes("wrapper") },
+        { task: "Buat dekorator yang meneruskan *args dan **kwargs serta mengembalikan hasil fungsi asli.", hint: "return func(*args, **kwargs)", validate: c => c.includes("*args") && c.includes("**kwargs") && c.includes("return") },
+        { task: "Buat dekorator 'huruf_besar' yang mengubah hasil kembalian string menjadi kapital.", hint: "return func(*args, **kwargs).upper()", validate: c => c.includes("upper") && c.includes("@") },
+        { task: "Buat dekorator 'ukur_waktu' yang mencetak durasi eksekusi memakai time.perf_counter().", hint: "Catat waktu sebelum dan sesudah memanggil func.", validate: c => c.includes("perf_counter") || c.includes("time.time") },
+        { task: "Gunakan @functools.wraps(func) pada wrapper agar nama fungsi asli tidak hilang. Cetak __name__.", hint: "from functools import wraps", validate: c => c.includes("wraps") },
+        { task: "Tumpuk dua dekorator (@a di atas @b) pada satu fungsi dan amati urutan eksekusinya.", hint: "Dekorator paling dekat dengan def dijalankan lebih dulu.", validate: c => (c.match(/@/g) || []).length >= 2 },
+        { task: "Buat dekorator 'hitung_panggilan' yang menghitung berapa kali fungsi dipanggil (wrapper.jumlah), lalu cetak jumlahnya.", hint: "wrapper.jumlah = 0 lalu tambah 1 di dalam wrapper.", validate: c => c.includes("wrapper") && c.includes("jumlah") && c.includes("print") }
+    ]
+});
+
+
+/* ---------- PERBAIKAN: validator spesifik + pustaka modern ----------
+   fix(id, indeks, {task, hint, re: regex atau [regex], text: true = dinilai sebagai teks}) */
+(function () {
+    const L = function (id) { return levelsData.find(function (l) { return l.id === id; }); };
+    function fix(id, idx, o) {
+        const t = L(id).tasks[idx];
+        if (o.task) t.task = o.task;
+        if (o.hint) t.hint = o.hint;
+        if (o.re) { const rs = [].concat(o.re); t.validate = function (c) { return rs.every(function (r) { return r.test(c); }); }; }
+        if (o.text) t.forceText = true;
+    }
+
+    // L52 Alembic (semua jawaban berupa perintah/konfigurasi)
+    [/alembic\s+init/i, /target_metadata\s*=\s*\w*\.?metadata/i, /alembic\s+revision\s+--autogenerate/i,
+     /alembic\s+upgrade\s+(head|\+1|[0-9a-f]{4,})/i, /alembic\s+downgrade\s+(-1|base|[0-9a-f]{4,})/i,
+     /alembic\s+(history|current)/i, [/mapped_column|Column\s*\(/i, /alembic\s+revision/i],
+     /op\.add_column\s*\(/i, /alembic\s+(upgrade|current|check)/i, /(git\s+(add|commit)|versions\/?)/i
+    ].forEach(function (re, i) { fix(52, i, { re: re, text: true }); });
+
+    // L53 Auth: passlib tidak lagi dirawat -> bcrypt langsung
+    const l53 = L(53);
+    l53.desc = l53.desc.replace("(passlib/bcrypt)", "(bcrypt)").replace("<code>Passlib</code>", "<code>bcrypt</code> (passlib sudah tidak dirawat)");
+    l53.example = 'import bcrypt\n\nhashed = bcrypt.hashpw("rahasia123".encode(), bcrypt.gensalt())\nprint(bcrypt.checkpw("rahasia123".encode(), hashed))';
+    fix(53, 0, { task: "Impor bcrypt lalu buat salt acak dengan bcrypt.gensalt().", hint: "import bcrypt; salt = bcrypt.gensalt()", re: /bcrypt\.gensalt\s*\(/ });
+    fix(53, 1, { task: "Buat fungsi hash_password(password) yang mengembalikan bcrypt.hashpw(password.encode(), bcrypt.gensalt()).", hint: "Password harus berupa bytes: password.encode().", re: [/def\s+hash_password/, /hashpw\s*\(/] });
+    fix(53, 2, { task: "Buat fungsi verify_password(password, hashed) yang memakai bcrypt.checkpw().", hint: "bcrypt.checkpw(password.encode(), hashed)", re: [/def\s+verify_password/, /checkpw\s*\(/] });
+    fix(53, 9, { re: /(authorize|bearer|\/docs)/i, text: true });
+
+    // L57 Redis
+    fix(57, 8, { re: /maxmemory-policy\s+(allkeys|volatile)-(lru|lfu|random)|maxmemory-policy\s+(volatile-ttl|noeviction)/i, text: true });
+    fix(57, 9, { task: "Ukur waktu dua pemanggilan fungsi (tanpa cache dan dengan cache dictionary) memakai time.perf_counter(), lalu cetak keduanya.", hint: "Catat perf_counter() sebelum dan sesudah tiap pemanggilan.", re: [/perf_counter|time\.time/, /def\s/] });
+
+    // L58 CORS / gateway
+    fix(58, 3, { re: [/(incr|expire|zadd|zcard|rate)/i, /redis/i], text: true });
+    fix(58, 5, { re: /x-api-key/i, text: true });
+    fix(58, 6, { re: /(x-content-type-options|strict-transport-security)/i, text: true });
+    fix(58, 7, { re: /(content-length|max_body|413)/i, text: true });
+    fix(58, 8, { re: /(options|access-control-allow-origin|preflight)/i, text: true });
+    fix(58, 9, { re: [/(cors|rate.?limit|api.?key|gateway|owasp)/i, /\w+\s+\w+\s+\w+/], text: true });
+
+    // L78 Ollama: pakai paket langchain_ollama
+    fix(78, 7, { task: "Impor ChatOllama dari langchain_ollama dan buat llm = ChatOllama(model='qwen2.5') untuk menghubungkan model lokal Ollama.",
+                 hint: "from langchain_ollama import ChatOllama; llm = ChatOllama(model='qwen2.5')",
+                 re: [/from\s+langchain_ollama\s+import\s+ChatOllama/i, /ChatOllama\s*\(/i] });
+    L(78).tasks[8].task = "Kirim kueri teks ke model lokal Ollama melalui llm.invoke() dan cetak response.content.";
+    L(78).tasks[8].hint = "response = llm.invoke('Halo!'); print(response.content)";
+    L(72).tasks[5].hint = "from langchain_chroma import Chroma (paket langchain-chroma)";
+
+    // L84 Prometheus
+    fix(84, 5, { re: /(scrape_configs|static_configs|targets)/i, text: true });
+    fix(84, 7, { re: /(curl|httpx|requests|localhost:\d+\/metrics)/i, text: true });
+    fix(84, 8, { re: [/grafana|data\s*source|datasource/i, /prometheus/i], text: true });
+    fix(84, 9, { re: /(alert\s*:|groups\s*:|expr\s*:|rate\s*\()/i, text: true });
+
+    // L88 Kubernetes
+    fix(88, 9, { task: "Tulis manifes HorizontalPodAutoscaler atau perintah kubectl autoscale untuk menskalakan deployment python-app berdasarkan CPU.",
+                 hint: "kubectl autoscale deployment python-app --cpu-percent=70 --min=2 --max=5",
+                 re: /(HorizontalPodAutoscaler|kubectl\s+autoscale)/i, text: true });
+
+    // L92-94: soal "Pahami..." diganti tugas yang bisa diuji
+    fix(92, 0, { task: "Tulis fungsi Cython 'cpdef int kuadrat(int x)' yang mengembalikan x * x.", hint: "cpdef int kuadrat(int x): return x * x", re: /cpdef\s+int\s+kuadrat\s*\(\s*int\s+\w+\s*\)/i, text: true });
+    fix(92, 5, { task: "Tulis kode Python dengan timeit yang membandingkan dua fungsi (mis. loop biasa vs sum(range())) lalu cetak kedua waktunya.", hint: "timeit.timeit(fungsi, number=1000)", re: [/timeit/, /def\s/], text: true });
+    fix(92, 6, { task: "Tulis perintah terminal untuk menjalankan skrip 'hitung.py' dengan interpreter PyPy.", hint: "pypy3 hitung.py", re: /pypy3?\s+\S+\.py/i, text: true });
+    fix(92, 7, { task: "Tulis fungsi Cython yang memakai 'cdef int i, total = 0' dan perulangan 'for i in range(n)' untuk menjumlahkan angka dengan tipe C.", hint: "cdef int i, total = 0", re: [/cdef\s+int/i, /for\s+\w+\s+in\s+range/], text: true });
+    fix(92, 9, { task: "Tulis dua kalimat yang menjelaskan kapan Cython layak dipakai (sebut kata 'bottleneck' atau 'CPU').", hint: "Pakai Cython hanya untuk fungsi bottleneck yang CPU-bound.", re: [/cython/i, /(bottleneck|cpu|profil)/i], text: true });
+    fix(93, 4, { task: "Buat async with asyncio.TaskGroup() berisi dua tugas, lalu cetak 'selesai' setelah blok with berakhir.", hint: "print di luar blok async with berjalan setelah semua tugas selesai.", re: [/taskgroup/i, /create_task/] });
+    fix(93, 5, { task: "Di dalam TaskGroup, buat satu tugas yang melempar ValueError; tangkap dengan except* ValueError dan cetak pesannya.", hint: "except* ValueError as eg: print(eg.exceptions)", re: [/except\s*\*\s*ValueError/, /raise\s+ValueError/] });
+    fix(93, 8, { task: "Jalankan tiga coroutine dengan asyncio.gather() lalu cetak daftar hasilnya.", hint: "hasil = await asyncio.gather(f(1), f(2), f(3))", re: [/gather\s*\(/, /async\s+def/] });
+    fix(93, 9, { task: "Ukur waktu total tiga tugas asyncio.sleep(0.1) yang berjalan konkuren dalam TaskGroup memakai time.perf_counter(), lalu cetak durasinya.", hint: "Hasilnya sekitar 0.1 detik, bukan 0.3.", re: [/perf_counter|time\.time/, /taskgroup/i] });
+    fix(94, 0, { task: "Tulis kerangka modul C: '#include <Python.h>' dan fungsi 'static PyObject* jumlah(PyObject* self, PyObject* args)'.", hint: "#include <Python.h> lalu definisikan fungsi static PyObject*.", re: [/#include\s*<Python\.h>/i, /static\s+PyObject\s*\*\s*jumlah\s*\(/i], text: true });
+
+    // L97-L100: jawaban teks/konfigurasi yang dulu lolos dengan c.length > 3
+    fix(97, 3, { re: /(registry|consul|service_registry|SERVICES\s*=)/i, text: true });
+    fix(97, 4, { re: /(trace[-_]?id|x-request-id|traceparent)/i, text: true });
+    fix(97, 5, { re: /(pika|kafka|basic_publish|producer\.send|publish)/i, text: true });
+    fix(97, 6, { re: [/(httpx|requests)/i, /(forward|proxy|route)/i], text: true });
+    fix(97, 7, { re: /(user_db|order_db|users\.db|orders\.db|create_engine)/i, text: true });
+    fix(97, 8, { re: /(fallback|try\s*:|except|CircuitBreakerError)/i, text: true });
+    fix(97, 9, { re: [/(user[-_ ]service|order[-_ ]service)/i, /(->|→|http|event|gateway)/i], text: true });
+    fix(98, 8, { re: /(basic_ack|auto_ack|acknowledg|\back\b)/i, text: true });
+    fix(98, 9, { re: [/(publish|send)/i, /consum/i], text: true });
+    fix(99, 4, { re: /(rollback|begin_nested)/i, text: true });
+    fix(100, 7, { re: /(bcrypt|hashpw|BaseModel|OWASP)/i, text: true });
+    fix(100, 8, { re: /(readme|##?\s|install|docker compose|endpoint)/i, text: true });
+})();
+
+
+/* ---------- PERBAIKAN (lanjutan): sisa validator c.length > N ----------
+   fx(id, indeks, regex | [regex], {task, hint, py:true}) -> py:true = tetap dijalankan sebagai Python */
+(function () {
+    const L = function (id) { return levelsData.find(function (l) { return l.id === id; }); };
+    function fx(id, idx, re, o) {
+        o = o || {};
+        const t = L(id).tasks[idx], rs = [].concat(re);
+        t.validate = function (c) { return rs.every(function (r) { return r.test(c); }); };
+        if (o.task) t.task = o.task;
+        if (o.hint) t.hint = o.hint;
+        if (!o.py) t.forceText = true;
+    }
+    // Data Engineering
+    fx(60, 0, [/iterrows/, /(perf_counter|timeit|time\.time)/], { py: true, task: "Bandingkan iterrows() vs operasi vektor pada kolom DataFrame memakai time.perf_counter(), lalu cetak kedua waktunya." });
+    fx(60, 5, /(@n?jit|numba)/i);
+    fx(66, 9, /adfuller\s*\(/, { task: "Impor adfuller dari statsmodels.tsa.stattools dan panggil adfuller(series) untuk uji stasioneritas.", hint: "from statsmodels.tsa.stattools import adfuller" });
+    fx(62, 6, [/(timestamp|last_|watermark|since|tanggal)/i, />=?/], { py: true });
+    fx(62, 9, [/(extract|sumber)/i, /transform/i, /(load|tujuan)/i]);
+    fx(65, 4, /airflow\s+tasks\s+test/i);
+    fx(65, 7, /airflow\s+(standalone|webserver|scheduler)/i);
+    fx(65, 8, /(localhost:8080|graph|grid)/i);
+    fx(65, 9, /(task_id|naming|nama|retries|idempot|owner)/i);
+    fx(64, 2, [/to_csv/, /to_parquet/, /(getsize|stat\(\)|perf_counter|timeit)/], { py: true });
+    fx(64, 5, /(merge|update|delete|transaction|_delta_log|acid)/i);
+    fx(64, 6, /(versionAsOf|timestampAsOf)/);
+    fx(64, 8, /(optimize|vacuum)/i);
+    fx(64, 9, [/parquet/i, /delta/i, /(lakehouse|acid|columnar|kolom)/i]);
+    fx(63, 1, /(get_validator|from_pandas|add_dataframe_asset|pandas)/i);
+    fx(63, 6, /\.success|\[.success.\]/i);
+    fx(63, 7, /(build_data_docs|data_docs)/i);
+    fx(63, 8, [/(def\s|validate)/i, /(load|expect_)/i]);
+    fx(63, 9, [/(expect_|validate)/i, /(None|NaN|nan|null|-\d)/]);
+    fx(67, 4, /scrapy\s+crawl\s+\S+\s+-o\s+\S+\.(json|csv)/);
+    fx(67, 5, /DOWNLOAD_DELAY\s*=\s*\d/);
+    fx(67, 6, [/user.?agent/i, /(random|choice)/i]);
+    fx(67, 9, [/robots/i, /(ROBOTSTXT_OBEY|delay|rate)/i]);
+    fx(68, 7, /(set_title|set_xlabel|set_ylabel|update_layout|title\s*=)/, { py: true });
+    fx(68, 9, /subplots\s*\(\s*2\s*,\s*2/, { py: true, task: "Buat satu figure dengan plt.subplots(2, 2) berisi empat grafik kecil.", hint: "fig, axes = plt.subplots(2, 2)" });
+    // Web API
+    fx(79, 8, [/os\.environ/, /(getenv|\[)/], { py: true });
+    fx(79, 9, [/(try|except|ValidationError)/, /Settings\s*\(/], { py: true });
+    fx(49, 9, /\/docs/);
+    fx(56, 3, /celery\s+-A\s+\S+\s+worker/);
+    fx(56, 8, /celery\s+(-A\s+\S+\s+)?flower/);
+    fx(54, 9, /(new\s+WebSocket|websocket_connect)/i);
+    fx(55, 7, /(^|\s)pytest\b/);
+    fx(55, 8, /pytest\s+.*--cov/);
+    // AI Engineering
+    fx(77, 7, /\w+\s*=\s*model\s*\(/, { py: true });
+    fx(77, 8, /=\s*criterion\s*\(/, { py: true });
+    fx(77, 9, [/for\s+epoch/, /print/], { py: true });
+    fx(78, 9, [/ollama|lokal|local/i, /(cloud|openai|privasi|privacy)/i]);
+    fx(72, 4, /\[\s*['"]documents['"]\s*\]\s*\[\s*0\s*\]/);
+    fx(73, 6, [/(konteks|context)/i, /(hanya|only|berdasarkan)/i]);
+    fx(73, 9, [/(question|pertanyaan|query)/i, /(assert|expected|jawaban)/i]);
+    fx(74, 4, /(tools\s*=|SerperDevTool|FileReadTool|BaseTool|@tool)/);
+    fx(74, 5, /process\s*=\s*Process\.(hierarchical|sequential)/);
+    fx(74, 9, /(verbose\s*=\s*True|log|output_log_file)/i);
+    fx(75, 0, [/"messages"\s*:/, /"role"/, /"assistant"/]);
+    fx(75, 5, /(Input|Contoh)[\s\S]*(Output|Jawab)/i);
+    fx(75, 6, /(langkah demi langkah|step[ -]by[ -]step)/i);
+    fx(75, 7, /(anda adalah|you are|kamu adalah)/i);
+    fx(75, 8, /(jangan|tidak boleh|do not|don't|never)/i);
+    fx(75, 9, [/(akurasi|accuracy|skor|score)/i, /(sebelum|before|base)/i, /(sesudah|setelah|after|ft:)/i]);
+    // DevOps
+    fx(80, 7, [/venv/, /__pycache__/]);
+    fx(82, 9, /actions\/workflows\/\S+\/badge\.svg/, { task: "Tulis badge status workflow untuk README: ![CI](https://github.com/USER/REPO/actions/workflows/ci.yml/badge.svg)", hint: "Format: https://github.com/USER/REPO/actions/workflows/ci.yml/badge.svg" });
+    fx(83, 8, [/(sentry-debug|debug-sentry|\/error|\/boom)/i, /(1\s*\/\s*0|raise)/], { task: "Tulis endpoint FastAPI '/sentry-debug' yang sengaja memicu error (1 / 0) untuk menguji Sentry.", hint: "@app.get('/sentry-debug') def trigger(): return 1 / 0" });
+    fx(83, 9, [/INFO/, /ERROR/, /(DEBUG|WARNING)/]);
+    fx(85, 9, [/(backend|s3|pulumi\s+login|state)/i, /(encrypt|enkripsi|secret|login)/i]);
+    fx(86, 5, [/(iam|role|policy|dynamodb:|s3:)/i, /(Action|Effect|Statement|policy)/i]);
+    fx(86, 7, /(layer|zip|requirements|--target|exclude)/i);
+    fx(86, 8, [/(logging\.|logger\.|print\()/, /(event|handler)/i]);
+    fx(86, 9, [/(serverless|lambda)/i, /(pay|bayar|server|cold start)/i]);
+    fx(87, 9, /(block\s*public\s*access|BlockPublicAcls|put_public_access_block|acl)/i);
+    // Security
+    fx(89, 7, /(rsa\.generate_private_key|\.sign\s*\()/);
+    fx(89, 8, /\.verify\s*\(/);
+    fx(89, 9, /(os\.environ|getenv|secret.?manager|\.env|vault)/i);
+    fx(90, 2, [/csrf/i, /(token|secrets\.token|compare_digest)/i]);
+    fx(90, 7, [/(role|admin)/i, /(403|HTTPException|PermissionError|raise)/i]);
+    fx(90, 9, /(bandit|pip-audit|safety|semgrep)/i);
+    fx(96, 1, /(B307|B105|B602|B101)/, { task: "Tulis satu baris kode berisiko (eval() atau password hardcoded) dan sebutkan kode temuan Bandit-nya (B307 atau B105).", hint: "B307 = eval(), B105 = password hardcoded." });
+    fx(96, 6, [/(bandit|ruff)/i, /(run\s*:|steps\s*:|jobs\s*:)/i]);
+    fx(96, 8, /(bandit\s+-r|-ll\b|nosec)/i);
+    fx(79, 7, /\w+\s*:\s*\w+\s*=\s*\S+/, { py: true, hint: "Contoh: port: int = 8000 di dalam class Settings." });
+    fx(90, 6, [/(ast\.literal_eval|json\.loads|\bint\s*\(|\bfloat\s*\()/, /(input|data|teks|text|user)/i], { py: true });
+    fx(91, 3, [/for\s+\w+\s+in\s+/, /print/], { py: true });
+    fx(96, 9, [/bandit/i, /(ruff|linter|black)/i, /(merge|pull request|CI)/i]);
+})();
+
+
+/* ---------- LEVEL FONDASI BARU (103-106) ----------
+   Baris soal: [soal, petunjuk, validator(regex), pola output (EXPECT), tes perilaku (Python), input otomatis, perlu 'in'] */
+(function () {
+    function V(rs) { rs = [].concat(rs); return function (c) { return rs.every(function (r) { return r.test(c); }); }; }
+    function mk(id, title, desc, example, rows) {
+        levelsData.push({ id: id, category: "Beginner", title: title, desc: desc, example: example, tasks: rows.map(function (r) {
+            return { task: r[0], hint: r[1], validate: V(r[2]), expect: r[3] || null, check: r[4] || null, stdin: r[5] || null, needsIn: !!r[6] };
+        }) });
+    }
+    const TF = /^\s*True\s*\n\s*False\s*$/, T = /^\s*True\s*$/, F = /^\s*False\s*$/;
+    const seq = function () { return new RegExp("^\\D*" + Array.prototype.join.call(arguments, "\\D+") + "\\D*$"); };
+    const num = function (n) { return new RegExp("(^|\\D)" + n + "(\\D|$)"); };
+
+    mk(103, "Level 103: Operator Perbandingan & Logika",
+        "<b>Definisi Konsep Mendalam:</b> Perbandingan menghasilkan nilai boolean (<code>True</code>/<code>False</code>) yang dipakai <code>if</code> dan perulangan untuk mengambil keputusan.<br><br><b>Poin Penting:</b><br>• Perbandingan: <code>==</code>, <code>!=</code>, <code>&gt;</code>, <code>&lt;</code>, <code>&gt;=</code>, <code>&lt;=</code> (jangan tertukar dengan <code>=</code> untuk menyimpan nilai).<br>• Logika: <code>and</code> (keduanya benar), <code>or</code> (salah satu benar), <code>not</code> (membalik).<br>• Keanggotaan: <code>in</code> dan <code>not in</code>. Perbandingan berantai: <code>10 &lt; x &lt; 20</code>.",
+        'umur = 20\nprint(umur >= 17)\nprint(umur > 17 and umur < 30)\nprint("a" in "abc")',
+        [
+            ["Cetak hasil perbandingan 7 == 7 lalu 7 != 7 (dua baris).", "print(7 == 7) lalu print(7 != 7).", [/==/, /!=/], TF],
+            ["Buat umur = 20. Cetak hasil umur >= 17 lalu umur < 17 (dua baris).", "Setiap perbandingan menghasilkan True atau False.", [/>=/, /</], TF, "assert umur == 20, 'umur harus 20'"],
+            ["Buat a = 5 dan b = 8. Cetak a > b, a < b, dan a != b (tiga baris).", "Satu print per perbandingan.", [/>/, /</, /!=/], /^\s*False\s*\n\s*True\s*\n\s*True\s*$/, "assert a == 5 and b == 8, 'a harus 5 dan b harus 8'"],
+            ["Cetak hasil perbandingan 'python' == 'Python' (huruf besar-kecil berpengaruh).", "Dua string berbeda huruf besarnya tidak sama.", [/==/], F],
+            ["Buat suhu = 30. Cetak hasil suhu > 25 and suhu < 35.", "and: kedua kondisi harus benar.", [/\band\b/], T, "assert suhu == 30, 'suhu harus 30'"],
+            ["Buat hari = 'minggu'. Cetak hasil hari == 'sabtu' or hari == 'minggu'.", "or: cukup salah satu benar.", [/\bor\b/], T, "assert hari == 'minggu', 'hari harus minggu'"],
+            ["Buat aktif = False. Cetak hasil not aktif.", "not membalik True/False.", [/\bnot\b/], T, "assert aktif is False, 'aktif harus False'"],
+            ["Buat nilai = 85 dan hadir = True. Cetak apakah nilai >= 75 and hadir.", "Gabungkan perbandingan dan variabel boolean dengan and.", [/>=/, /\band\b/], T, "assert nilai == 85 and hadir is True, 'nilai=85 dan hadir=True'"],
+            ["Buat angka = 15. Cetak apakah angka berada di antara 10 dan 20 memakai perbandingan berantai 10 < angka < 20.", "10 < angka < 20", [/<[^<\n]*</], T, "assert angka == 15, 'angka harus 15'"],
+            ["Buat buah = ['apel', 'jeruk']. Cetak 'apel' in buah lalu 'mangga' not in buah (dua baris).", "in dan not in memeriksa keanggotaan.", [/\bin\b/, /not\s+in/], /^\s*True\s*\n\s*True\s*$/, "assert buah == ['apel', 'jeruk'], 'buah harus [apel, jeruk]'", null, true]
+        ]);
+
+    mk(104, "Level 104: input() & Konversi Tipe Data",
+        "<b>Definisi Konsep Mendalam:</b> <code>input()</code> membaca teks dari pengguna dan <b>selalu</b> mengembalikan string. Untuk menghitung, ubah dulu ke angka dengan konversi tipe.<br><br><b>Poin Penting:</b><br>• <code>int(\"5\")</code>, <code>float(\"1.5\")</code>, <code>str(42)</code>, <code>type(x)</code>.<br>• <code>int(3.9)</code> memotong desimal menjadi 3.<br>• Di aplikasi ini, input otomatis disediakan per soal (atau isi kolom Input di bawah editor).",
+        'nama = input("Nama: ")\numur = int(input("Umur: "))\nprint(f"{nama} tahun depan {umur + 1} tahun")',
+        [
+            ["Baca satu baris dengan input() ke variabel nama, lalu cetak 'Halo, ' + nama. (Input otomatis: Budi)", "nama = input()", [/\binput\s*\(/], /halo,\s*budi/i, "assert nama == 'Budi'", ["Budi"]],
+            ["Baca umur dengan input(), ubah ke int dengan int(), simpan di umur, lalu cetak umur + 5. (Input otomatis: 20)", "umur = int(input())", [/\binput\s*\(/, /\bint\s*\(/], num(25), "assert umur == 20 and type(umur).__name__ == 'int', 'umur harus int bernilai 20'", ["20"]],
+            ["Baca tinggi dengan input(), ubah ke float, simpan di tinggi, lalu cetak tinggi * 100. (Input otomatis: 1.75)", "tinggi = float(input())", [/\binput\s*\(/, /\bfloat\s*\(/], num("175(\\.0)?"), "assert tinggi == 1.75", ["1.75"]],
+            ["Baca dua bilangan a dan b sebagai int (input otomatis: 4 lalu 6), lalu cetak hasil kali a * b.", "Dua kali input(), masing-masing dibungkus int().", [/\binput\s*\([\s\S]*\binput\s*\(/, /\bint\s*\(/], num(24), "assert a == 4 and b == 6", ["4", "6"]],
+            ["Tanpa input(): buat angka = int('123'), lalu cetak angka + 1.", "int() mengubah string angka menjadi bilangan bulat.", [/\bint\s*\(/], num(124), "assert angka == 123 and type(angka).__name__ == 'int'"],
+            ["Cetak hasil int(3.9) (desimal dipotong, bukan dibulatkan).", "print(int(3.9))", [/\bint\s*\(/], /^\s*3\s*$/],
+            ["Ubah angka 42 menjadi string dengan str(), lalu cetak str(42) + '!'.", "str(42) + '!'", [/\bstr\s*\(/], /^\s*42!\s*$/],
+            ["Cetak type(5), type(5.0), dan type('5') masing-masing satu baris.", "type() menunjukkan tipe data nilai.", [/\btype\s*\(/], /int[\s\S]*float[\s\S]*str/],
+            ["Baca nama dan umur (input otomatis: Sari lalu 17), lalu cetak memakai f-string: 'Sari berumur 17 tahun'.", "f\"{nama} berumur {umur} tahun\"", [/\binput\s*\([\s\S]*\binput\s*\(/, /\bf["']/], /sari berumur 17 tahun/i, "assert nama == 'Sari' and str(umur) == '17'", ["Sari", "17"]],
+            ["Baca bilangan sebagai int (input otomatis: 8). Cetak 'Genap' jika bilangan % 2 == 0, selain itu 'Ganjil'.", "Ubah ke int dulu sebelum memakai %.", [/\binput\s*\(/, /\bint\s*\(/, /%/, /\bif\b/], /genap/i, "assert bilangan == 8 and type(bilangan).__name__ == 'int'", ["8"]]
+        ]);
+
+    mk(105, "Level 105: String Method & Slicing",
+        "<b>Definisi Konsep Mendalam:</b> String adalah urutan karakter yang bisa diakses lewat indeks dan diolah dengan method bawaan. String bersifat <i>immutable</i>: method mengembalikan string baru.<br><br><b>Poin Penting:</b><br>• Indeks: <code>s[0]</code> (pertama), <code>s[-1]</code> (terakhir). Slicing: <code>s[awal:akhir:langkah]</code>, akhir tidak ikut; <code>s[::-1]</code> membalik.<br>• Method: <code>.upper()</code>, <code>.strip()</code>, <code>.replace()</code>, <code>.split()</code>, <code>.join()</code>, <code>.count()</code>, <code>.find()</code>, <code>.startswith()</code>, <code>.endswith()</code>.",
+        's = "Belajar Python"\nprint(s[0:7])\nprint(s.upper())\nprint(s.split(" "))',
+        [
+            ["Buat teks = 'Python'. Cetak teks[0] lalu teks[-1] (dua baris).", "Indeks -1 adalah karakter terakhir.", [/\[\s*0\s*\]/, /\[\s*-1\s*\]/], /^\s*P\s*\n\s*n\s*$/, "assert teks == 'Python'"],
+            ["Buat teks = 'belajar python'. Cetak 7 huruf pertama dengan slicing.", "teks[0:7]", [/\[\s*0?\s*:\s*7\s*\]/], /^\s*belajar\s*$/, "assert teks == 'belajar python'"],
+            ["Buat kata = 'python'. Cetak kata yang dibalik memakai slicing [::-1].", "kata[::-1]", [/\[\s*:\s*:\s*-1\s*\]/], /nohtyp/, "assert kata == 'python'"],
+            ["Buat kalimat = 'saya suka python'. Cetak kalimat dalam huruf kapital dengan .upper().", "kalimat.upper()", [/\.upper\s*\(/], /SAYA SUKA PYTHON/, "assert kalimat == 'saya suka python'"],
+            ["Buat kotor = '   halo   '. Cetak kotor tanpa spasi di kedua ujung dengan .strip().", "kotor.strip()", [/\.strip\s*\(/], /^\s*halo\s*$/, "assert kotor == '   halo   '"],
+            ["Buat teks = 'saya suka kopi'. Cetak teks dengan 'kopi' diganti 'teh' memakai .replace().", "teks.replace('kopi', 'teh')", [/\.replace\s*\(/], /saya suka teh/, "assert teks == 'saya suka kopi'"],
+            ["Buat data = 'apel,jeruk,mangga'. Cetak data.split(',') (hasilnya list).", "split memecah string menjadi list.", [/\.split\s*\(/], /\[\s*'apel',\s*'jeruk',\s*'mangga'\s*\]/, "assert data == 'apel,jeruk,mangga'"],
+            ["Buat buah = ['apel', 'jeruk']. Cetak gabungan elemennya dengan pemisah ' - ' memakai .join().", "' - '.join(buah)", [/\.join\s*\(/], /apel - jeruk/, "assert buah == ['apel', 'jeruk']"],
+            ["Buat kata = 'programming'. Cetak jumlah huruf 'm' dengan .count() lalu posisi pertama huruf 'g' dengan .find().", "Hasilnya 2 lalu 3 (indeks mulai dari 0).", [/\.count\s*\(/, /\.find\s*\(/], /2[\s\S]*3/, "assert kata == 'programming'"],
+            ["Buat email = 'budi@mail.com'. Cetak apakah email.startswith('budi') and email.endswith('.com').", "Gabungkan dua method dengan and.", [/\.startswith\s*\(/, /\.endswith\s*\(/], T, "assert email == 'budi@mail.com'"]
+        ]);
+
+    mk(106, "Level 106: break & continue",
+        "<b>Definisi Konsep Mendalam:</b> <code>break</code> menghentikan perulangan seketika, sedangkan <code>continue</code> melompati sisa iterasi saat ini dan lanjut ke iterasi berikutnya.<br><br><b>Poin Penting:</b><br>• Dipakai di dalam <code>if</code> yang ada di dalam <code>for</code> atau <code>while</code>.<br>• <code>while True:</code> hampir selalu butuh <code>break</code> agar tidak berjalan selamanya.<br>• <code>for ... else</code>: blok <code>else</code> jalan hanya bila loop selesai tanpa <code>break</code>.",
+        'for i in range(1, 8):\n    if i == 3:\n        continue\n    if i == 6:\n        break\n    print(i)',
+        [
+            ["Dengan for i in range(1, 10), cetak i dan hentikan perulangan dengan break saat i == 5 (setelah mencetak 5).", "Taruh break setelah print.", [/\bfor\b/, /\bbreak\b/], seq(1, 2, 3, 4, 5)],
+            ["Cetak angka 1 sampai 10 kecuali 5, memakai continue.", "if i == 5: continue sebelum print.", [/\bcontinue\b/], seq(1, 2, 3, 4, 6, 7, 8, 9, 10)],
+            ["Cetak hanya bilangan ganjil dari 1 sampai 9: lewati yang genap dengan continue saat i % 2 == 0.", "if i % 2 == 0: continue", [/\bcontinue\b/, /%/], seq(1, 3, 5, 7, 9)],
+            ["Buat i = 0 dan while True: tambah i, cetak i, lalu break saat i == 3.", "i += 1; print(i); if i == 3: break", [/while\s+True/, /\bbreak\b/], seq(1, 2, 3)],
+            ["Buat data = [3, 8, 12, 5]. Cetak elemen pertama yang lebih dari 10, lalu berhenti dengan break.", "Cetak 12 saja.", [/\bbreak\b/, /\bfor\b/], seq(12), "assert data == [3, 8, 12, 5]"],
+            ["Untuk setiap huruf dalam 'PYTHON', lewati huruf 'T' dengan continue dan cetak huruf lainnya (satu per baris).", "if huruf == 'T': continue", [/\bcontinue\b/, /\bfor\b/], /^\s*P\s*\n\s*Y\s*\n\s*H\s*\n\s*O\s*\n\s*N\s*$/],
+            ["Buat total = 0. Untuk i dari 1 sampai 10: tambah i ke total, dan break jika total > 20. Cetak total di akhir.", "Hasil akhir total adalah 21.", [/\bbreak\b/], num(21), "assert total == 21, 'total akhir harus 21'"],
+            ["Buat hewan = ['ikan', 'kucing', 'sapi']. Loop hewan; saat hewan == 'kucing' cetak 'Ketemu' lalu break.", "Cetak 'Ketemu' tepat sekali.", [/\bbreak\b/, /==/], /^\s*ketemu\s*$/i, "assert hewan == ['ikan', 'kucing', 'sapi']"],
+            ["Buat for i in range(3): cetak i, lalu tambahkan blok else pada for yang mencetak 'Selesai' (loop selesai tanpa break).", "else sejajar dengan for.", [/\bfor\b/, /\belse\b/], /^\s*0\s*\n\s*1\s*\n\s*2\s*\n\s*selesai\s*$/i],
+            ["Dengan for i in range(1, 15): lewati kelipatan 3 dengan continue, berhenti dengan break jika i > 8, cetak i lainnya.", "Urutan: continue dulu, lalu break, lalu print. Hasil: 1 2 4 5 7 8.", [/\bcontinue\b/, /\bbreak\b/], seq(1, 2, 4, 5, 7, 8)]
+        ]);
+})();
+
+/* ---------- URUTAN BELAJAR (fondasi dulu, lanjutan kemudian) ----------
+   `id` = identitas tetap (dipakai untuk progress tersimpan), `no` = nomor tampilan. */
+(function () {
+    const PHASES = [
+        ["Beginner", [1, 2, 3, 105, 104, 12, 103, 4, 5, 6, 7, 106]],
+        ["Intermediate", [8, 9, 10, 11, 15, 23, 34, 13, 14, 16, 33, 101]],
+        ["Advanced", [28, 20, 18, 19, 17, 22, 102, 30]],
+        ["Expert", [38, 24, 21, 25, 93, 26, 27, 29]],
+        ["Professional", [31, 32, 35, 95, 36, 37, 39]],
+        ["Architecture", [40, 41, 42, 43, 44, 45, 46, 47, 48]],
+        ["Data Engineering", [59, 60, 66, 62, 65, 64, 63, 61, 67, 68]],
+        ["Web API", [79, 49, 50, 51, 52, 57, 56, 53, 54, 55, 58]],
+        ["AI Engineering", [69, 76, 77, 78, 70, 71, 72, 73, 74, 75]],
+        ["DevOps", [80, 81, 82, 83, 84, 85, 87, 86, 88]],
+        ["Security & Performance", [89, 90, 96, 91, 92, 94]],
+        ["Enterprise Mastery", [97, 98, 99, 100]]
+    ];
+    const byId = new Map(levelsData.map(function (l) { return [l.id, l]; }));
+    const ordered = [];
+    PHASES.forEach(function (ph) {
+        ph[1].forEach(function (id) {
+            const l = byId.get(id);
+            if (!l) throw new Error("Level " + id + " dobel/hilang di PHASES");
+            l.category = ph[0];
+            ordered.push(l);
+            byId.delete(id);
+        });
+    });
+    if (byId.size) throw new Error("Level belum dimasukkan ke PHASES: " + Array.from(byId.keys()).join(","));
+    ordered.forEach(function (l, i) {
+        l.no = i + 1;
+        l.title = "Level " + l.no + ": " + l.title.replace(/^Level\s+\d+\s*:\s*/i, "");
+    });
+    levelsData.splice(0, levelsData.length, ...ordered);
+})();
 
 /* =====================================================================
    LOGIKA APLIKASI
@@ -1738,9 +2068,9 @@ const levelsData = [
     // Level 1-48 memakai kata kunci Python murni: isi string diabaikan saat cek struktur
     // (kecuali L12 format-spec dan L23 mode file yang memang berada di dalam string).
     const STRING_BLIND_LEVELS = new Set(Array.from({ length: 48 }, function (_, i) { return i + 1; })
-        .filter(function (n) { return n !== 12 && n !== 23; }));
+        .filter(function (n) { return n !== 12 && n !== 23; }).concat([101, 102, 103, 104, 105, 106]));
     // Library yang memang tidak tersedia di browser. ImportError lain = salah ketik, bukan keterbatasan.
-    const UNAVAILABLE_LIBS = new RegExp("^(torch|tensorflow|transformers|fastapi|uvicorn|starlette|alembic|passlib|jwt|celery|redis|pyspark|airflow|great_expectations|gx|deltalake|delta|scrapy|openai|anthropic|langchain\\w*|llama_index|chromadb|qdrant_client|crewai\\w*|autogen|sentry_sdk|structlog|prometheus_client|pulumi\\w*|boto3|botocore|bcrypt|defusedxml|pika|kafka|pytest|mangum|dotenv|pydantic_settings|Cython|memory_profiler|locust|testcontainers|pybreaker|numba|seaborn|plotly|pyarrow|psycopg2|pymysql)$");
+    const UNAVAILABLE_LIBS = new RegExp("^(torch|tensorflow|transformers|fastapi|uvicorn|starlette|alembic|passlib|jwt|celery|redis|pyspark|airflow|great_expectations|gx|deltalake|delta|scrapy|openai|anthropic|langchain\\w*|llama_index|chromadb|qdrant_client|crewai\\w*|autogen|sentry_sdk|structlog|prometheus_client|pulumi\\w*|boto3|botocore|bcrypt|defusedxml|pika|kafka|pytest|mangum|dotenv|pydantic_settings|Cython|memory_profiler|locust|testcontainers|pybreaker|numba|seaborn|plotly|ollama|pyarrow|psycopg2|pymysql)$");
     // Hasil cetak yang wajib muncul (kunci: "level-indeksSoal")
     const EXPECT = {
         "2-0": /\b24(\.0)?\b/, "2-1": /\b48\b/, "2-2": /\b81\b/, "2-3": /\b1\b/, "2-4": /\b53000\b/,
@@ -1750,6 +2080,34 @@ const levelsData = [
         "5-0": /sejuk/i, "5-2": /berhenti/i, "5-3": /siang/i, "5-4": /kerusakan berat/i, "5-5": /rabu/i,
         "5-6": /diskon 20%/i, "5-7": /biaya sedang/i, "5-8": /full akses/i, "5-9": /anak-anak/i
     };
+
+    // Urutan angka yang harus muncul di output (angka lain boleh ada di antaranya)
+    function SEQ() { return new RegExp("(?:^|\\D)" + Array.prototype.join.call(arguments, "\\D+") + "(?:\\D|$)"); }
+    Object.assign(EXPECT, {
+        "3-0": /saya membeli 5 buah apel/i, "3-1": /halo rian, profesi anda programmer/i, "3-2": /suhu di bandung saat ini 22 derajat/i,
+        "3-3": /hari ini adalah hari senin tanggal 15/i, "3-4": /total uang anda 50000 rupiah/i, "3-5": /belajar bahasa pem\w*gram\w* python/i,
+        "3-6": /suara kucing adalah meow/i, "3-7": /samsung[\s\S]*3000000|3000000[\s\S]*samsung/i, "3-9": /buku rekomendasi: belajar coding/i,
+        "6-0": SEQ(2, 4, 6, 8), "6-1": SEQ(1, 2, 3, 4, 5), "6-2": SEQ(5, 4, 3, 2, 1), "6-3": SEQ(5, 10, 15, 20),
+        "6-4": /(halo python[\s\S]*){4}/i, "6-5": SEQ(1, 3, 5, 7, 9), "6-6": /p[\s\S]*y[\s\S]*t[\s\S]*h[\s\S]*o[\s\S]*n/i,
+        "6-7": SEQ(1, 4, 9, 16), "6-8": SEQ(12, 13, 14, 15, 16, 17), "6-9": /(loading\.\.\.[\s\S]*){3}/i,
+        "7-0": /3\D+2\D+1[\s\S]*mulai!/i, "7-1": SEQ(1, 2, 3, 4), "7-2": SEQ(1, 2, 4, 8), "7-3": SEQ(2, 4, 6),
+        "7-4": /(ulangi[\s\S]*){3}/i, "7-6": /(^|\D)10(\D|$)/, "7-7": SEQ(5, 3, 1), "7-8": SEQ(10, 20, 30), "7-9": SEQ(1, 4, 9)
+    });
+    // Tes perilaku: dijalankan di Python setelah kode murid (namespace sama). AssertionError = jawaban salah.
+    const CHECKS = {};
+    function typed(list) {
+        return list.map(function (p) {
+            return "assert type(" + p[0] + ").__name__ == '" + p[1] + "', '" + p[0] + " harus bertipe " + p[1] + "'" +
+                (p[2] ? "\nassert " + p[0] + " is " + p[2] + ", '" + p[0] + " harus bernilai " + p[2] + "'" : "");
+        }).join("\n");
+    }
+    [[["nama_depan", "str"], ["tinggi_badan", "float"]], [["tahun_lahir", "int"], ["kota_asal", "str"]], [["sudah_menikah", "bool", "False"]],
+     [["berat_badan", "float"], ["nama_panggilan", "str"]], [["jumlah_saudara", "int"], ["hobi", "str"]], [["suhu_badan", "float"]],
+     [["nomor_sepatu", "int"], ["status_siswa", "bool", "True"]], [["email_pengguna", "str"], ["skor_ujian", "float"]],
+     [["kode_akses", "int"], ["akses_admin", "bool", "False"]], [["nama_hewan", "str"], ["jumlah_kaki", "int"]]
+    ].forEach(function (list, i) { CHECKS["1-" + i] = typed(list); });
+    [["umur", 18], ["nilai_ujian", 65], ["uang", 40000], ["angka", 10], ["suhu", 38], ["stok", 0], ["kecepatan", 90], ["tinggi", 155], ["jam", 21], ["poin", 120]]
+        .forEach(function (p, i) { CHECKS["4-" + i] = "assert " + p[0] + " == " + p[1] + ", '" + p[0] + " harus bernilai " + p[1] + " sesuai soal'"; });
 
     // Kurva XP yang naik rata: Level 1 = 100 XP, Level 100 = 2.080 XP.
     // Ubah fungsi ini jika ingin kurva lain.
@@ -1762,13 +2120,16 @@ const levelsData = [
             const vsrc = String(t.validate);
             t.needsStdout = /\bprint\b/.test(vsrc);                 // validator meminta print
             t.needsAnyOutput = /\b(cetak|print|tampilkan)\b/i.test(t.task); // soal meminta mencetak
-            t.expect = EXPECT[lvl.id + "-" + i] || null;
+            t.expect = EXPECT[lvl.id + "-" + i] || t.expect || null;
+            t.check = CHECKS[lvl.id + "-" + i] || t.check || null;
+            t.needsIn = !!t.needsIn || vsrc.indexOf("\\bin\\b") !== -1;
             t.noStrings = STRING_BLIND_LEVELS.has(lvl.id);
             const lengthOnly = /^\s*c\s*=>\s*c\.length\s*>\s*\d+\s*$/.test(vsrc);
             t.minChars = (lengthOnly && !TEXT_LEVELS.has(lvl.id)) ? 25 : 6; // soal uraian wajib dijawab dengan beberapa kalimat/baris
             if (TEXT_LEVELS.has(lvl.id) || lengthOnly || (lvl.id === 85 && i >= 5 && i <= 8)) t.mode = "text";
+            if (t.forceText) { t.mode = "text"; t.minChars = Math.max(t.minChars, 15); }
         });
-        lvl.xp = xpForLevel(lvl.id);
+        lvl.xp = xpForLevel(lvl.no);
         lvl.shortTitle = lvl.title.replace(/^Level\s+\d+\s*:\s*/i, "");
     });
 
@@ -1928,7 +2289,17 @@ const levelsData = [
             "    co = compile(tree, '<exec>', 'exec', flags=ast.PyCF_ALLOW_TOP_LEVEL_AWAIT)",
             "    r = eval(co, g)",
             "    if inspect.iscoroutine(r):",
-            "        await r"
+            "        await r",
+            "def _info(code):",
+            "    t = ast.parse(code)",
+            "    used = {n.id for n in ast.walk(t) if isinstance(n, ast.Name) and isinstance(n.ctx, ast.Load)} | {n.attr for n in ast.walk(t) if isinstance(n, ast.Attribute)}",
+            "    fn = (ast.FunctionDef, ast.AsyncFunctionDef)",
+            "    unused = [n.name for n in t.body if isinstance(n, fn) and not n.decorator_list and not n.name.startswith('_') and not n.name.startswith('test') and n.name not in used]",
+            "    cond = (ast.Compare, ast.BoolOp, ast.UnaryOp)",
+            "    tif = [n.lineno for n in ast.walk(t) if isinstance(n, ast.If) and not any(isinstance(x, cond) for x in ast.walk(n.test))]",
+            "    twh = [n.lineno for n in ast.walk(t) if isinstance(n, ast.While) and isinstance(n.test, ast.Constant)]",
+            "    cin = any(isinstance(n, ast.Compare) and any(isinstance(o, (ast.In, ast.NotIn)) for o in n.ops) for n in ast.walk(t))",
+            "    return {'unused': unused, 'trivialIf': tif, 'trivialWhile': twh, 'cmpIn': cin}"
         ].join("\n");
 
         let pyodide = null;
@@ -1954,6 +2325,7 @@ const levelsData = [
             const id = ev.data.id;
             const code = ev.data.code;
             const stdin = ev.data.stdin || [];
+            const check = ev.data.check || null;
             await ready;
             if (!pyodide) {
                 postMessage({ type: "result", id: id, status: "engine-failed" });
@@ -1981,7 +2353,17 @@ const levelsData = [
                     proxy.destroy();
                     figs.forEach(function (d) { postMessage({ type: "figure", data: d }); });
                 } catch (e) { /* abaikan */ }
-                postMessage({ type: "result", id: id, status: "ok" });
+                let info = null;
+                try { const ip = pyodide.globals.get("_info")(code); info = ip.toJs({ dict_converter: Object.fromEntries }); ip.destroy(); } catch (e) { /* abaikan */ }
+                if (check) {
+                    try { pyodide.runPython(check, { globals: g }); }
+                    catch (ce) {
+                        const cm = String((ce && ce.message) || ce).trim().split("\n").pop();
+                        postMessage({ type: "result", id: id, status: "checkfail", message: cm, info: info });
+                        return;
+                    }
+                }
+                postMessage({ type: "result", id: id, status: "ok", info: info });
             } catch (e) {
                 flush();
                 const msg = String((e && e.message) || e);
@@ -2105,6 +2487,7 @@ const levelsData = [
             const res = {
                 status: m.status,
                 message: m.message || "",
+                info: m.info || null,
                 errType: m.errType || "",
                 chunks: job.chunks,
                 ms: Math.round(performance.now() - job.t0),
@@ -2194,7 +2577,7 @@ const levelsData = [
                 };
                 job.timer = setTimeout(function () { abort("time"); }, LOAD_LIMIT_MS); // sebelum "started"
                 current = job;
-                worker.postMessage({ id: job.id, code: code, stdin: stdin });
+                worker.postMessage({ id: job.id, code: code, stdin: stdin, check: (hooks && hooks.check) || null });
             });
         }
 
@@ -2307,7 +2690,7 @@ const levelsData = [
         return rank.name;
     }
     function isLocked(lvl) {
-        return state.settings.lockOrder && lvl.id > 1 && !isLevelComplete(levelById.get(lvl.id - 1));
+        return state.settings.lockOrder && lvl.no > 1 && !isLevelComplete(levelsData[lvl.no - 2]);
     }
     function firstUndone(lvl) {
         for (let i = 0; i < lvl.tasks.length; i++) if (!isTaskDone(lvl, i)) return i;
@@ -2368,7 +2751,7 @@ const levelsData = [
         const num = el("span", [
             "shrink-0 w-9 h-9 grid place-items-center rounded-lg text-xs font-bold",
             complete ? "bg-emerald-500/15 text-emerald-300" : active ? "bg-indigo-500/20 text-indigo-300" : "bg-slate-800 text-slate-400"
-        ].join(" "), String(lvl.id));
+        ].join(" "), String(lvl.no));
 
         const mid = el("span", "flex-1 min-w-0 flex flex-col gap-1.5");
         mid.appendChild(el("span", "text-sm font-semibold text-slate-200 truncate", lvl.shortTitle));
@@ -2384,7 +2767,7 @@ const levelsData = [
         btn.append(num, mid, status);
         btn.addEventListener("click", function () {
             if (locked) {
-                toast("Selesaikan Level " + (lvl.id - 1) + " dulu untuk membuka level ini.", "warn");
+                toast("Selesaikan Level " + (lvl.no - 1) + " dulu untuk membuka level ini.", "warn");
                 return;
             }
             goTo(lvl.id, firstUndone(lvl));
@@ -2402,7 +2785,7 @@ const levelsData = [
 
         categoryGroups.forEach(function (group) {
             const matches = group.levels.filter(function (lvl) {
-                return !q || (lvl.id + " " + lvl.category + " " + lvl.shortTitle).toLowerCase().indexOf(q) !== -1;
+                return !q || (lvl.no + " " + lvl.category + " " + lvl.shortTitle).toLowerCase().indexOf(q) !== -1;
             });
             if (!matches.length) return;
             const doneLevels = group.levels.filter(isLevelComplete).length;
@@ -2459,7 +2842,7 @@ const levelsData = [
     function renderLevel() {
         const lvl = currentLevel();
         const task = currentTask();
-        $("bg-level-watermark").textContent = lvl.id < 10 ? "0" + lvl.id : String(lvl.id);
+        $("bg-level-watermark").textContent = lvl.no < 10 ? "0" + lvl.no : String(lvl.no);
         $("badge-category").textContent = lvl.category;
         $("badge-xp").textContent = "+" + taskXp(lvl) + " XP / soal";
         $("badge-subtask").textContent = "Soal " + (state.taskIndex + 1) + " dari " + lvl.tasks.length;
@@ -2517,7 +2900,7 @@ const levelsData = [
             const i = (state.taskIndex + k) % n;
             if (!isTaskDone(lvl, i)) { goTo(lvl.id, i); return; }
         }
-        const next = levelById.get(lvl.id + 1);
+        const next = levelsData[lvl.no];
         if (next && !isLocked(next)) { goTo(next.id, firstUndone(next)); return; }
         if (next) { toast("Level berikutnya masih terkunci. Selesaikan semua soal level ini dulu.", "warn"); return; }
         if (completedLevelCount() === levelsData.length) { showFinish(); return; }
@@ -2577,7 +2960,7 @@ const levelsData = [
         return v === "" ? [] : v.split(/\r?\n/);
     }
 
-    async function runAndRender(code) {
+    async function runAndRender(code, check) {
         // Jika murid pindah soal selagi kode jalan, jangan tulis output ke soal yang baru.
         const lid = state.levelId, tix = state.taskIndex;
         const same = function () { return lid === state.levelId && tix === state.taskIndex; };
@@ -2585,7 +2968,8 @@ const levelsData = [
         let started = false;
         let figures = 0;
         function begin() { if (!started) { started = true; outClear(); } }
-        const res = await PyEngine.run(code, getStdin(), {
+        const res = await PyEngine.run(code, getStdin().length ? getStdin() : (currentTask().stdin || []), {
+            check: check,
             onStatus: function (text) { if (!started && same()) outPending(text); },
             onChunk: function (stream, text) {
                 if (!same()) return;
@@ -2618,6 +3002,9 @@ const levelsData = [
             case "syntax":
                 outLine("Kode belum bisa dijalankan karena kesalahan sintaks:", CLS.bad);
                 outLine(res.message, CLS.err);
+                break;
+            case "checkfail":
+                outLine((res.chunks.length ? "\n" : "") + "✘ Kode berjalan, tetapi hasilnya belum sesuai soal: " + res.message, CLS.err);
                 break;
             case "error":
                 outLine((res.chunks.length ? "\n" : "") + res.message, CLS.err);
@@ -2655,11 +3042,23 @@ const levelsData = [
         try { await runAndRender(code); } finally { setBusy(false); }
     }
 
+    // Pencocokan kata utuh: "if" tidak lagi cocok dengan "elif"/"diff", "for" dengan "format", "*" dengan "**".
+    class Src extends String {
+        includes(x) {
+            const s = String(this);
+            if (typeof x === "string") {
+                if (/^\w+$/.test(x)) return new RegExp("(^|\\W)" + x + "(\\W|$)").test(s);
+                if (x === "*") return /(^|[^*])\*(?!\*)/.test(s);
+                if (x === "/") return /(^|[^/])\/(?!\/)/.test(s);
+            }
+            return String.prototype.includes.call(s, x);
+        }
+    }
     function runValidator(task, lvl, src) {
         try {
-            if (task.validate(src)) return true;
+            if (task.validate(new Src(src))) return true;
             // Validator level 78+ ditulis huruf kecil; kode murid (mis. AutoTokenizer) dicek tanpa peka huruf besar/kecil.
-            return lvl.id >= 78 && !!task.validate(src.toLowerCase());
+            return lvl.id >= 78 && lvl.id <= 100 && !!task.validate(new Src(src.toLowerCase()));
         } catch (e) { return false; }
     }
 
@@ -2673,6 +3072,11 @@ const levelsData = [
     }
 
     function judge(code, task, lvl, res) {
+        const norm = function (x) { return String(x).replace(/\s+/g, " ").trim().toLowerCase(); };
+        const nc = norm(code);
+        if (nc === norm(lvl.example) || (task.mode === "text" ? nc.indexOf(norm(task.task)) !== -1 : nc === norm(task.task))) {
+            return { pass: false, reason: "Jawaban sama dengan contoh materi atau teks soal. Tulis jawabanmu sendiri sesuai instruksi." };
+        }
         const structOk = structureOk(code, task, lvl);
         const notMatching = "Kode belum memenuhi instruksi soal. Baca lagi soalnya dan gunakan 💡 Petunjuk jika perlu.";
 
@@ -2687,10 +3091,19 @@ const levelsData = [
                 return { pass: false, reason: "Sintaks Python masih salah. Perbaiki error di terminal dulu." };
             case "error":
                 return { pass: false, reason: "Kode menghasilkan error saat dijalankan. Baca pesan error di terminal." };
+            case "checkfail":
+                return { pass: false, reason: "Kode berjalan, tetapi hasilnya belum sesuai soal: " + res.message };
             case "timeout":
                 return { pass: false, reason: "Kode tidak selesai tepat waktu (cek apakah ada loop yang tidak pernah berhenti)." };
             case "ok": {
                 if (!structOk) return { pass: false, reason: "Kode berjalan tanpa error, tetapi " + notMatching.charAt(0).toLowerCase() + notMatching.slice(1) };
+                const inf = res.info;
+                if (inf) {
+                    if (/(cetak|print|tampilkan|uji|panggil)/i.test(task.task) && inf.unused && inf.unused.length) return { pass: false, reason: "Fungsi " + inf.unused.join(", ") + " dibuat tetapi tidak pernah dipakai. Panggil fungsinya (dan cetak hasilnya jika diminta) agar bisa diperiksa." };
+                    if ((lvl.id === 4 || lvl.id === 5) && inf.trivialIf && inf.trivialIf.length) return { pass: false, reason: "Kondisi if harus berupa perbandingan atau logika (mis. umur >= 17), bukan sekadar nilai variabel atau konstanta." };
+                    if (task.needsIn && !inf.cmpIn) return { pass: false, reason: "Soal ini meminta operator keanggotaan: pakai 'in' dalam perbandingan (mis. 'kucing' in hewan), bukan 'for ... in'." };
+                    if (lvl.id === 7 && inf.trivialWhile && inf.trivialWhile.length) return { pass: false, reason: "Kondisi while tidak boleh konstanta; pakai kondisi yang berubah (mis. i <= 3)." };
+                }
                 const stdout = res.chunks.filter(function (c) { return c.stream === "stdout"; }).map(function (c) { return c.text; }).join("");
                 const anyOut = res.figures > 0 || res.chunks.some(function (c) { return c.text.trim() !== ""; });
                 if (task.needsStdout && !res.hasOutput) return { pass: false, reason: "Kode berjalan, tetapi tidak menampilkan output. Pastikan memakai print() dan, jika membuat fungsi, memanggilnya." };
@@ -2733,7 +3146,7 @@ const levelsData = [
             res = { status: "text", chunks: [], figures: 0 };
         } else {
             setBusy(true);
-            try { res = await runAndRender(code); } finally { setBusy(false); }
+            try { res = await runAndRender(code, task.check); } finally { setBusy(false); }
         }
 
         // Murid mungkin berpindah soal selagi kode berjalan; jangan beri kredit ke soal yang salah.
@@ -2759,8 +3172,8 @@ const levelsData = [
             outLine("🎉 Benar! Soal " + (idx + 1) + " selesai. +" + result.xp + " XP", CLS.ok);
             toast("+" + result.xp + " XP", "xp", 2200);
             if (result.levelCompleted) {
-                outLine("🏆 Level " + lvl.id + " tuntas! Bonus +" + result.bonus + " XP", CLS.ok);
-                toast("🏆 Level " + lvl.id + " tuntas! Bonus +" + result.bonus + " XP", "success", 4500);
+                outLine("🏆 Level " + lvl.no + " tuntas! Bonus +" + result.bonus + " XP", CLS.ok);
+                toast("🏆 Level " + lvl.no + " tuntas! Bonus +" + result.bonus + " XP", "success", 4500);
             }
             const rankAfter = rankFor(totalTasksDone());
             if (rankAfter !== rankBefore) toast("🎖️ Rank baru: " + rankAfter, "success", 4500);
