@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Python Odyssey: belajar Python lewat 106 level dan 1.060 soal, dengan editor dan mesin Python asli yang berjalan langsung di browser.">
+    <meta name="description" content="Python Odyssey: belajar Python lewat 119 level dan 1.132 soal, dengan editor dan mesin Python asli yang berjalan langsung di browser.">
     <meta name="theme-color" content="#020617">
-    <title>Python Odyssey - 106 Level Belajar Python</title>
+    <title>Python Odyssey - 119 Level Belajar Python</title>
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%90%8D%3C/text%3E%3C/svg%3E">
 
     <!-- Tailwind CSS (Play CDN: cocok untuk belajar/prototipe; untuk produksi sebaiknya di-build) -->
@@ -35,7 +35,7 @@
                 </div>
                 <div>
                     <h1 class="text-lg sm:text-xl font-extrabold tracking-tight bg-gradient-to-r from-indigo-400 via-sky-300 to-cyan-400 bg-clip-text text-transparent">Python Odyssey</h1>
-                    <p class="text-xs text-slate-400 hidden sm:block">106 level · 1.060 soal · Python asli di browser</p>
+                    <p class="text-xs text-slate-400 hidden sm:block">119 level · 1.132 soal · Python asli di browser</p>
                 </div>
             </div>
 
@@ -61,7 +61,7 @@
                     <span class="text-emerald-400 text-lg" aria-hidden="true">🏆</span>
                     <div>
                         <p class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold">Progress</p>
-                        <p id="progress-text" class="text-sm font-bold text-emerald-300">0 / 106 Level</p>
+                        <p id="progress-text" class="text-sm font-bold text-emerald-300">0 / 119 Level</p>
                     </div>
                 </div>
             </div>
@@ -77,7 +77,7 @@
         <!-- Sidebar Daftar Level -->
         <aside id="sidebar" class="lg:col-span-4 bg-slate-900 lg:bg-slate-900/60 border border-slate-800/80 rounded-2xl p-4 flex flex-col lg:h-[calc(100dvh-140px)] lg:sticky lg:top-24">
             <div class="flex items-center justify-between mb-3 px-2">
-                <h2 class="text-xs font-bold uppercase tracking-wider text-slate-400">Peta Kurikulum (106 Level)</h2>
+                <h2 class="text-xs font-bold uppercase tracking-wider text-slate-400">Peta Kurikulum (119 Level)</h2>
                 <button id="btn-close-sidebar" type="button" class="lg:hidden text-xs px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold">✕ Tutup</button>
             </div>
             <input id="level-search" type="search" placeholder="Cari level atau kategori…" aria-label="Cari level"
@@ -112,6 +112,7 @@
                     <span id="badge-category" class="px-3 py-1 bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-semibold rounded-full uppercase tracking-wider">Beginner</span>
                     <div class="flex items-center gap-2">
                         <span id="badge-subtask" class="text-xs font-mono text-cyan-300 bg-cyan-500/10 border border-cyan-500/20 px-2.5 py-1 rounded-full">Soal 1 dari 10</span>
+                        <span id="badge-grading" class="text-[11px] font-semibold px-2.5 py-1 rounded-full border border-emerald-500/30 text-emerald-300 bg-emerald-500/10">▶ Dinilai dengan menjalankan kode</span>
                         <span id="badge-xp" class="text-xs font-mono text-amber-400 font-bold bg-amber-500/10 border border-amber-500/20 px-2.5 py-1 rounded-full">+10 XP / soal</span>
                     </div>
                 </div>
