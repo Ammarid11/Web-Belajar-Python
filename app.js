@@ -1,6 +1,6 @@
 /* =====================================================================
    PYTHON ODYSSEY - app.js
-   Bagian 1: Kurikulum (levelsData, 119 level)
+   Bagian 1: Kurikulum (levelsData, 139 level)
    Bagian 2: Logika aplikasi (lihat komentar "LOGIKA APLIKASI" di bawah)
    ===================================================================== */
 
@@ -738,7 +738,7 @@ const levelsData = [
     },
     {
         id: 44, category: "Architecture", title: "Level 44: Dependency Injection & Inversion of Control (IoC)",
-        desc: "<b>Definisi Konsep Mendalam:</b> Melepaskan ketergantungan kaku antar komponen kode (<i>loosely coupled</i>).<br><br><b>Poin Penting:</b><br>• Menyuntikkan objek dependensi melalui parameter konstruktor (<code>__init__</code>).<br>• Meningkatkan kemudahan unit testing dan fleksibilitas arsitektur.",
+        desc: "<b>Definisi Konsep Mendalam:</b> Melepaskan ketergantungan kaku antar komponen kode (<i>loosely coupled</i>).<br><br><b>Poin Penting:</b><br>• Menyuntikkan objek dependensi melalui parameter konstruktor (<code>__init__</code>).<br>• Meningkatkan kemudahan unit testing dan fleksibilitas arsitektur.<br>• <b>ABC (Abstract Base Class):</b> kelas dasar dari modul <code>abc</code> yang menolak diinstansiasi selama method <code>@abstractmethod</code>-nya belum diimplementasikan; dipakai sebagai 'kontrak' antarmuka (<code>from abc import ABC, abstractmethod</code>).",
         example: `class Service:\n    def run(self): return "OK"\nclass Client:\n    def __init__(self, service): self.service = service`,
         tasks: [
             { task: "Buat class Client yang menerima objek Service melalui konstruktor (__init__) secara Dependency Injection.", hint: "Jangan buat instance service di dalam class client secara langsung.", validate: c => c.includes("class") && c.includes("__init__") },
@@ -806,7 +806,7 @@ const levelsData = [
     },
     {
         id: 48, category: "Architecture", title: "Level 48: Metaprogramming Lanjutan & AST (Abstract Syntax Trees)",
-        desc: "<b>Definisi Konsep Mendalam:</b> Puncak arsitektur enterprise untuk memanipulasi struktur kode program Python saat runtime.<br><br><b>Poin Penting:</b><br>• Menggunakan modul <code>ast</code> untuk mem-parse string kode menjadi pohon sintaks (Abstract Syntax Trees) serta melakukan transformasi node.",
+        desc: "<b>Definisi Konsep Mendalam:</b> Metaprogramming lanjutan (kelanjutan dari metaclass) untuk memanipulasi struktur kode program Python saat runtime.<br><br><b>Poin Penting:</b><br>• Menggunakan modul <code>ast</code> untuk mem-parse string kode menjadi pohon sintaks (Abstract Syntax Trees) serta melakukan transformasi node.",
         example: `import ast\n\ntree = ast.parse("x = 1 + 2")\nprint(ast.dump(tree))`,
         tasks: [
             { task: "Impor modul ast, parse string kode Python sederhana menjadi pohon AST menggunakan ast.parse().", hint: "Gunakan ast.parse('kode_python').", validate: c => c.includes("ast") && c.includes("parse") },
@@ -818,7 +818,7 @@ const levelsData = [
             { task: "Buat AST visitor sederhana untuk menghitung jumlah percabangan if di dalam kode Python.", hint: "Turunkan class dari ast.NodeVisitor.", validate: c => c.includes("ast") && c.includes("NodeVisitor") },
             { task: "Simulasikan pembuatan DSL (Domain Specific Language) ringan menggunakan parsing AST.", hint: "Terjemahkan sintaks kustom menjadi kode Python.", validate: c => c.includes("ast") },
             { task: "Uji manipulasi AST untuk validasi keamanan kode otomatis (linter kustom).", hint: "Periksa keberadaan fungsi terlarang di dalam AST.", validate: c => c.includes("ast") },
-            { task: "Tulis program yang mencetak ringkasan 3 pola desain yang sudah dipelajari (nama pola + satu kalimat fungsinya), satu per baris.", hint: "Gunakan print() atau for pada list berisi tuple (nama, fungsi).", validate: c => c.includes("print") && c.length > 40 }
+            { task: "Parse kode 'def a(): pass' dan 'def b(): pass' (dua baris, dipisah \\n) dengan ast.parse, hitung jumlah node ast.FunctionDef memakai ast.walk, lalu cetak hasilnya (2).", hint: "tree = ast.parse('def a(): pass\\ndef b(): pass'); sum(isinstance(n, ast.FunctionDef) for n in ast.walk(tree))", validate: c => /ast\.walk\s*\(/.test(c) && /FunctionDef/.test(c), expect: /(^|\D)2(\D|$)/ }
         ]
     },
     {
@@ -1949,7 +1949,7 @@ levelsData.push({
             ["Buat aktif = False. Cetak hasil not aktif.", "not membalik True/False.", [/\bnot\b/], T, "assert aktif is False, 'aktif harus False'"],
             ["Buat nilai = 85 dan hadir = True. Cetak apakah nilai >= 75 and hadir.", "Gabungkan perbandingan dan variabel boolean dengan and.", [/>=/, /\band\b/], T, "assert nilai == 85 and hadir is True, 'nilai=85 dan hadir=True'"],
             ["Buat angka = 15. Cetak apakah angka berada di antara 10 dan 20 memakai perbandingan berantai 10 < angka < 20.", "10 < angka < 20", [/<[^<\n]*</], T, "assert angka == 15, 'angka harus 15'"],
-            ["Buat buah = ['apel', 'jeruk']. Cetak 'apel' in buah lalu 'mangga' not in buah (dua baris).", "in dan not in memeriksa keanggotaan.", [/\bin\b/, /not\s+in/], /^\s*True\s*\n\s*True\s*$/, "assert buah == ['apel', 'jeruk'], 'buah harus [apel, jeruk]'", null, true]
+            ["Buat teks = 'python'. Cetak 'py' in teks lalu 'java' not in teks (dua baris).", "in dan not in memeriksa apakah potongan teks ada di dalam string.", [/\bin\b/, /not\s+in/], /^\s*True\s*\n\s*True\s*$/, "assert teks == 'python', 'teks harus python'", null, true]
         ]);
 
     mk(104, "Level 104: input() & Konversi Tipe Data",
@@ -2029,7 +2029,7 @@ levelsData.push({
             ["Definisikan ulang sapa(nama, sapaan='Halo'), lalu cetak sapa('Sari', sapaan='Selamat pagi') (keyword argument).", "Tulis sapaan='...' saat memanggil.", [/def\s+sapa/, /sapaan\s*=\s*['"]Selamat pagi['"]/], /selamat pagi,\s*sari!/i],
             ["Buat kurang(a, b) yang mengembalikan a - b, lalu cetak kurang(b=3, a=10) (urutan keyword dibalik).", "Dengan keyword, urutan tidak masalah.", [/def\s+kurang/, /\bb\s*=\s*3/, /\ba\s*=\s*10/], /^\s*7\s*$/],
             ["Buat hitung = 0 (global) dan fungsi tambah() yang memakai 'global hitung' lalu hitung += 1. Panggil dua kali, cetak hitung.", "Tanpa global, Python menganggap hitung lokal dan error.", [/\bglobal\s+hitung\b/], /^\s*2\s*$/, "assert hitung == 2"],
-            ["Buat fungsi coba() yang membuat x = 5 di dalamnya. Panggil coba(), lalu cetak x di luar fungsi dalam try/except NameError yang mencetak 'x tidak ada di luar'.", "Variabel lokal tidak terlihat di luar fungsi.", [/def\s+coba/, /except\s+NameError/], /x tidak ada di luar/],
+            ["Buat x = 'global' di luar fungsi. Buat fungsi coba() yang membuat x = 'lokal' lalu mencetak x. Panggil coba(), lalu cetak x di luar fungsi (dua baris: lokal, lalu global).", "x di dalam fungsi adalah variabel lokal yang berbeda dari x di luar fungsi.", [/def\s+coba/, /\bx\s*=\s*['"]lokal['"]/], /^\s*lokal\s*\n\s*global\s*$/i, "assert x == 'global', 'x di luar fungsi harus tetap global'"],
             ["Buat tambah_item(item, daftar=None): jika daftar is None buat list kosong, append item, return daftar. Cetak tambah_item('a') lalu tambah_item('b') (dua baris).", "Jangan pakai daftar=[] sebagai default.", [/daftar\s*=\s*None/, /\bis\s+None\b/], /^\s*\['a'\]\s*\n\s*\['b'\]\s*$/]
         ]);
 
@@ -2191,22 +2191,528 @@ levelsData.push({
     });
 })();
 
+
+/* ---------- LEVEL FONDASI & MINI-PROYEK BARU (120-139) ----------
+   Baris soal: {t: soal, h: petunjuk, v: regex[] struktur, e: pola/objek .test() untuk output,
+                c: tes perilaku Python, i: input otomatis, n: perlu operator 'in', x: dinilai sebagai teks} */
+(function () {
+    function V(rs) { rs = [].concat(rs); return function (c) { return rs.every(function (r) { return r.test(c); }); }; }
+    function C(lines) { return lines.join("\n"); }
+    function norm(l) { return l.replace(/\s+/g, " ").trim().toLowerCase(); }
+    // Output harus persis sama baris demi baris (spasi berlebih & huruf besar-kecil diabaikan)
+    function LINES(arr) {
+        const want = arr.map(function (x) { return norm(String(x)); });
+        return { test: function (s) {
+            const got = String(s).replace(/\r/g, "").split("\n").map(norm).filter(function (l) { return l !== ""; });
+            return got.length === want.length && got.every(function (x, i) { return x === want[i]; });
+        } };
+    }
+    // Seperti LINES, tetapi spasi di awal baris (rata tengah) harus tepat
+    function LINESX(arr) {
+        return { test: function (s) {
+            const got = String(s).replace(/\r/g, "").split("\n").map(function (l) { return l.replace(/\s+$/, ""); });
+            while (got.length && got[got.length - 1] === "") got.pop();
+            return got.length === arr.length && got.every(function (x, i) { return x === arr[i]; });
+        } };
+    }
+    function mk(id, cat, title, desc, example, rows) {
+        levelsData.push({ id: id, category: cat, title: title, desc: desc, example: example,
+            tasks: rows.map(function (r) {
+                return { task: r.t, hint: r.h, validate: V(r.v || [/[\s\S]/]), expect: r.e || null, check: r.c || null,
+                         stdin: r.i || null, needsIn: !!r.n, forceText: !!r.x };
+            }) });
+    }
+    const NEST = /\bfor\b[\s\S]*\bfor\b/;
+
+    /* ===== 120: Nested loop & pola bintang ===== */
+    mk(120, "Beginner", "Level 120: Nested Loop & Pola Bintang",
+        "<b>Konsep:</b> <i>Nested loop</i> adalah perulangan di dalam perulangan. Loop luar biasanya mewakili <b>baris</b>, loop dalam mewakili <b>kolom</b>: untuk setiap iterasi loop luar, loop dalam berjalan penuh dari awal sampai akhir.<br><br><b>Contoh &amp; output:</b> tabel perkalian 3 x 3 di bawah mencetak <code>1 2 3</code>, <code>2 4 6</code>, <code>3 6 9</code> masing-masing di satu baris. <code>print(..., end=\" \")</code> mengganti baris baru dengan spasi, dan <code>print()</code> kosong di akhir loop dalam memindahkan kursor ke baris berikutnya.<br><br><b>Kesalahan umum:</b> lupa <code>print()</code> kosong (semua hasil menumpuk di satu baris); salah indentasi sehingga <code>print()</code> ikut berulang di loop dalam; memakai nama variabel loop yang sama (<code>i</code>) untuk loop luar dan dalam.",
+        'for i in range(1, 4):\n    for j in range(1, 4):\n        print(i * j, end=" ")\n    print()\n# 1 2 3\n# 2 4 6\n# 3 6 9',
+        [
+            { t: "Cetak persegi bintang 3 baris x 3 kolom ('***' di tiap baris) memakai nested loop dan print(..., end='').", h: "Loop luar = baris, loop dalam = kolom; print() kosong di akhir tiap baris.", v: [NEST, /end\s*=/], e: LINES(["***", "***", "***"]) },
+            { t: "Cetak persegi '#' berukuran 4 baris x 4 kolom memakai nested loop.", h: "Ubah jumlah iterasi kedua loop menjadi 4.", v: [NEST, /end\s*=/], e: LINES(["####", "####", "####", "####"]) },
+            { t: "Cetak segitiga siku-siku bintang setinggi 4 baris (1, 2, 3, lalu 4 bintang) dengan nested loop.", h: "Loop dalam: for j in range(i) dengan i dari 1 sampai 4.", v: [NEST, /end\s*=/], e: LINES(["*", "**", "***", "****"]) },
+            { t: "Cetak segitiga angka 4 baris: baris 1 '1', baris 2 '1 2', baris 3 '1 2 3', baris 4 '1 2 3 4'.", h: "Loop dalam mencetak j dari 1 sampai i (end=' ').", v: [NEST, /end\s*=/], e: LINES(["1", "1 2", "1 2 3", "1 2 3 4"]) },
+            { t: "Cetak piramida bintang setinggi 3 rata tengah: '  *', ' ***', '*****' (spasi di depan harus tepat).", h: "Baris i: spasi sebanyak (3 - i), bintang sebanyak 2 * i - 1.", v: [/\bfor\b/], e: LINESX(["  *", " ***", "*****"]) },
+            { t: "Cetak tabel perkalian 1 sampai 5: baris ke-i berisi i*1 sampai i*5 dipisah spasi (baris pertama '1 2 3 4 5').", h: "Cetak i * j di loop dalam.", v: [NEST], e: LINES(["1 2 3 4 5", "2 4 6 8 10", "3 6 9 12 15", "4 8 12 16 20", "5 10 15 20 25"]) },
+            { t: "Cetak papan catur 4 x 4: '#' bila (i + j) genap, selain itu '.' (baris pertama '#.#.', baris kedua '.#.#').", h: "Periksa (i + j) % 2 == 0 di dalam loop dalam.", v: [NEST, /%/], e: LINES(["#.#.", ".#.#", "#.#.", ".#.#"]) },
+            { t: "Cetak semua pasangan (i, j) dari 1 sampai 3 dengan i < j, satu pasangan per baris: '1 2', '1 3', '2 3'.", h: "Loop dalam bisa dimulai dari i + 1.", v: [NEST], e: LINES(["1 2", "1 3", "2 3"]) }
+        ]);
+
+    /* ===== 121: is vs ==, mutable vs immutable ===== */
+    mk(121, "Intermediate", "Level 121: Operator is, Mutable vs Immutable",
+        "<b>Konsep:</b> <code>==</code> membandingkan <b>nilai</b>, sedangkan <code>is</code> membandingkan <b>identitas</b> (apakah dua nama menunjuk objek yang sama di memori). Objek <i>mutable</i> (list, dict, set) bisa diubah di tempat; objek <i>immutable</i> (int, str, tuple, bool) tidak bisa: operasi menghasilkan objek baru.<br><br><b>Contoh &amp; output:</b> setelah <code>b = a</code>, kedua nama menunjuk list yang sama, jadi <code>b.append(3)</code> ikut mengubah <code>a</code>. <code>a.copy()</code> membuat salinan dangkal; untuk list bersarang pakai <code>copy.deepcopy</code>.<br><br><b>Kesalahan umum:</b> mengira <code>b = a</code> menyalin list; memakai <code>is</code> untuk membandingkan angka/string (pakai <code>==</code>); hanya <code>x is None</code> yang memang idiom untuk <code>is</code>; mengubah list yang sedang diiterasi.",
+        'a = [1, 2]\nb = a            # b menunjuk list yang SAMA\nc = a.copy()     # c adalah salinan\nb.append(3)\nprint(a, c)                    # [1, 2, 3] [1, 2]\nprint(a is b, a is c, a == c)  # True False False',
+        [
+            { t: "Buat a = [1, 2, 3] dan b = a. Tambahkan 4 lewat b.append(4), lalu cetak a (a ikut berubah).", h: "b = a tidak menyalin list; keduanya satu objek.", v: [/\bb\s*=\s*a\b/, /\.append\s*\(/], e: /\[1, 2, 3, 4\]/, c: "assert a == [1, 2, 3, 4] and a is b" },
+            { t: "Buat a = [1, 2, 3] dan salinannya c = a.copy(). Tambahkan 4 ke c, lalu cetak a dan c (dua baris).", h: "copy() membuat objek list baru.", v: [/\.copy\s*\(|\[\s*:\s*\]|\blist\s*\(\s*a\s*\)/], e: LINES(["[1, 2, 3]", "[1, 2, 3, 4]"]), c: "assert a == [1, 2, 3] and c == [1, 2, 3, 4]" },
+            { t: "Buat x = [1, 2] dan y = [1, 2]. Cetak x == y lalu x is y (dua baris).", h: "Isi sama belum tentu objek yang sama.", v: [/\bis\b/, /==/], e: LINES(["True", "False"]), c: "assert x == y and x is not y" },
+            { t: "Buat s = 'halo'. Coba s[0] = 'H' di dalam try/except TypeError, dan cetak 'string immutable' saat gagal.", h: "String tidak bisa diubah per karakter.", v: [/\btry\b/, /except\s+TypeError/], e: /string immutable/i, c: "assert s == 'halo'" },
+            { t: "Buat tuple t = (1, 2, 3) dan tuple baru t2 dengan menambahkan 4 (t + (4,)). Cetak t lalu t2 (dua baris).", h: "Tuple tidak berubah; operasi + menghasilkan tuple baru.", v: [/\bt2\s*=/], e: LINES(["(1, 2, 3)", "(1, 2, 3, 4)"]), c: "assert t == (1, 2, 3) and t2 == (1, 2, 3, 4)" },
+            { t: "Buat data = [[1, 2], [3]] dan salinan penuh salinan = copy.deepcopy(data). Tambahkan 99 ke salinan[0], lalu cetak data (tidak boleh berubah).", h: "import copy; deepcopy menyalin juga list di dalamnya.", v: [/deepcopy\s*\(/], e: /^\s*\[\[1, 2\], \[3\]\]\s*$/, c: "assert data == [[1, 2], [3]] and salinan[0] == [1, 2, 99]" },
+            { t: "Buat hasil = None. Cetak hasil is None (cara idiomatik memeriksa None).", h: "Untuk None gunakan is, bukan ==.", v: [/\bis\s+None\b/], e: /True/, c: "assert hasil is None" },
+            { t: "Buat fungsi tambah_item(daftar) yang melakukan daftar.append('x'). Buat l = [], panggil tambah_item(l) sekali, lalu cetak l ('x' muncul karena list diteruskan sebagai referensi).", h: "Fungsi mengubah objek yang sama dengan milik pemanggil.", v: [/def\s+tambah_item\s*\(/, /\.append\s*\(/], e: /\['x'\]/, c: "assert l == ['x']" }
+        ]);
+
+    /* ===== 122: Traceback & debugging ===== */
+    mk(122, "Intermediate", "Level 122: Membaca Traceback & Debugging Dasar",
+        "<b>Konsep:</b> Saat program error, Python mencetak <i>traceback</i>. Bacalah <b>dari bawah</b>: baris terakhir berisi jenis dan pesan error; baris-baris di atasnya menunjuk file dan nomor baris tempat error terjadi. Jenis umum: <code>SyntaxError</code> (tata tulis salah), <code>NameError</code> (nama belum didefinisikan), <code>TypeError</code> (tipe tidak cocok), <code>ValueError</code> (nilai tidak valid), <code>IndexError</code>, <code>ZeroDivisionError</code>, <code>AttributeError</code>.<br><br><b>Contoh &amp; output:</b> <code>int(\"dua puluh\")</code> berakhir dengan <code>ValueError: invalid literal for int() with base 10: 'dua puluh'</code>. Teknik dasar mencari bug: baca pesan error, cetak nilai variabel (<i>print debugging</i>), kecilkan kode sampai masalahnya terisolasi.<br><br><b>Kesalahan umum:</b> membaca traceback dari atas; mengubah kode secara acak tanpa membaca pesan; mengabaikan nomor baris. Setiap soal di level ini memberi kode yang rusak: tulis versi yang benar.",
+        '# Jalankan kode ini dan baca tracebacknya dari BAWAH\nprint("Mulai")\numur = int("dua puluh")\nprint(umur)\n# ValueError: invalid literal for int() with base 10: \'dua puluh\'',
+        [
+            { t: "Kode rusak: nama = 'Ani' lalu print(nma). Ini memicu NameError karena salah ketik. Tulis versi yang benar sehingga mencetak Ani.", h: "Nama variabel harus sama persis (nama).", v: [/\bprint\s*\(/], e: /Ani/, c: "assert nama == 'Ani'" },
+            { t: "Kode rusak: print('Umur: ' + 20) memicu TypeError (str + int). Perbaiki dengan str() atau f-string agar mencetak: Umur: 20", h: "'Umur: ' + str(20) atau f\"Umur: {20}\"", v: [/\bprint\s*\(/], e: /Umur: 20/ },
+            { t: "Kode rusak: angka = int('3.5') memicu ValueError. Perbaiki lewat float() lebih dulu agar angka bernilai integer 3, lalu cetak angka.", h: "int(float('3.5')) memotong desimal.", v: [/\bint\s*\(/, /\bfloat\s*\(/], e: /^\s*3\s*$/, c: "assert angka == 3 and type(angka).__name__ == 'int'" },
+            { t: "Kode rusak: total = 0; jumlah = 0; print(total / jumlah) memicu ZeroDivisionError. Tulis versi aman: jika jumlah == 0 cetak 0, selain itu cetak total / jumlah.", h: "Periksa pembagi dengan if sebelum membagi.", v: [/\bif\b/, /\//], e: /^\s*0(\.0)?\s*$/, c: "assert total == 0 and jumlah == 0" },
+            { t: "Kode rusak: kata = 'python'; print(kata[6]) memicu IndexError (indeks mulai dari 0). Perbaiki agar mencetak huruf terakhir, yaitu n.", h: "kata[5] atau kata[-1].", v: [/\bkata\s*\[/], e: /^\s*n\s*$/, c: "assert kata == 'python'" },
+            { t: "Kode rusak: for i in range(1, 5): print(i) seharusnya mencetak 1 sampai 5 (off-by-one). Perbaiki.", h: "Batas atas range tidak ikut dicetak.", v: [/range\s*\(\s*1\s*,\s*6\s*\)/], e: LINES(["1", "2", "3", "4", "5"]) },
+            { t: "Kode rusak: def rata(a, b): return a + b / 2 (urutan operasi salah). Perbaiki lalu cetak rata(10, 20), harus 15.0.", h: "Pakai tanda kurung: (a + b) / 2.", v: [/def\s+rata\s*\(/], e: /^\s*15(\.0)?\s*$/, c: "assert rata(10, 20) == 15 and rata(1, 2) == 1.5" },
+            { t: "Kode rusak: baris 'print(i)' tidak diindentasi di bawah 'for i in range(3):' (IndentationError). Tulis versi benar yang mencetak 0, 1, 2.", h: "Isi blok for harus menjorok 4 spasi.", v: [/for\s+\w+\s+in\s+range\s*\(\s*3\s*\)\s*:\s*\n[ \t]+print/], e: LINES(["0", "1", "2"]) },
+            { t: "Kode rusak: x = [1, 2, 3]; x.push(4) memicu AttributeError. Simpan nama error itu sebagai string di variabel jenis_error, perbaiki x dengan append(4), lalu cetak jenis_error dan x (dua baris).", h: "List tidak punya push; yang benar append.", v: [/\.append\s*\(\s*4\s*\)/], e: LINES(["AttributeError", "[1, 2, 3, 4]"]), c: "assert jenis_error == 'AttributeError' and x == [1, 2, 3, 4]" }
+        ]);
+
+    /* ===== 123: itertools ===== */
+    mk(123, "Intermediate", "Level 123: itertools",
+        "<b>Konsep:</b> Modul <code>itertools</code> berisi pembangun <i>iterator</i> yang efisien: <code>chain</code> (menyambung), <code>combinations</code>/<code>permutations</code>/<code>product</code> (kombinatorik), <code>accumulate</code> (total berjalan), <code>islice</code> (mengiris iterator), <code>count</code>/<code>cycle</code> (tak hingga), dan <code>groupby</code> (mengelompokkan).<br><br><b>Contoh &amp; output:</b> <code>list(combinations('ABC', 2))</code> menghasilkan <code>[('A', 'B'), ('A', 'C'), ('B', 'C')]</code>.<br><br><b>Kesalahan umum:</b> mencetak iterator langsung (hasilnya <code>&lt;itertools...&gt;</code>, bungkus dengan <code>list()</code>); iterator hanya bisa dipakai <b>sekali</b>; <code>groupby</code> hanya mengelompokkan elemen yang bersebelahan, jadi data harus diurutkan dulu; loop tak berujung pada <code>count()</code>/<code>cycle()</code> tanpa <code>islice</code>.",
+        'from itertools import combinations, chain\n\nprint(list(combinations("ABC", 2)))  # [(\'A\', \'B\'), (\'A\', \'C\'), (\'B\', \'C\')]\nprint(list(chain([1, 2], [3])))      # [1, 2, 3]',
+        [
+            { t: "Sambung a = [1, 2] dan b = [3, 4] dengan itertools.chain, lalu cetak hasilnya sebagai list.", h: "list(chain(a, b))", v: [/chain\s*\(/], e: /\[1, 2, 3, 4\]/ },
+            { t: "Cetak semua kombinasi 2 huruf dari 'ABC' dengan combinations (sebagai list).", h: "list(combinations('ABC', 2))", v: [/combinations\s*\(/], e: /\[\('A', 'B'\), \('A', 'C'\), \('B', 'C'\)\]/ },
+            { t: "Cetak banyaknya permutasi 2 elemen dari [1, 2, 3] memakai permutations dan len().", h: "len(list(permutations([1, 2, 3], 2)))", v: [/permutations\s*\(/], e: /^\s*6\s*$/ },
+            { t: "Cetak list product([0, 1], repeat=2) (semua pasangan bit).", h: "product(..., repeat=2)", v: [/product\s*\(/], e: /\[\(0, 0\), \(0, 1\), \(1, 0\), \(1, 1\)\]/ },
+            { t: "Cetak total berjalan dari [1, 2, 3, 4] dengan accumulate (sebagai list).", h: "list(accumulate([1, 2, 3, 4]))", v: [/accumulate\s*\(/], e: /\[1, 3, 6, 10\]/ },
+            { t: "Ambil 3 angka pertama dari count(10) memakai islice, lalu cetak sebagai list.", h: "list(islice(count(10), 3))", v: [/islice\s*\(/, /count\s*\(/], e: /\[10, 11, 12\]/ },
+            { t: "Urutkan ['apel', 'anggur', 'bayam', 'buah', 'cabai'], kelompokkan per huruf pertama dengan groupby, dan cetak tiap grup (huruf lalu list katanya).", h: "groupby(data, key=lambda k: k[0]) lalu list(grup).", v: [/groupby\s*\(/, /sorted\s*\(|\.sort\s*\(/], e: /a\W+anggur\W+apel[\s\S]*b\W+bayam\W+buah[\s\S]*c\W+cabai/ },
+            { t: "Dari lampu = ['merah', 'kuning', 'hijau'], ambil 5 nilai pertama dari cycle(lampu) dan cetak (merah, kuning, hijau, merah, kuning).", h: "islice(cycle(lampu), 5)", v: [/cycle\s*\(/, /islice\s*\(|next\s*\(/], e: /merah[\s\S]*kuning[\s\S]*hijau[\s\S]*merah[\s\S]*kuning/ }
+        ]);
+
+    /* ===== 124: os & pathlib ===== */
+    mk(124, "Intermediate", "Level 124: os & pathlib",
+        "<b>Konsep:</b> <code>pathlib.Path</code> memperlakukan lokasi file sebagai objek: <code>Path('/tmp') / 'a.txt'</code> menggabungkan path, <code>.name</code>, <code>.stem</code>, <code>.suffix</code>, <code>.parent</code> menguraikannya, dan <code>.exists()</code>, <code>.mkdir()</code>, <code>.write_text()</code>, <code>.read_text()</code>, <code>.glob('*.txt')</code> bekerja pada filesystem. <code>os.path.join</code> dan <code>os.getcwd()</code> adalah padanan gaya lama.<br><br><b>Contoh &amp; output:</b> <code>Path('/tmp/data/a.txt').suffix</code> menghasilkan <code>'.txt'</code>. Di browser, filesystem bersifat sementara (hilang saat halaman dimuat ulang).<br><br><b>Kesalahan umum:</b> menggabungkan path dengan <code>+</code> atau <code>'\\'</code> alih-alih <code>/</code>/<code>join</code>; lupa <code>exist_ok=True</code> sehingga <code>mkdir</code> error bila folder sudah ada; mengira <code>Path(...)</code> sendiri membuat file; path relatif bergantung pada folder kerja saat program dijalankan.",
+        'from pathlib import Path\n\np = Path("/tmp/data/laporan.txt")\nprint(p.name, p.stem, p.suffix)   # laporan.txt laporan .txt\nprint(p.parent)                   # /tmp/data\nprint(Path("/tmp") / "data" / "a.txt")  # /tmp/data/a.txt',
+        [
+            { t: "Dari p = Path('/tmp/data/laporan.txt') cetak p.name, p.stem, dan p.suffix (tiga baris).", h: "Tiga print terpisah.", v: [/Path\s*\(/], e: LINES(["laporan.txt", "laporan", ".txt"]) },
+            { t: "Cetak folder induk (parent) dari Path('/tmp/data/laporan.txt').", h: "p.parent", v: [/\.parent\b/], e: LINES(["/tmp/data"]) },
+            { t: "Gabungkan Path('/tmp') / 'proyek' / 'main.py' memakai operator / lalu cetak hasilnya.", h: "Operator / pada objek Path.", v: [/Path\s*\(\s*['"][^'"]*['"]\s*\)\s*\/\s*['"]/], e: LINES(["/tmp/proyek/main.py"]) },
+            { t: "Gabungkan 'data', '2026', 'file.csv' dengan os.path.join dan cetak hasilnya.", h: "import os; os.path.join(a, b, c)", v: [/os\.path\.join\s*\(/], e: LINES(["data/2026/file.csv"]) },
+            { t: "Buat folder /tmp/odyssey/sub dengan mkdir(parents=True, exist_ok=True), lalu cetak apakah folder itu exists().", h: "Path('/tmp/odyssey/sub').mkdir(parents=True, exist_ok=True)", v: [/mkdir\s*\(/, /parents\s*=\s*True/, /exist_ok\s*=\s*True/], e: LINES(["True"]), c: "from pathlib import Path\nassert Path('/tmp/odyssey/sub').is_dir()" },
+            { t: "Buat folder /tmp/odyssey (jika belum ada), tulis 'halo' ke /tmp/odyssey/catatan.txt dengan write_text(), lalu baca kembali dengan read_text() dan cetak.", h: "Path.write_text('halo') lalu Path.read_text().", v: [/write_text\s*\(/, /read_text\s*\(/], e: LINES(["halo"]), c: "from pathlib import Path\nassert Path('/tmp/odyssey/catatan.txt').read_text() == 'halo'" },
+            { t: "Awali dengan shutil.rmtree('/tmp/odyssey/data', ignore_errors=True) agar bersih, buat folder itu, tulis file a.txt, b.txt, c.txt di dalamnya, lalu cetak nama file hasil glob('*.txt') secara terurut (satu per baris).", h: "sorted(p.name for p in folder.glob('*.txt'))", v: [/rmtree\s*\(/, /glob\s*\(/, /sorted\s*\(/, /write_text\s*\(|open\s*\(/], e: LINES(["a.txt", "b.txt", "c.txt"]), c: "from pathlib import Path\nassert sorted(p.name for p in Path('/tmp/odyssey/data').glob('*.txt')) == ['a.txt', 'b.txt', 'c.txt']" },
+            { t: "Tulis 'abcde' ke /tmp/odyssey/ukuran.txt (folder dibuat dulu bila perlu), lalu cetak ukuran file itu dalam byte memakai stat().st_size atau os.path.getsize().", h: "Path.stat().st_size", v: [/stat\s*\(\s*\)\s*\.st_size|getsize\s*\(/], e: LINES(["5"]), c: "from pathlib import Path\nassert Path('/tmp/odyssey/ukuran.txt').stat().st_size == 5" }
+        ]);
+
+    /* ===== 125: venv & pip (dinilai dari teks) ===== */
+    mk(125, "Intermediate", "Level 125: Virtual Environment & pip",
+        "<b>Konsep:</b> <i>Virtual environment</i> (venv) adalah folder Python terisolasi sehingga paket proyek A tidak bentrok dengan proyek B. <code>pip</code> memasang paket ke venv yang sedang aktif, dan <code>requirements.txt</code> mencatat daftar paket beserta versinya agar orang lain bisa memasang lingkungan yang sama.<br><br><b>Contoh &amp; perintah:</b> buat dengan <code>python -m venv .venv</code>, aktifkan dengan <code>source .venv/bin/activate</code> (Linux/macOS) atau <code>.venv\\Scripts\\activate</code> (Windows), lalu <code>pip install requests</code>. Soal level ini berupa perintah terminal dan dinilai dari isi teks (tidak dijalankan).<br><br><b>Kesalahan umum:</b> memasang paket tanpa mengaktifkan venv (masuk ke Python global); meng-commit folder venv ke Git (tambahkan ke <code>.gitignore</code>); lupa mengunci versi (<code>requests==2.32.3</code>) sehingga hasil berbeda antar mesin.",
+        '# Perintah terminal\n# python -m venv .venv\n# source .venv/bin/activate\n# pip install requests==2.32.3\n# pip freeze > requirements.txt',
+        [
+            { t: "Tulis perintah membuat virtual environment bernama .venv.", h: "python -m venv .venv", v: [/python3?\s+-m\s+venv\s+\S+/], x: true },
+            { t: "Tulis perintah mengaktifkan .venv untuk Linux/macOS dan untuk Windows (dua baris).", h: "source .venv/bin/activate dan .venv\\Scripts\\activate", v: [/source\s+\S*bin[\\\/]activate/, /Scripts[\\\/]activate/], x: true },
+            { t: "Tulis perintah memasang paket requests dengan versi dikunci (==).", h: "pip install requests==2.32.3", v: [/pip3?\s+install\s+requests==\d+(\.\d+)+/], x: true },
+            { t: "Tulis perintah menyimpan daftar paket terpasang ke berkas requirements.txt.", h: "pip freeze > requirements.txt", v: [/pip3?\s+freeze\s*>\s*requirements\.txt/], x: true },
+            { t: "Tulis perintah memasang semua paket dari requirements.txt.", h: "pip install -r requirements.txt", v: [/pip3?\s+install\s+-r\s+requirements\.txt/], x: true },
+            { t: "Tulis perintah menonaktifkan venv, lalu satu baris .gitignore yang mengabaikan folder .venv.", h: "deactivate; baris .venv/ pada .gitignore.", v: [/\bdeactivate\b/, /^\s*\.?venv\/?\s*$/m], x: true },
+            { t: "Tulis dua perintah: menampilkan daftar paket terpasang, lalu menghapus paket requests.", h: "pip list dan pip uninstall requests", v: [/pip3?\s+list/, /pip3?\s+uninstall\s+(-y\s+)?requests/], x: true }
+        ]);
+
+    /* ===== 126: Matplotlib dasar ===== */
+    const MPL = [/matplotlib\.pyplot\s+as\s+plt/, /plt\.subplots\s*\(/];
+    mk(126, "Data Engineering", "Level 126: Matplotlib Dasar",
+        "<b>Konsep:</b> Matplotlib menggambar grafik. Gaya yang dianjurkan adalah <i>object-oriented</i>: <code>fig, ax = plt.subplots()</code> membuat kanvas (<code>fig</code>) dan area plot (<code>ax</code>), lalu semua pengaturan dipanggil lewat <code>ax</code>: <code>ax.plot()</code> (garis), <code>ax.bar()</code> (batang), <code>ax.scatter()</code> (titik), <code>ax.hist()</code> (histogram), <code>ax.set_title()</code>, <code>ax.set_xlabel()</code>, <code>ax.legend()</code>. <code>fig.savefig('file.png')</code> menyimpan gambar.<br><br><b>Contoh &amp; output:</b> kode di bawah menampilkan satu grafik garis berjudul \"Contoh\" di panel terminal.<br><br><b>Kesalahan umum:</b> mencampur gaya <code>plt.plot</code> dan <code>ax.plot</code>; lupa <code>label=</code> sebelum <code>ax.legend()</code>; memanggil <code>plt.show()</code> berkali-kali; jumlah data x dan y tidak sama.",
+        'import matplotlib.pyplot as plt\n\nfig, ax = plt.subplots()\nax.plot([1, 2, 3], [2, 4, 8])\nax.set_title("Contoh")\nplt.show()',
+        [
+            { t: "Buat fig, ax = plt.subplots(), gambar garis x = [1, 2, 3] dan y = [2, 4, 8] dengan ax.plot, lalu tampilkan dengan plt.show().", h: "ax.plot(x, y)", v: MPL.concat([/ax\.plot\s*\(/]), c: "assert len(ax.lines) == 1 and list(ax.lines[0].get_ydata()) == [2, 4, 8]" },
+            { t: "Pada grafik garis sederhana (fig, ax = plt.subplots()), beri judul 'Penjualan', label sumbu x 'Bulan', dan label sumbu y 'Unit', lalu tampilkan.", h: "ax.set_title, ax.set_xlabel, ax.set_ylabel", v: MPL.concat([/set_title\s*\(/, /set_xlabel\s*\(/, /set_ylabel\s*\(/]), c: "assert ax.get_title() == 'Penjualan' and ax.get_xlabel() == 'Bulan' and ax.get_ylabel() == 'Unit'" },
+            { t: "Buat grafik batang ax.bar(['A', 'B', 'C'], [5, 3, 7]) lalu tampilkan.", h: "ax.bar(kategori, nilai)", v: MPL.concat([/ax\.bar\s*\(/]), c: "assert len(ax.patches) == 3 and [round(p.get_height()) for p in ax.patches] == [5, 3, 7]" },
+            { t: "Buat scatter plot ax.scatter dengan x = [1, 2, 3, 4] dan y = [1, 4, 9, 16], lalu tampilkan.", h: "ax.scatter(x, y)", v: MPL.concat([/ax\.scatter\s*\(/]), c: "assert len(ax.collections) == 1" },
+            { t: "Gambar dua garis pada satu ax dengan label 'Kucing' dan 'Anjing' (data bebas), tambahkan ax.legend(), lalu tampilkan.", h: "ax.plot(x, y, label='Kucing')", v: MPL.concat([/label\s*=/, /ax\.legend\s*\(/]), c: "assert len(ax.lines) == 2 and ax.get_legend() is not None and [t.get_text() for t in ax.get_legend().get_texts()] == ['Kucing', 'Anjing']" },
+            { t: "Buat histogram dari data = [1, 2, 2, 3, 3, 3, 4, 4, 5] dengan bins=5 memakai ax.hist, lalu tampilkan.", h: "ax.hist(data, bins=5)", v: MPL.concat([/ax\.hist\s*\(/, /bins\s*=\s*5/]), c: "assert len(ax.patches) == 5" },
+            { t: "Buat dua panel berdampingan: fig, axes = plt.subplots(1, 2). Panel kiri berisi garis (axes[0].plot), panel kanan berisi batang (axes[1].bar). Tampilkan.", h: "axes adalah array dua ax.", v: [/matplotlib\.pyplot\s+as\s+plt/, /plt\.subplots\s*\(\s*1\s*,\s*2/, /axes\s*\[\s*0\s*\]\s*\.plot\s*\(/, /axes\s*\[\s*1\s*\]\s*\.bar\s*\(/], c: "assert len(axes) == 2 and len(axes[0].lines) == 1 and len(axes[1].patches) >= 1" },
+            { t: "Buat grafik garis apa saja (fig, ax = plt.subplots()), lalu simpan ke /tmp/grafik.png dengan fig.savefig().", h: "fig.savefig('/tmp/grafik.png')", v: MPL.concat([/savefig\s*\(/]), c: "import os\nassert os.path.getsize('/tmp/grafik.png') > 0" }
+        ]);
+
+    /* ===== 127: Embedding & kemiripan vektor ===== */
+    mk(127, "AI Engineering", "Level 127: Embedding & Kemiripan Vektor",
+        "<b>Konsep:</b> <i>Embedding</i> mengubah teks menjadi vektor angka sehingga teks yang maknanya mirip menghasilkan vektor yang berdekatan. Kedekatan diukur dengan <b>cosine similarity</b> = <code>dot(a, b) / (norma(a) * norma(b))</code>, bernilai 1 untuk arah sama, 0 untuk tegak lurus. Basis data vektor (Level berikutnya) hanya menyimpan vektor dan mencari yang terdekat.<br><br><b>Contoh &amp; output:</b> embedding asli datang dari model (ratusan dimensi); di sini kita memakai <i>bag-of-words</i> sederhana: tiap dimensi = jumlah kemunculan satu kata kosakata. Vektor <code>[1, 2, 3]</code> dan <code>[2, 4, 6]</code> searah, cosine = <code>1.0</code>.<br><br><b>Kesalahan umum:</b> membagi dengan nol bila salah satu vektor berisi nol semua; membandingkan vektor dari kosakata/model berbeda; mengira jarak kecil = skor tinggi (cosine dan jarak berlawanan arah).",
+        'import math\n\ndef dot(a, b):\n    return sum(x * y for x, y in zip(a, b))\n\ndef norma(v):\n    return math.sqrt(dot(v, v))\n\ndef cosine(a, b):\n    return dot(a, b) / (norma(a) * norma(b))\n\nprint(round(cosine([1, 2, 3], [2, 4, 6]), 4))   # 1.0\nprint(round(cosine([1, 0], [0, 1]), 4))         # 0.0',
+        [
+            { t: "Buat fungsi dot(a, b) yang mengembalikan hasil kali titik dua vektor (jumlah a[i] * b[i]). Cetak dot([1, 2, 3], [4, 5, 6]).", h: "sum(x * y for x, y in zip(a, b))", v: [/def\s+dot\s*\(/], e: /^\s*32\s*$/, c: "assert dot([1, 0], [0, 1]) == 0 and dot([2, 3], [4, 5]) == 23" },
+            { t: "Buat fungsi norma(v) (panjang vektor, akar jumlah kuadrat). Cetak norma([3, 4]).", h: "math.sqrt(sum(x * x for x in v))", v: [/def\s+norma\s*\(/], e: /^\s*5(\.0)?\s*$/, c: "assert abs(norma([1, 0]) - 1) < 1e-9 and abs(norma([3, 4]) - 5) < 1e-9" },
+            { t: "Buat dot, norma, dan cosine(a, b) = dot / (norma(a) * norma(b)). Cetak round(cosine([1, 0], [0, 1]), 4) lalu round(cosine([1, 2], [2, 4]), 4).", h: "Vektor tegak lurus -> 0.0; searah -> 1.0.", v: [/def\s+cosine\s*\(/], e: LINES(["0.0", "1.0"]), c: "assert abs(cosine([1, 2], [2, 4]) - 1) < 1e-9 and abs(cosine([1, 0], [0, 1])) < 1e-9" },
+            { t: "Dengan VOKAB = ['kucing', 'anjing', 'makan', 'tidur'], buat embed(teks) yang mengembalikan list jumlah kemunculan tiap kata VOKAB di teks. Cetak embed('kucing makan makan').", h: "[teks.split().count(k) for k in VOKAB]", v: [/def\s+embed\s*\(/], e: /\[1, 0, 2, 0\]/, c: "assert embed('anjing tidur tidur') == [0, 1, 0, 2]" },
+            { t: "Dalam satu program (VOKAB seperti soal sebelumnya, embed, dot, norma, cosine), cetak round(cosine(embed('kucing makan'), embed('kucing tidur')), 2).", h: "Hasilnya 0.5 karena hanya satu kata yang sama.", v: [/def\s+embed\s*\(/, /def\s+cosine\s*\(/], e: LINES(["0.5"]) },
+            { t: "Dengan VOKAB = ['kucing', 'anjing', 'makan', 'tidur', 'ikan'] dan dokumen = ['kucing makan ikan', 'anjing tidur', 'kucing tidur'], buat cari(kueri) yang mengembalikan dokumen paling mirip (cosine tertinggi). Cetak cari('kucing makan').", h: "Embed kueri dan tiap dokumen, ambil yang cosine-nya maksimum.", v: [/def\s+cari\s*\(/], e: /kucing makan ikan/, c: "assert cari('anjing tidur') == 'anjing tidur' and cari('kucing makan') == 'kucing makan ikan'" },
+            { t: "Buat normalisasi(v) yang membagi tiap elemen dengan norma vektor (panjang menjadi 1). Cetak normalisasi([3, 4]).", h: "[x / norma for x in v]", v: [/def\s+normalisasi\s*\(/], e: /\[0\.6, 0\.8\]/, c: "assert normalisasi([0, 5]) == [0.0, 1.0]" },
+            { t: "Buat euclid(a, b) (jarak Euclidean: akar jumlah kuadrat selisih). Cetak euclid([0, 0], [3, 4]).", h: "math.sqrt(sum((x - y) ** 2 for x, y in zip(a, b)))", v: [/def\s+euclid\s*\(/], e: /^\s*5(\.0)?\s*$/, c: "assert euclid([1, 1], [1, 1]) == 0 and abs(euclid([0, 0], [3, 4]) - 5) < 1e-9" }
+        ]);
+})();
+
+/* ---------- MINI-PROYEK DI AKHIR TIAP FASE (128-139) ----------
+   Tiap mini-proyek berisi 5 soal berjenjang (mudah -> sulit) yang bersama-sama membangun satu program kecil.
+   Setiap soal berdiri sendiri (tulis ulang bagian yang dibutuhkan) dan dinilai dengan tes perilaku. */
+(function () {
+    function V(rs) { rs = [].concat(rs); return function (c) { return rs.every(function (r) { return r.test(c); }); }; }
+    function C(lines) { return lines.join("\n"); }
+    function norm(l) { return l.replace(/\s+/g, " ").trim().toLowerCase(); }
+    function LINES(arr) {
+        const want = arr.map(function (x) { return norm(String(x)); });
+        return { test: function (s) {
+            const got = String(s).replace(/\r/g, "").split("\n").map(norm).filter(function (l) { return l !== ""; });
+            return got.length === want.length && got.every(function (x, i) { return x === want[i]; });
+        } };
+    }
+    function mk(id, cat, title, desc, example, rows) {
+        levelsData.push({ id: id, category: cat, title: title, desc: desc, example: example,
+            tasks: rows.map(function (r) {
+                return { task: r.t, hint: r.h, validate: V(r.v || [/[\s\S]/]), expect: r.e || null, check: r.c || null,
+                         stdin: r.i || null, needsIn: !!r.n, forceText: !!r.x, skipUnused: true };
+            }) });
+    }
+    const intro = function (fase, isi) {
+        return "<b>Mini-proyek penutup fase " + fase + ":</b> " + isi + " Soal disusun dari mudah ke sulit dan saling melengkapi; tiap soal berdiri sendiri, jadi tulis ulang bagian yang dibutuhkan. Jawaban dinilai dengan menjalankan tes pada fungsi/kelas yang kamu buat.";
+    };
+
+    /* ----- 128: Beginner ----- */
+    mk(128, "Beginner", "Level 128: Mini-Proyek Beginner: Kasir & Tebak Angka",
+        intro("Beginner", "membuat kasir sederhana lalu permainan tebak angka dari variabel, operator, percabangan, input(), dan while.") + "<br><br><b>Contoh &amp; output:</b> kode di bawah menghitung total belanja dan mencetak <code>Total: 25000</code>.<br><br><b>Kesalahan umum:</b> lupa mengubah hasil input() ke angka; memakai <code>=</code> alih-alih <code>==</code>; while yang kondisinya tidak pernah berubah.",
+        'harga1 = 12000\nharga2 = 8500\nharga3 = 4500\ntotal = harga1 + harga2 + harga3\nprint(f"Total: {total}")  # Total: 25000',
+        [
+            { t: "Buat harga1 = 12000, harga2 = 8500, harga3 = 4500. Hitung total (jumlah ketiganya) dan cetak: Total: 25000", h: "total = harga1 + harga2 + harga3", v: [/\btotal\s*=/], e: /Total: 25000/, c: "assert total == 25000" },
+            { t: "Dengan total = 25000: jika total >= 20000 beri diskon 10% (bayar = total * 0.9), selain itu bayar = total. Cetak: Bayar: 22500.0", h: "Gunakan if ... else.", v: [/\bif\b/, /\belse\b/, /\bbayar\b/], e: /Bayar: 22500(\.0)?/, c: "assert bayar == 22500" },
+            { t: "Dengan bayar = 22500.0, baca uang dari input() (otomatis: 30000), ubah ke int, lalu cetak: Kembalian: 7500.0", h: "kembalian = uang - bayar", v: [/\binput\s*\(/, /\bint\s*\(|\bfloat\s*\(/], i: ["30000"], e: /Kembalian: 7500(\.0)?/, c: "assert uang == 30000" },
+            { t: "Tebak angka: rahasia = 7. Baca tebakan (int dari input(), otomatis: 5). Cetak 'Terlalu kecil' bila tebakan < rahasia, 'Terlalu besar' bila lebih, selain itu 'Benar!'.", h: "if / elif / else.", v: [/\binput\s*\(/, /\bif\b/, /\belif\b/, /\belse\b/], i: ["5"], e: /terlalu kecil/i, c: "assert rahasia == 7" },
+            { t: "Ulangi tebakan dengan while (rahasia = 7; input otomatis: 3, 9, 7). Beri petunjuk seperti soal sebelumnya, hitung percobaan (variabel percobaan), berhenti saat benar, lalu cetak: Benar dalam 3 percobaan", h: "Naikkan percobaan di setiap iterasi; hentikan dengan break atau kondisi while.", v: [/\bwhile\b/, /\binput\s*\(/, /\bpercobaan\b/], i: ["3", "9", "7"], e: /terlalu kecil[\s\S]*terlalu besar[\s\S]*benar dalam 3 percobaan/i, c: "assert percobaan == 3" }
+        ]);
+
+    /* ----- 129: Intermediate ----- */
+    mk(129, "Intermediate", "Level 129: Mini-Proyek Intermediate: Pengelola Nilai Siswa",
+        intro("Intermediate", "membangun pengelola nilai dari fungsi, dictionary, sorted/lambda/enumerate, Counter, dan penanganan error.") + "<br><br><b>Contoh &amp; output:</b> kode di bawah mencetak <code>80.0</code>.<br><br><b>Kesalahan umum:</b> membagi dengan nol pada daftar kosong; mengubah dictionary sambil diiterasi; lupa <code>reverse=True</code>.",
+        'def rata_rata(daftar):\n    return sum(daftar) / len(daftar) if daftar else 0\n\nnilai = {"Ani": 90, "Budi": 70, "Cici": 85}\nprint(rata_rata([80, 90, 70]))  # 80.0',
+        [
+            { t: "Buat rata_rata(daftar) yang mengembalikan rata-rata (0 bila daftar kosong). Cetak rata_rata([80, 90, 70]).", h: "Periksa daftar kosong sebelum membagi.", v: [/def\s+rata_rata\s*\(/], e: /^\s*80(\.0)?\s*$/, c: "assert rata_rata([1, 2, 3, 4]) == 2.5 and rata_rata([]) == 0" },
+            { t: "Dengan nilai = {'Ani': 90, 'Budi': 70, 'Cici': 85}, buat lulus(nilai, batas=75) yang mengembalikan list nama yang lulus (nilai >= batas), terurut. Cetak lulus(nilai).", h: "sorted(n for n, v in nilai.items() if v >= batas)", v: [/def\s+lulus\s*\(\s*\w+\s*,\s*batas\s*=\s*75/], e: /\['Ani', 'Cici'\]/, c: "assert lulus({'Z': 80, 'A': 60, 'B': 75}) == ['B', 'Z'] and lulus({'A': 80, 'B': 60}, batas=50) == ['A', 'B']" },
+            { t: "Cetak peringkat dari nilai tertinggi (nilai seperti soal sebelumnya) memakai sorted(..., key=lambda ..., reverse=True) dan enumerate(start=1), format '1. Ani 90'.", h: "sorted(nilai.items(), key=lambda p: p[1], reverse=True)", v: [/sorted\s*\(/, /lambda/, /enumerate\s*\(/], e: LINES(["1. Ani 90", "2. Cici 85", "3. Budi 70"]) },
+            { t: "Buat predikat(n): 'A' bila n >= 85, 'B' bila n >= 75, selain itu 'C'. Hitung distribusi predikat dari nilai seperti soal sebelumnya dengan collections.Counter dan cetak dict(counter).", h: "Counter(predikat(v) for v in nilai.values())", v: [/def\s+predikat\s*\(/, /Counter\s*\(/], e: /\{'A': 2, 'C': 1\}|\{'C': 1, 'A': 2\}/, c: "assert predikat(85) == 'A' and predikat(75) == 'B' and predikat(74) == 'C'" },
+            { t: "Buat aman_nilai(teks): ubah ke int; bila bukan angka atau di luar 0-100, raise ValueError. Uji '85', 'abc', '150' dengan try/except; cetak 85 lalu 'Nilai tidak valid' dua kali (tiga baris).", h: "int('abc') sudah melempar ValueError sendiri.", v: [/def\s+aman_nilai\s*\(/, /raise\s+ValueError/, /except\s+ValueError/], e: LINES(["85", "Nilai tidak valid", "Nilai tidak valid"]), c: C(["assert aman_nilai('0') == 0 and aman_nilai('100') == 100", "try:", "    aman_nilai('-1')", "    ok = False", "except ValueError:", "    ok = True", "assert ok, 'nilai -1 harus ditolak'"]) }
+        ]);
+
+    /* ----- 130: Advanced ----- */
+    mk(130, "Advanced", "Level 130: Mini-Proyek Advanced: Rekening Bank OOP",
+        intro("Advanced", "membangun class Rekening lengkap dengan validasi, property, __str__, dan dataclass.") + "<br><br><b>Contoh &amp; output:</b> kode di bawah mencetak <code>150</code>.<br><br><b>Kesalahan umum:</b> lupa <code>self</code>; mengubah saldo langsung dari luar class; <code>raise ValueError</code> tanpa pesan yang jelas.",
+        'class Rekening:\n    def __init__(self, pemilik, saldo=0):\n        self.pemilik = pemilik\n        self.saldo = saldo\n\n    def setor(self, jumlah):\n        if jumlah <= 0:\n            raise ValueError("Jumlah harus positif")\n        self.saldo += jumlah\n\nr = Rekening("Ani", 100)\nr.setor(50)\nprint(r.saldo)  # 150',
+        [
+            { t: "Buat class Rekening dengan __init__(self, pemilik, saldo=0) dan method setor(jumlah) yang menambah saldo; jumlah <= 0 -> raise ValueError. Buat Rekening('Ani'), setor 500, cetak saldo.", h: "Atribut self.saldo; validasi di awal setor().", v: [/class\s+Rekening/, /def\s+setor/, /raise\s+ValueError/], e: /^\s*500\s*$/, c: C(["r = Rekening('Budi', 100)", "r.setor(50)", "assert r.saldo == 150", "try:", "    r.setor(0)", "    ok = False", "except ValueError:", "    ok = True", "assert ok"]) },
+            { t: "Lanjutkan: tambahkan tarik(jumlah); bila jumlah > saldo, raise ValueError('Saldo tidak cukup'). Setor 500 lalu tarik 200 dan cetak saldo (300); lalu tarik 1000 di dalam try/except dan cetak pesan error.", h: "except ValueError as e: print(e)", v: [/class\s+Rekening/, /def\s+tarik/, /except\s+ValueError/], e: LINES(["300", "Saldo tidak cukup"]), c: C(["r = Rekening('A', 100)", "r.tarik(40)", "assert r.saldo == 60", "try:", "    r.tarik(500)", "    ok = False", "except ValueError:", "    ok = True", "assert ok"]) },
+            { t: "Ubah saldo menjadi property read-only (atribut internal _saldo, tanpa setter). Dengan r = Rekening('Ani', 100) cetak r.saldo; lalu coba r.saldo = 5 di dalam try/except AttributeError dan cetak 'saldo read-only'.", h: "@property def saldo(self): return self._saldo", v: [/@property/, /_saldo/, /except\s+AttributeError/], e: LINES(["100", "saldo read-only"]), c: C(["r = Rekening('A', 100)", "assert r.saldo == 100", "try:", "    r.saldo = 5", "    ok = False", "except AttributeError:", "    ok = True", "assert ok", "r.setor(10)", "assert r.saldo == 110"]) },
+            { t: "Tambahkan __str__ sehingga print(r) menampilkan 'Rekening Ani: 1500'. Buat r = Rekening('Ani', 1000), setor 500, lalu cetak r.", h: "return f\"Rekening {self.pemilik}: {self.saldo}\"", v: [/def\s+__str__/], e: /Rekening Ani: 1500/, c: "assert str(Rekening('X', 5)) == 'Rekening X: 5'" },
+            { t: "Buat @dataclass Transaksi(jenis: str, jumlah: int). Rekening menyimpan self.riwayat (list Transaksi) dan mencatat 'setor'/'tarik' tiap transaksi sukses. Dengan Rekening('Ani'): setor 500, tarik 200, lalu cetak len(r.riwayat) dan r.riwayat[0] (dua baris).", h: "from dataclasses import dataclass", v: [/@dataclass/, /class\s+Transaksi/, /riwayat/], e: LINES(["2", "Transaksi(jenis='setor', jumlah=500)"]), c: "r = Rekening('A')\nr.setor(10)\nr.tarik(4)\nassert r.riwayat == [Transaksi('setor', 10), Transaksi('tarik', 4)]" }
+        ]);
+
+    /* ----- 131: Expert ----- */
+    const LOG = 'LOG = [\n    "2026-10-01 10:00:01 INFO login user=ani",\n    "2026-10-01 10:00:05 ERROR gagal bayar user=budi",\n    "2026-10-01 10:01:00 INFO login user=cici",\n    "2026-10-01 10:02:10 ERROR timeout user=ani",\n    "2026-10-01 10:03:00 ERROR disk penuh user=ani",\n]\n';
+    mk(131, "Expert", "Level 131: Mini-Proyek Expert: Analisis Log Server",
+        intro("Expert", "menganalisis log server dengan generator, regex, closure, dan Counter.") + " Data <code>LOG</code> ada di kotak contoh; salin ke editor (tombol \"Pakai di editor\") untuk soal yang memakainya.<br><br><b>Contoh &amp; output:</b> kode di bawah mencetak <code>3</code> (jumlah baris ERROR).<br><br><b>Kesalahan umum:</b> generator yang dipakai dua kali (habis setelah pemakaian pertama); pola regex yang terlalu rakus; lupa mengembalikan fungsi dalam pada closure.",
+        LOG + '\ndef error_saja(baris):\n    for b in baris:\n        if " ERROR " in b:\n            yield b\n\nprint(len(list(error_saja(LOG))))  # 3',
+        [
+            { t: "Buat generator error_saja(baris) yang yield setiap baris log yang mengandung ' ERROR '. Dengan LOG dari contoh, cetak len(list(error_saja(LOG))).", h: "Gunakan yield di dalam for.", v: [/def\s+error_saja\s*\(/, /\byield\b/], e: /^\s*3\s*$/, c: C(["import inspect", "assert inspect.isgeneratorfunction(error_saja)", "assert list(error_saja(['a ERROR x', 'b INFO y'])) == ['a ERROR x']"]) },
+            { t: "Dengan re.findall, ambil semua nama user dari LOG (teks setelah 'user=') ke list 'pengguna' dan cetak.", h: "re.findall(r'user=(\\w+)', teks)", v: [/re\.findall\s*\(/], e: /\['ani', 'budi', 'cici', 'ani', 'ani'\]/, c: "assert pengguna == ['ani', 'budi', 'cici', 'ani', 'ani']" },
+            { t: "Buat buat_penghitung(level) yang mengembalikan fungsi hitung(baris) (closure) untuk menghitung baris ber-level itu. Cetak buat_penghitung('ERROR')(LOG).", h: "Fungsi dalam memakai variabel level dari fungsi luar.", v: [/def\s+buat_penghitung\s*\(/, /def\s+buat_penghitung[\s\S]*\n[ \t]+def\s+\w+/], e: /^\s*3\s*$/, c: "assert buat_penghitung('INFO')(['x INFO y', 'z ERROR w', 'q INFO r']) == 2" },
+            { t: "Dengan collections.Counter dan most_common(1), cari user dengan ERROR terbanyak di LOG dan cetak namanya.", h: "Hitung user hanya dari baris ERROR.", v: [/Counter\s*\(/, /most_common\s*\(/], e: /^\s*ani\s*$/ },
+            { t: "Buat laporan(baris) yang mengembalikan dict {'total': ..., 'error': ..., 'user_terbanyak': ...} (user_terbanyak = user dengan ERROR terbanyak). Cetak laporan(LOG).", h: "Gabungkan generator, re, dan Counter dari soal sebelumnya.", v: [/def\s+laporan\s*\(/, /re\.|Counter/], e: /\{'total': 5, 'error': 3, 'user_terbanyak': 'ani'\}/, c: "assert laporan(['t ERROR user=x', 't INFO user=x', 't ERROR user=y', 't ERROR user=y']) == {'total': 4, 'error': 3, 'user_terbanyak': 'y'}" }
+        ]);
+
+    /* ----- 132: Professional ----- */
+    mk(132, "Professional", "Level 132: Mini-Proyek Professional: Penyimpan Konfigurasi JSON Bertipe",
+        intro("Professional", "membangun penyimpan konfigurasi dengan type hint, dataclass, serialisasi JSON, validasi, dan file.") + "<br><br><b>Contoh &amp; output:</b> kode di bawah mencetak <code>Konfigurasi(nama='app', port=8000, debug=False)</code>.<br><br><b>Kesalahan umum:</b> lupa <code>asdict</code> saat membuat JSON; mengira type hint memaksa tipe saat runtime (tidak); lupa menutup file (pakai <code>with</code>).",
+        'from dataclasses import dataclass\n\n@dataclass\nclass Konfigurasi:\n    nama: str\n    port: int = 8000\n    debug: bool = False\n\nprint(Konfigurasi("app"))  # Konfigurasi(nama=\'app\', port=8000, debug=False)',
+        [
+            { t: "Buat @dataclass Konfigurasi dengan type hint: nama: str, port: int = 8000, debug: bool = False. Cetak Konfigurasi('app').", h: "from dataclasses import dataclass", v: [/@dataclass/, /nama\s*:\s*str/, /port\s*:\s*int\s*=\s*8000/, /debug\s*:\s*bool\s*=\s*False/], e: /Konfigurasi\(nama='app', port=8000, debug=False\)/, c: "assert Konfigurasi('x', 1, True).debug is True" },
+            { t: "Ubah Konfigurasi('app') menjadi string JSON dengan dataclasses.asdict + json.dumps dan cetak hasilnya.", h: "json.dumps(asdict(obj))", v: [/asdict\s*\(/, /json\.dumps\s*\(/], e: /\{"nama": "app", "port": 8000, "debug": false\}/ },
+            { t: "Buat muat(teks: str) -> Konfigurasi yang membuat objek dari string JSON (json.loads lalu ** unpacking). Cetak muat('{\"nama\": \"x\", \"port\": 9}').", h: "Konfigurasi(**json.loads(teks))", v: [/def\s+muat\s*\(\s*teks\s*:\s*str\s*\)\s*->\s*Konfigurasi/, /json\.loads\s*\(/], e: /Konfigurasi\(nama='x', port=9, debug=False\)/, c: "assert muat('{\"nama\": \"y\"}') == Konfigurasi('y')" },
+            { t: "Tambahkan __post_init__ yang raise ValueError bila port di luar 1..65535. Uji Konfigurasi('a', 70000) dalam try/except dan cetak 'port tidak valid'.", h: "Validasi di __post_init__ berjalan setelah __init__ otomatis.", v: [/__post_init__/, /raise\s+ValueError/], e: /port tidak valid/i, c: C(["try:", "    Konfigurasi('a', 0)", "    ok = False", "except ValueError:", "    ok = True", "assert ok", "assert Konfigurasi('a', 80).port == 80"]) },
+            { t: "Simpan Konfigurasi('app', 9000) ke /tmp/konfig.json dengan json.dump, muat kembali dengan json.load, lalu cetak apakah hasilnya sama dengan asdict aslinya (True).", h: "with open(path, 'w') as f: json.dump(...)", v: [/json\.dump\s*\(/, /json\.load\s*\(/, /open\s*\(/], e: LINES(["True"]), c: "import json\nassert json.load(open('/tmp/konfig.json')) == {'nama': 'app', 'port': 9000, 'debug': False}" }
+        ]);
+
+    /* ----- 133: Architecture ----- */
+    mk(133, "Architecture", "Level 133: Mini-Proyek Architecture: Sistem Pesanan Modular",
+        intro("Architecture", "merakit sistem pesanan dengan pola Strategy, Repository, Dependency Injection, dan class abstrak.") + "<br><br><b>Contoh &amp; output:</b> kode di bawah mencetak <code>900.0</code>.<br><br><b>Kesalahan umum:</b> membuat objek dependensi di dalam class (membuat tes sulit); class abstrak tanpa <code>@abstractmethod</code>; satu class mengerjakan terlalu banyak hal.",
+        'class DiskonMember:\n    def hitung(self, total):\n        return total * 0.9\n\nprint(DiskonMember().hitung(1000))  # 900.0',
+        [
+            { t: "Strategy: buat class DiskonNormal (hitung(total) mengembalikan total) dan DiskonMember (hitung(total) mengembalikan total * 0.9). Cetak DiskonMember().hitung(1000).", h: "Dua class dengan method yang sama.", v: [/class\s+DiskonNormal/, /class\s+DiskonMember/, /def\s+hitung/], e: /900(\.0)?/, c: "assert DiskonNormal().hitung(500) == 500 and abs(DiskonMember().hitung(200) - 180) < 1e-9" },
+            { t: "Repository: buat class PesananRepository dengan simpan(pesanan) dan semua() (data di list internal). Simpan 'A' dan 'B', lalu cetak semua().", h: "self._data = [] di __init__.", v: [/class\s+PesananRepository/, /def\s+simpan/, /def\s+semua/], e: /\['A', 'B'\]/, c: "r = PesananRepository()\nr.simpan(1)\nr.simpan(2)\nassert r.semua() == [1, 2]" },
+            { t: "Dependency Injection: buat class LayananPesanan(repo, diskon) dengan buat(total) yang menghitung total akhir lewat diskon.hitung, menyimpannya lewat repo.simpan, dan mengembalikannya. Pakai PesananRepository dan DiskonMember (tulis ulang), panggil buat(1000), cetak hasilnya dan repo.semua().", h: "Terima dependensi lewat __init__, jangan buat sendiri di dalam class.", v: [/class\s+LayananPesanan/, /def\s+__init__\s*\(\s*self\s*,\s*repo\s*,\s*diskon/, /def\s+buat/], e: /900(\.0)?[\s\S]*\[900(\.0)?\]/, c: C(["class _R:", "    def __init__(s): s.d = []", "    def simpan(s, x): s.d.append(x)", "class _D:", "    def hitung(s, t): return t - 1", "_r = _R()", "assert LayananPesanan(_r, _D()).buat(10) == 9 and _r.d == [9]"]) },
+            { t: "ABC: buat class abstrak Diskon (abc.ABC) dengan @abstractmethod hitung(total); DiskonNormal mewarisinya. Buktikan Diskon() memicu TypeError (cetak 'abstrak') dan cetak DiskonNormal().hitung(10) (10).", h: "from abc import ABC, abstractmethod", v: [/\bABC\b/, /@abstractmethod/, /except\s+TypeError/], e: LINES(["abstrak", "10"]), c: C(["try:", "    Diskon()", "    ok = False", "except TypeError:", "    ok = True", "assert ok and DiskonNormal().hitung(5) == 5"]) },
+            { t: "Tes dengan fake: buat RepoPalsu (simpan ke list), DiskonMember, LayananPesanan, dan fungsi test_buat_member() yang meng-assert LayananPesanan(RepoPalsu(), DiskonMember()).buat(100) == 90.0. Panggil test_buat_member() lalu cetak 'lulus'.", h: "Fake object menggantikan repository asli saat tes.", v: [/def\s+test_buat_member/, /\bassert\b/, /class\s+RepoPalsu/, /class\s+LayananPesanan/, /class\s+DiskonMember/], e: /lulus/, c: "test_buat_member()" }
+        ]);
+
+    /* ----- 134: Data Engineering ----- */
+    mk(134, "Data Engineering", "Level 134: Mini-Proyek Data Engineering: ETL Penjualan dengan Pandas",
+        intro("Data Engineering", "menjalankan ETL kecil: extract data, transform dengan groupby, lalu load ke CSV.") + " Data <code>DATA</code> ada di kotak contoh.<br><br><b>Contoh &amp; output:</b> kode di bawah mencetak tabel dengan kolom <code>total</code>.<br><br><b>Kesalahan umum:</b> loop baris dengan <code>iterrows</code> padahal ada operasi vektor; lupa <code>index=False</code>/<code>reset_index</code> saat menyimpan; membandingkan kolom dengan <code>and</code> alih-alih <code>&amp;</code>.",
+        'import pandas as pd\n\nDATA = {\n    "produk": ["A", "B", "A", "C", "B"],\n    "qty": [2, 1, 3, 5, 4],\n    "harga": [1000, 2500, 1000, 400, 2500],\n}\ndf = pd.DataFrame(DATA)\ndf["total"] = df["qty"] * df["harga"]\nprint(df)',
+        [
+            { t: "Extract & Transform: buat DataFrame df dari DATA (lihat contoh), tambah kolom 'total' = qty * harga, lalu cetak df['total'].sum().", h: "df['total'] = df['qty'] * df['harga']", v: [/DataFrame\s*\(/, /\[\s*['"]total['"]\s*\]\s*=/, /\.sum\s*\(/], e: /^\s*19500\s*$/, c: "assert 'total' in df.columns and int(df['total'].sum()) == 19500" },
+            { t: "Dengan df dari soal sebelumnya, hitung total per produk: ringkasan = df.groupby('produk')['total'].sum(), lalu cetak ringkasan.", h: "groupby('produk')['total'].sum()", v: [/groupby\s*\(/], e: /A\s+5000[\s\S]*B\s+12500[\s\S]*C\s+2000/, c: "assert ringkasan.to_dict() == {'A': 5000, 'B': 12500, 'C': 2000}" },
+            { t: "Filter: dari ringkasan, ambil nama produk dengan total > 3000 sebagai list terurut di variabel 'laris', lalu cetak laris.", h: "ringkasan[ringkasan > 3000].index.tolist()", v: [/>\s*3000/], e: /\['A', 'B'\]/, c: "assert laris == ['A', 'B']" },
+            { t: "Cari produk terlaris (total terbesar) dari ringkasan dengan idxmax() (atau sort_values/nlargest) dan cetak namanya (B).", h: "ringkasan.idxmax()", v: [/(idxmax|sort_values|nlargest|max)\s*\(/], e: /^\s*B\s*$/ },
+            { t: "Load: simpan ringkasan ke '/tmp/ringkasan.csv' dengan to_csv, baca kembali dengan pd.read_csv, lalu cetak .shape (harus (3, 2)).", h: "pd.read_csv('/tmp/ringkasan.csv').shape", v: [/to_csv\s*\(/, /read_csv\s*\(/, /\.shape/], e: /\(3,\s*2\)/, c: "import os\nassert os.path.exists('/tmp/ringkasan.csv')" }
+        ]);
+
+    /* ----- 135: Web API ----- */
+    mk(135, "Web API", "Level 135: Mini-Proyek Web API: Mini REST dengan Router & SQLite",
+        intro("Web API", "membangun inti sebuah REST API tanpa framework: router, path parameter, database SQLite, dan POST dengan validasi.") + "<br><br><b>Contoh &amp; output:</b> kode di bawah mencetak <code>(200, 'pong')</code>.<br><br><b>Kesalahan umum:</b> menyusun SQL dengan f-string (rawan SQL injection; pakai placeholder <code>?</code>); lupa <code>commit()</code> setelah INSERT; status code yang salah (404 vs 422).",
+        'def tangani(metode, path):\n    if metode == "GET" and path == "/ping":\n        return (200, "pong")\n    return (404, "tidak ditemukan")\n\nprint(tangani("GET", "/ping"))  # (200, \'pong\')',
+        [
+            { t: "Buat tangani(metode, path) yang mengembalikan tuple (status, body): GET '/ping' -> (200, 'pong'); selain itu (404, 'tidak ditemukan'). Cetak tangani('GET', '/ping') dan tangani('GET', '/x').", h: "if metode == 'GET' and path == '/ping':", v: [/def\s+tangani\s*\(\s*metode\s*,\s*path/], e: LINES(["(200, 'pong')", "(404, 'tidak ditemukan')"]), c: "assert tangani('GET', '/ping') == (200, 'pong') and tangani('POST', '/ping') == (404, 'tidak ditemukan')" },
+            { t: "Tambahkan rute GET '/users/<id>' (id angka) dengan re.fullmatch/re.match sehingga tangani('GET', '/users/5') mengembalikan (200, {'id': 5}). Cetak hasil itu (rute /ping tetap berfungsi).", h: "re.fullmatch(r'/users/(\\d+)', path)", v: [/re\.(fullmatch|match)\s*\(/], e: /\(200, \{'id': 5\}\)/, c: "assert tangani('GET', '/users/12') == (200, {'id': 12}) and tangani('GET', '/ping') == (200, 'pong')" },
+            { t: "Buat koneksi sqlite3 ':memory:', tabel users(id INTEGER PRIMARY KEY, nama TEXT), isi (1, 'Ani'), lalu buat ambil_user(id) yang mengembalikan {'id': ..., 'nama': ...} atau None. Cetak ambil_user(1) dan ambil_user(99).", h: "cur.execute('SELECT ... WHERE id = ?', (id,)).fetchone()", v: [/sqlite3\.connect\s*\(/, /def\s+ambil_user\s*\(/], e: LINES(["{'id': 1, 'nama': 'Ani'}", "None"]), c: "assert ambil_user(1) == {'id': 1, 'nama': 'Ani'} and ambil_user(2) is None" },
+            { t: "Hubungkan keduanya: GET '/users/<id>' di tangani() memakai ambil_user; ada -> (200, user), tidak ada -> (404, 'user tidak ada'). Cetak tangani('GET', '/users/1') dan tangani('GET', '/users/99').", h: "Satu program berisi database, ambil_user, dan tangani.", v: [/def\s+tangani/, /def\s+ambil_user/, /sqlite3\.connect/], e: LINES(["(200, {'id': 1, 'nama': 'Ani'})", "(404, 'user tidak ada')"]), c: "assert tangani('GET', '/users/1') == (200, {'id': 1, 'nama': 'Ani'}) and tangani('GET', '/users/99') == (404, 'user tidak ada')" },
+            { t: "POST '/users': ubah tangani menjadi tangani(metode, path, body=None). tangani('POST', '/users', {'nama': 'Budi'}) menyisipkan user baru (id otomatis) dan mengembalikan (201, {'id': 2, 'nama': 'Budi'}); tanpa 'nama' -> (422, 'nama wajib'). Cetak kedua kasus (kasus kedua pakai {}).", h: "INSERT INTO users (nama) VALUES (?) lalu cur.lastrowid.", v: [/def\s+tangani\s*\([^)]*body/, /INSERT\s+INTO/i], e: LINES(["(201, {'id': 2, 'nama': 'Budi'})", "(422, 'nama wajib')"]), c: "assert tangani('POST', '/users', {'nama': 'Cici'})[0] == 201 and tangani('POST', '/users', {}) == (422, 'nama wajib')" }
+        ]);
+
+    /* ----- 136: AI Engineering ----- */
+    mk(136, "AI Engineering", "Level 136: Mini-Proyek AI Engineering: Mesin Pencari Semantik Mini",
+        intro("AI Engineering", "membangun mesin pencari mini: tokenisasi, kosakata, embedding bag-of-words, cosine similarity, class MesinCari, dan evaluasi akurasi.") + "<br><br><b>Contoh &amp; output:</b> kode di bawah mencetak <code>['kucing', 'makan', 'ikan']</code>.<br><br><b>Kesalahan umum:</b> lupa mengubah ke huruf kecil sebelum menghitung; membagi dengan nol pada vektor kosong; menguji mesin pada data yang sama dengan data pembuatnya tanpa menyadarinya.",
+        'import re\n\ndef tokenisasi(teks):\n    return re.findall(r"\\w+", teks.lower())\n\nprint(tokenisasi("Kucing Makan, Ikan!"))  # [\'kucing\', \'makan\', \'ikan\']',
+        [
+            { t: "Buat tokenisasi(teks) yang mengubah ke huruf kecil dan mengambil kata dengan re.findall. Cetak tokenisasi('Kucing Makan, Ikan!').", h: "re.findall(r'\\w+', teks.lower())", v: [/def\s+tokenisasi\s*\(/, /re\.findall\s*\(/], e: /\['kucing', 'makan', 'ikan'\]/, c: "assert tokenisasi('A b-C') == ['a', 'b', 'c']" },
+            { t: "Buat buat_vokab(dokumen) yang mengembalikan list kata unik terurut dari semua dokumen (pakai tokenisasi). Cetak buat_vokab(['kucing makan', 'anjing makan']).", h: "sorted(set(...))", v: [/def\s+buat_vokab\s*\(/, /def\s+tokenisasi\s*\(/], e: /\['anjing', 'kucing', 'makan'\]/, c: "assert buat_vokab(['b a', 'c a']) == ['a', 'b', 'c']" },
+            { t: "Buat embed(teks, vokab) (jumlah kemunculan tiap kata vokab, memakai tokenisasi) dan cosine(a, b). Cetak embed('kucing makan makan', ['anjing', 'kucing', 'makan']) lalu round(cosine([1, 1], [1, 0]), 3) (dua baris).", h: "cosine([1, 1], [1, 0]) = 0.707", v: [/def\s+embed\s*\(/, /def\s+cosine\s*\(/], e: LINES(["[0, 1, 2]", "0.707"]), c: "assert embed('anjing', ['anjing', 'kucing']) == [1, 0] and abs(cosine([1, 2], [2, 4]) - 1) < 1e-9" },
+            { t: "Buat class MesinCari: __init__(self, dokumen) menyimpan dokumen dan kosakata; cari(kueri, k=1) mengembalikan list k dokumen paling mirip. Cetak MesinCari(['kucing makan ikan', 'anjing tidur', 'kucing tidur']).cari('kucing makan').", h: "Urutkan dokumen berdasarkan cosine terhadap embed kueri.", v: [/class\s+MesinCari/, /def\s+cari\s*\(\s*self\s*,\s*kueri/], e: /\['kucing makan ikan'\]/, c: "m = MesinCari(['a b', 'c d', 'a c'])\nassert m.cari('a b') == ['a b'] and len(m.cari('a', k=2)) == 2" },
+            { t: "Evaluasi: buat akurasi(mesin, uji) (uji = list tuple (kueri, dokumen_benar); akurasi = fraksi kueri yang hasil teratasnya benar). Cetak akurasi(MesinCari(['kucing makan ikan', 'anjing tidur', 'kucing tidur']), [('kucing makan', 'kucing makan ikan'), ('anjing', 'anjing tidur')]) (1.0).", h: "mesin.cari(kueri)[0] == benar", v: [/def\s+akurasi\s*\(/, /class\s+MesinCari/], e: LINES(["1.0"]), c: C(["class _M:", "    def cari(s, q, k=1):", "        return ['x'] if q == 'ok' else ['y']", "assert akurasi(_M(), [('ok', 'x'), ('no', 'x')]) == 0.5"]) }
+        ]);
+
+    /* ----- 137: DevOps (dinilai dari teks) ----- */
+    mk(137, "DevOps", "Level 137: Mini-Proyek DevOps: Paket Deploy Aplikasi Python",
+        intro("DevOps", "menulis paket deploy lengkap: Dockerfile, Docker Compose, GitHub Actions, manifes Kubernetes, dan urutan rilis.") + " Soal berupa berkas konfigurasi, jadi dinilai dari isi teks (tidak dijalankan).<br><br><b>Contoh &amp; konfigurasi:</b> awal sebuah Dockerfile ada di kotak contoh.<br><br><b>Kesalahan umum:</b> menyalin seluruh kode sebelum <code>requirements.txt</code> (cache layer tidak efektif); jalan sebagai root; mengunci semua layanan di satu container; lupa mengurutkan langkah rilis (tes dulu, baru build).",
+        '# Dockerfile minimal (belum memakai cache dependensi)\nFROM python:3.11-slim\nWORKDIR /srv\nCOPY app.py .\nCMD ["python", "app.py"]',
+        [
+            { t: "Tulis Dockerfile: FROM python:3.12-slim, WORKDIR /app, COPY requirements.txt, RUN pip install --no-cache-dir -r requirements.txt, COPY seluruh kode, dan CMD.", h: "Salin requirements.txt dulu agar layer dependensi di-cache.", v: [/FROM\s+python:3\.\d+(\.\d+)?-slim/i, /WORKDIR\s+\/app/i, /COPY\s+requirements\.txt/i, /RUN\s+pip\s+install\s+--no-cache-dir\s+-r\s+requirements\.txt/i, /CMD\s*\[/i], x: true },
+            { t: "Tulis docker-compose.yml dengan layanan web (build, ports) yang depends_on layanan redis (image redis:alpine).", h: "services: web: ... redis: image: redis:alpine", v: [/services\s*:/, /\bweb\s*:/, /\bredis\s*:/, /build\s*:/, /ports\s*:/, /depends_on\s*:/, /redis:\S+/], x: true },
+            { t: "Tulis workflow GitHub Actions: berjalan saat push, di ubuntu-latest, memakai actions/checkout, actions/setup-python, dan menjalankan pytest.", h: "on: [push]; jobs: test: runs-on: ubuntu-latest; steps: ...", v: [/on\s*:/, /runs-on\s*:\s*ubuntu-latest/, /actions\/checkout@v\d/, /actions\/setup-python@v\d/, /pytest/], x: true },
+            { t: "Tulis manifes Kubernetes: Deployment dengan replicas: 2 dan containerPort, serta Service untuk mengeksposnya (dua dokumen).", h: "kind: Deployment ... --- kind: Service", v: [/kind\s*:\s*Deployment/, /replicas\s*:\s*2/, /kind\s*:\s*Service/, /containerPort\s*:\s*\d+/], x: true },
+            { t: "Tulis urutan perintah rilis: jalankan pytest, docker build, kubectl apply -f, lalu kubectl rollout status (satu per baris, urut).", h: "Tes dulu, baru build dan deploy.", v: [/pytest[\s\S]*docker\s+build[\s\S]*kubectl\s+apply\s+-f[\s\S]*kubectl\s+rollout\s+status/i], x: true }
+        ]);
+
+    /* ----- 138: Security & Performance ----- */
+    mk(138, "Security & Performance", "Level 138: Mini-Proyek Security & Performance: Penyimpanan Password Aman",
+        intro("Security & Performance", "membangun penyimpanan password aman dan membuktikan pilihan struktur data cepat, hanya dengan pustaka standar.") + "<br><br><b>Contoh &amp; output:</b> kode di bawah mencetak <code>64</code> (hash SHA-256 heksadesimal).<br><br><b>Kesalahan umum:</b> menyimpan password mentah atau hash cepat tanpa salt; membandingkan hash dengan <code>==</code> (rentan timing attack, pakai <code>hmac.compare_digest</code>); memakai <code>random</code> alih-alih <code>secrets</code> untuk token.",
+        'import hashlib\n\nhasil = hashlib.pbkdf2_hmac("sha256", b"rahasia", b"garam", 100_000)\nprint(len(hasil.hex()))  # 64',
+        [
+            { t: "Buat hash_password(password, salt) dengan hashlib.pbkdf2_hmac('sha256', password.encode(), salt, 100_000) dan kembalikan .hex(). Cetak panjang hasil hash_password('rahasia', b'garam').", h: "salt berupa bytes.", v: [/pbkdf2_hmac\s*\(/, /def\s+hash_password\s*\(/], e: /^\s*64\s*$/, c: "import hashlib\nassert hash_password('a', b'x') == hashlib.pbkdf2_hmac('sha256', b'a', b'x', 100000).hex()" },
+            { t: "Buat verifikasi(password, salt, hash_tersimpan) memakai hmac.compare_digest (sertakan hash_password). Cetak verifikasi benar lalu salah (True, False) untuk password 'rahasia' dan 'salah'.", h: "hmac.compare_digest(a, b)", v: [/compare_digest\s*\(/, /def\s+verifikasi\s*\(/, /def\s+hash_password/], e: LINES(["True", "False"]), c: "h = hash_password('p', b's')\nassert verifikasi('p', b's', h) is True and verifikasi('q', b's', h) is False" },
+            { t: "Buat buat_token() yang mengembalikan secrets.token_hex(16). Cetak len(buat_token()) lalu buat_token() != buat_token() (32, True).", h: "import secrets", v: [/secrets\.token_hex\s*\(\s*16\s*\)/, /def\s+buat_token\s*\(/], e: LINES(["32", "True"]), c: "assert len(buat_token()) == 32" },
+            { t: "Buat aman_html(teks) memakai html.escape untuk mencegah XSS. Cetak aman_html('<script>alert(1)</script>').", h: "import html; html.escape(teks)", v: [/html\.escape\s*\(/, /def\s+aman_html\s*\(/], e: /&lt;script&gt;alert\(1\)&lt;\/script&gt;/, c: "assert aman_html('<b>') == '&lt;b&gt;'" },
+            { t: "Dengan daftar = list(range(20000)) dan himpunan = set(daftar), ukur 200 kali '19999 in daftar' vs '19999 in himpunan' dengan timeit. Cetak 'set lebih cepat' bila waktu set lebih kecil.", h: "timeit.timeit('19999 in daftar', globals=globals(), number=200)", v: [/timeit/, /\bset\s*\(/, /\blist\s*\(\s*range/], e: /set lebih cepat/ }
+        ]);
+
+    /* ----- 139: Enterprise Mastery (sebelum capstone) ----- */
+    mk(139, "Enterprise Mastery", "Level 139: Mini-Proyek Enterprise: Event Bus & Circuit Breaker",
+        intro("Enterprise Mastery", "membangun dua pola ketahanan sistem terdistribusi dalam Python murni: event bus dan circuit breaker.") + "<br><br><b>Contoh &amp; output:</b> kode di bawah mencetak <code>dunia</code>.<br><br><b>Kesalahan umum:</b> satu handler yang error menghentikan semua handler lain; circuit breaker yang tidak pernah menutup kembali; lupa mengembalikan hasil fungsi di <code>call()</code>.",
+        'class EventBus:\n    def __init__(self):\n        self.handlers = {}\n    def subscribe(self, event, handler):\n        self.handlers.setdefault(event, []).append(handler)\n    def publish(self, event, data):\n        for h in self.handlers.get(event, []):\n            h(data)\n\nbus = EventBus()\nbus.subscribe("halo", print)\nbus.publish("halo", "dunia")  # dunia',
+        [
+            { t: "Buat class EventBus dengan subscribe(event, handler) dan publish(event, data) yang memanggil semua handler event itu dengan data. Subscribe 'halo' ke print lalu publish('halo', 'dunia').", h: "Simpan handler dalam dict event -> list.", v: [/class\s+EventBus/, /def\s+subscribe/, /def\s+publish/], e: /dunia/, c: "b = EventBus()\ngot = []\nb.subscribe('e', got.append)\nb.publish('e', 1)\nb.publish('x', 2)\nassert got == [1]" },
+            { t: "Ubah publish agar mengembalikan jumlah handler yang berhasil dipanggil (0 bila event tak dikenal). Cetak publish('x', 1) pada bus kosong, lalu hasil publish setelah 2 subscriber didaftarkan (dua baris: 0 dan 2).", h: "Hitung dengan variabel penghitung.", v: [/class\s+EventBus/, /\breturn\b/], e: LINES(["0", "2"]), c: "b = EventBus()\nassert b.publish('a', 1) == 0\nb.subscribe('a', lambda d: None)\nb.subscribe('a', lambda d: None)\nassert b.publish('a', 1) == 2" },
+            { t: "Isolasi error: bila satu handler melempar exception, handler lain tetap dipanggil dan publish hanya menghitung yang sukses. Daftarkan 1 handler yang error dan 1 normal, lalu cetak hasil publish (1).", h: "try/except di dalam loop handler.", v: [/\btry\s*:/, /\bexcept\b/, /class\s+EventBus/], e: /^\s*1\s*$/, c: C(["b = EventBus()", "got = []", "def bad(d):", "    raise RuntimeError('x')", "b.subscribe('e', bad)", "b.subscribe('e', got.append)", "assert b.publish('e', 5) == 1 and got == [5]"]) },
+            { t: "Buat class CircuitBreaker(max_gagal=2) dengan call(fungsi, *args) yang mengembalikan hasil fungsi. Bila gagal beruntun mencapai max_gagal, circuit 'open': call langsung raise RuntimeError('circuit open') tanpa memanggil fungsi. Uji 3 panggilan gagal berturut-turut dan cetak pesan error ketiga.", h: "Hitung kegagalan beruntun; periksa sebelum memanggil fungsi.", v: [/class\s+CircuitBreaker/, /def\s+call/, /raise\s+RuntimeError/], e: /circuit open/, c: C(["cb = CircuitBreaker(max_gagal=2)", "n = [0]", "def gagal():", "    n[0] += 1", "    raise ValueError('x')", "for _ in range(2):", "    try:", "        cb.call(gagal)", "    except ValueError:", "        pass", "try:", "    cb.call(gagal)", "    ok = False", "except RuntimeError as e:", "    ok = 'circuit open' in str(e)", "assert ok and n[0] == 2"]) },
+            { t: "Tambahkan reset() yang menutup circuit, dan panggilan sukses mereset hitungan gagal. Uji: gagal 1x, sukses 1x, gagal 1x lagi (circuit tetap tertutup) lalu cetak 'tertutup'.", h: "Set hitungan gagal ke 0 setelah panggilan sukses.", v: [/def\s+reset/, /class\s+CircuitBreaker/], e: /tertutup/, c: C(["cb = CircuitBreaker(max_gagal=2)", "def gagal():", "    raise ValueError('x')", "def coba():", "    try:", "        cb.call(gagal)", "    except ValueError:", "        pass", "coba()", "assert cb.call(lambda: 7) == 7", "coba()", "assert cb.call(lambda: 8) == 8", "coba()", "coba()", "try:", "    cb.call(lambda: 1)", "    ok = False", "except RuntimeError:", "    ok = True", "assert ok", "cb.reset()", "assert cb.call(lambda: 9) == 9"]) }
+        ]);
+})();
+
+/* ---------- SOAL LEVEL 1, 2, 3, 6 DISUSUN ULANG (kesulitan bertingkat: mudah -> sulit) ----------
+   Soal lama memakai 10 variasi template yang sama. Soal baru naik bertahap dan memakai tes perilaku. */
+(function () {
+    function V(rs) { rs = [].concat(rs); return function (c) { return rs.every(function (r) { return r.test(c); }); }; }
+    function norm(l) { return l.replace(/\s+/g, " ").trim().toLowerCase(); }
+    function LINES(arr) {
+        const want = arr.map(function (x) { return norm(String(x)); });
+        return { test: function (s) {
+            const got = String(s).replace(/\r/g, "").split("\n").map(norm).filter(function (l) { return l !== ""; });
+            return got.length === want.length && got.every(function (x, i) { return x === want[i]; });
+        } };
+    }
+    function L(id) { return levelsData.find(function (l) { return l.id === id; }); }
+    function set(id, rows) {
+        L(id).tasks = rows.map(function (r) {
+            return { task: r.t, hint: r.h, validate: V(r.v || [/[\s\S]/]), expect: r.e || null, check: r.c || null };
+        });
+    }
+    const FPFX = /(^|[^A-Za-z0-9_])f["']/;
+    const T = function (name, tp) { return "assert type(" + name + ").__name__ == '" + tp + "', '" + name + " harus bertipe " + tp + "'"; };
+
+    set(1, [
+        { t: "Buat variabel 'nama' berisi string 'Ani', lalu cetak nilainya.", h: "String diapit tanda kutip: nama = \"Ani\".", v: [/\bnama\s*=\s*["']/], e: /Ani/, c: "assert nama == 'Ani'" },
+        { t: "Buat 'umur' (integer 17) dan 'tinggi' (float 1.65), lalu cetak keduanya.", h: "Integer tanpa titik, float memakai titik desimal.", v: [/\bumur\s*=/, /\btinggi\s*=/], e: /17[\s\S]*1\.65/, c: T("umur", "int") + "\n" + T("tinggi", "float") },
+        { t: "Buat variabel boolean 'lulus' bernilai True, lalu cetak tipenya dengan type().", h: "print(type(lulus))", v: [/\btype\s*\(/, /\blulus\s*=\s*True\b/], e: /bool/, c: "assert lulus is True" },
+        { t: "Buat a = 10, b = 2.5, c = '10'. Cetak type() dari masing-masing (tiga baris).", h: "Tiga pemanggilan print(type(...)).", v: [/\btype\s*\(/], e: /int[\s\S]*float[\s\S]*str/, c: "assert a == 10 and b == 2.5 and c == '10'" },
+        { t: "Buat x = 3 dan y = 7, lalu tukar isinya tanpa variabel ketiga (x, y = y, x). Cetak x dan y.", h: "Python mendukung penugasan tuple.", v: [/\bx\s*,\s*y\s*=\s*y\s*,\s*x\b/], e: /7\D+3/, c: "assert x == 7 and y == 3" },
+        { t: "Isi tiga variabel p, q, r dengan nilai 0 sekaligus dalam satu baris (p = q = r = 0), lalu cetak ketiganya.", h: "Penugasan berantai.", v: [/\bp\s*=\s*q\s*=\s*r\s*=\s*0\b/], e: /^\s*0\s+0\s+0\s*$/, c: "assert p == q == r == 0" },
+        { t: "Buat harga = 15000 dan jumlah = 3, hitung total = harga * jumlah, lalu cetak total.", h: "Variabel dapat dipakai dalam ekspresi.", v: [/\btotal\s*=\s*harga\s*\*\s*jumlah\b/], e: /45000/, c: "assert total == 45000" },
+        { t: "Buat x = 5 lalu cetak type(x); isi ulang x = 'lima' lalu cetak type(x) lagi (dynamic typing).", h: "Variabel boleh berganti tipe.", v: [/\bx\s*=\s*\d+[\s\S]*\bx\s*=\s*["']/, /\btype\s*\(/], e: /int[\s\S]*str/ },
+        { t: "Buat angka_teks = '42', ubah menjadi integer di variabel 'angka' dengan int(), lalu cetak angka + 8.", h: "int('42') mengubah string menjadi bilangan.", v: [/\bint\s*\(/], e: /(^|\D)50(\D|$)/, c: "assert angka == 42 and type(angka).__name__ == 'int'" },
+        { t: "Buat nama (str), umur (int), tinggi (float), mahasiswa (bool). Cetak keempatnya dalam satu print() dipisah ' | ' lewat argumen sep.", h: "print(a, b, c, d, sep=\" | \")", v: [/sep\s*=/], e: /.+ \| .+ \| .+ \| .+/, c: T("nama", "str") + "\n" + T("umur", "int") + "\n" + T("tinggi", "float") + "\n" + T("mahasiswa", "bool") }
+    ]);
+
+    set(2, [
+        { t: "Cetak hasil 7 + 5.", h: "print(7 + 5)", v: [/7\s*\+\s*5/], e: /^\s*12\s*$/ },
+        { t: "Cetak hasil 17 // 5 lalu 17 % 5 (dua baris).", h: "// pembagian bulat, % sisa bagi.", v: [/\/\//, /%/], e: LINES(["3", "2"]) },
+        { t: "Cetak 2 pangkat 10 memakai operator **.", h: "2 ** 10", v: [/\*\*/], e: /^\s*1024\s*$/ },
+        { t: "Buat panjang = 8 dan lebar = 5, hitung keliling = 2 * (panjang + lebar), lalu cetak keliling.", h: "Kurung mengatur urutan operasi.", v: [/\bkeliling\s*=/], e: /^\s*26\s*$/, c: "assert keliling == 26" },
+        { t: "Cetak 2 + 3 * 4 lalu (2 + 3) * 4 (dua baris) untuk melihat pengaruh urutan operasi.", h: "Perkalian didahulukan dari penjumlahan.", v: [/\(\s*2\s*\+\s*3\s*\)/], e: LINES(["14", "20"]) },
+        { t: "Hitung rata-rata nilai 80, 85, 90 dan simpan di 'rata'. Cetak hasilnya (operator / selalu menghasilkan float).", h: "(80 + 85 + 90) / 3", v: [/\brata\s*=/, /\//], e: /^\s*85\.0\s*$/, c: "assert rata == 85.0" },
+        { t: "Harga 200000 diskon 15%. Hitung harga_akhir = harga - harga * 0.15 lalu cetak.", h: "Simpan harga = 200000 terlebih dulu.", v: [/\bharga_akhir\s*=/, /\*/], e: /170000/, c: "assert abs(harga_akhir - 170000) < 1e-6" },
+        { t: "Ubah 3725 detik menjadi jam, menit, detik memakai // dan % (variabel jam, menit, detik). Cetak ketiganya: 1 2 5.", h: "jam = detik_total // 3600; sisa = detik_total % 3600", v: [/\/\//, /%/], e: /(^|\D)1\D+2\D+5(\D|$)/, c: "assert jam == 1 and menit == 2 and detik == 5" },
+        { t: "Buat angka = 4729. Cetak digit satuannya (angka % 10) lalu angka tanpa digit satuan (angka // 10) pada dua baris.", h: "Hasilnya 9 dan 472.", v: [/%/, /\/\//], e: LINES(["9", "472"]), c: "assert angka == 4729" },
+        { t: "Bunga majemuk: modal 1000000, bunga 5% per tahun, 3 tahun. Hitung total = modal * (1 + 0.05) ** 3, bulatkan 2 desimal dengan round(), lalu cetak.", h: "round(nilai, 2)", v: [/\bround\s*\(/, /\*\*/], e: /1157625(\.0+)?/ }
+    ]);
+
+    set(3, [
+        { t: "Buat nama = 'Rian' lalu cetak 'Halo, Rian!' memakai f-string.", h: "f\"Halo, {nama}!\"", v: [FPFX], e: /Halo, Rian!/, c: "assert nama == 'Rian'" },
+        { t: "Buat buah = 'apel' dan jumlah = 5, cetak: Saya membeli 5 apel (f-string).", h: "Dua variabel dalam satu f-string.", v: [FPFX], e: /Saya membeli 5 apel/, c: "assert buah == 'apel' and jumlah == 5" },
+        { t: "Buat a = 7 dan b = 3, lalu cetak dengan f-string: 7 + 3 = 10 (hasil dihitung di dalam kurung kurawal).", h: "f\"{a} + {b} = {a + b}\"", v: [FPFX], e: /7 \+ 3 = 10/ },
+        { t: "Buat kata = 'Python' dan cetak dengan f-string: Python punya 6 huruf (angka 6 dari len()).", h: "{len(kata)} di dalam f-string.", v: [FPFX], e: /Python punya 6 huruf/, c: "assert kata == 'Python'" },
+        { t: "Cetak 'ha' diulang 3 kali lalu tanda '!' (hahaha!) memakai operator * dan +.", h: "'ha' * 3 + '!'", v: [/\*/, /\+/], e: /^\s*hahaha!\s*$/ },
+        { t: "Buat nama = 'Sari' dan umur = 17. Cetak dua baris dengan SATU f-string dan \\n: 'Nama: Sari' lalu 'Umur: 17'.", h: "\\n di dalam string pindah baris.", v: [FPFX], e: LINES(["Nama: Sari", "Umur: 17"]), c: "assert nama == 'Sari' and umur == 17" },
+        { t: "Buat x = 5 lalu cetak teks persis '{x} = 5' dengan f-string (kurung kurawal literal ditulis ganda: {{ dan }}).", h: "f\"{{x}} = {x}\"", v: [FPFX], e: /\{x\} = 5/, c: "assert x == 5" },
+        { t: "Buat nama = 'budi santoso' lalu cetak dengan huruf awal tiap kata kapital memakai .title().", h: "nama.title()", v: [/\.title\s*\(/], e: /Budi Santoso/, c: "assert nama == 'budi santoso'" },
+        { t: "Buat depan = 'Budi' dan belakang = 'Santoso'. Cetak inisialnya dengan indeks [0] dan f-string: B.S.", h: "f\"{depan[0]}.{belakang[0]}.\"", v: [FPFX], e: /B\.S\./, c: "assert depan == 'Budi' and belakang == 'Santoso'" },
+        { t: "Buat item = 'Kopi', harga = 18000, jumlah = 2. Cetak struk dengan f-string, total dihitung di dalamnya: Kopi x2 = 36000", h: "{harga * jumlah}", v: [FPFX], e: /Kopi x2 = 36000/, c: "assert item == 'Kopi' and harga == 18000 and jumlah == 2" }
+    ]);
+
+    set(6, [
+        { t: "Cetak angka 1 sampai 5 (satu per baris) dengan perulangan for dan range.", h: "range(1, 6)", v: [/\bfor\b/, /range\s*\(/], e: LINES(["1", "2", "3", "4", "5"]) },
+        { t: "Cetak bilangan genap 2 sampai 10 dengan range yang memakai step (tiga argumen).", h: "range(2, 11, 2)", v: [/range\s*\([^)]*,[^)]*,[^)]*\)/], e: LINES(["2", "4", "6", "8", "10"]) },
+        { t: "Hitung mundur 5 sampai 1 dengan for, lalu cetak 'Selesai!'.", h: "range(5, 0, -1)", v: [/\bfor\b/, /range\s*\(/], e: LINES(["5", "4", "3", "2", "1", "Selesai!"]) },
+        { t: "Jumlahkan angka 1 sampai 100 dengan for dan variabel penampung 'total'. Cetak total.", h: "total = 0, lalu total += i.", v: [/\bfor\b/, /\btotal\s*(\+)?=/], e: /5050/, c: "assert total == 5050" },
+        { t: "Cetak tabel perkalian 7 dari 1 sampai 5 dengan format '7 x 1 = 7'.", h: "f\"7 x {i} = {7 * i}\"", v: [/\bfor\b/], e: LINES(["7 x 1 = 7", "7 x 2 = 14", "7 x 3 = 21", "7 x 4 = 28", "7 x 5 = 35"]) },
+        { t: "Hitung banyaknya huruf vokal (a, i, u, e, o) pada 'pemrograman' dengan for dan if. Simpan di 'jumlah_vokal' dan cetak.", h: "if huruf in 'aiueo': jumlah_vokal += 1", v: [/\bfor\b/, /\bif\b/, /\bjumlah_vokal\b/], e: /(^|\D)4(\D|$)/, c: "assert jumlah_vokal == 4" },
+        { t: "Hitung faktorial 6 (1*2*3*4*5*6) dengan for. Simpan di 'hasil' dan cetak.", h: "hasil = 1, lalu hasil *= i.", v: [/\bfor\b/, /\bhasil\b/, /\*/], e: /720/, c: "assert hasil == 720" },
+        { t: "Jumlahkan hanya bilangan genap dari 1 sampai 20 dengan for + if. Simpan di 'jumlah' dan cetak.", h: "if i % 2 == 0:", v: [/\bfor\b/, /\bif\b/, /%/], e: /110/, c: "assert jumlah == 110" },
+        { t: "FizzBuzz 1 sampai 15: kelipatan 3 cetak 'Fizz', kelipatan 5 'Buzz', kelipatan keduanya 'FizzBuzz', lainnya angkanya (satu per baris).", h: "Periksa kelipatan 15 lebih dulu.", v: [/\bfor\b/, /%/], e: LINES(["1", "2", "Fizz", "4", "Buzz", "Fizz", "7", "8", "Fizz", "Buzz", "11", "Fizz", "13", "14", "FizzBuzz"]) },
+        { t: "Cetak 8 suku pertama deret Fibonacci (0 1 1 2 3 5 8 13), satu per baris, dengan for dan penugasan a, b = b, a + b.", h: "Mulai a = 0, b = 1.", v: [/\bfor\b/, /\ba\s*,\s*b\s*=\s*b\s*,\s*a\s*\+\s*b\b/], e: LINES(["0", "1", "1", "2", "3", "5", "8", "13"]) }
+    ]);
+})();
+
+/* ---------- AUDIT VALIDATOR LANJUTAN (soal yang dulu lolos dengan kode asal-asalan) ----------
+   Memakai tes perilaku (check) atau regex struktur yang lebih spesifik. */
+(function () {
+    function L(id) { return levelsData.find(function (l) { return l.id === id; }); }
+    function val(id, idx, rs) { rs = [].concat(rs); L(id).tasks[idx].validate = function (c) { return rs.every(function (r) { return r.test(c); }); }; }
+    function chk(id, idx, code) { L(id).tasks[idx].check = code; }
+    function all(id, fn) { L(id).tasks.forEach(function (t, i) { fn(t, i); }); }
+    function C(lines) { return lines.join("\n"); }
+    const NEST3 = /^def\s[\s\S]*?\n( +)def\s[\s\S]*?\n\1 +def\s/m;
+
+    // L8 Fungsi: wajib benar-benar membuat fungsi bernama sesuai soal dan benar hasilnya
+    [["luas_persegi_panjang(5, 4) == 20"], ["tambah_dua_angka(2, 3) == 5"], ["keliling_persegi(6) == 24"], ["kuadrat(7) == 49"],
+     ["isinstance(sapa_pengguna('Ammar'), str) and 'Ammar' in sapa_pengguna('Ammar')"], ["kurangi(20, 8) == 12"],
+     ["konversi_jam_ke_menit(3) == 180"], ["abs(luas_lingkaran(7) - 153.86) < 0.01"],
+     ["cek_genap(4) is True and cek_genap(3) is False"], ["hitung_total(5000, 3) == 15000"]
+    ].forEach(function (p, i) { chk(8, i, "assert " + p[0]); });
+
+    // L11 Dictionary (tiga soal pertama)
+    chk(11, 0, "assert any(isinstance(v, dict) and {'merk', 'tipe', 'tahun'} <= set(v) for v in list(globals().values()))");
+    chk(11, 1, "assert any(isinstance(v, dict) and {'nama', 'umur', 'hobi', 'pekerjaan'} <= set(v) for v in list(globals().values()))");
+    chk(11, 2, "assert any(isinstance(v, dict) and {'nama', 'harga', 'stok'} <= set(v) and v['stok'] == 50 for v in list(globals().values()))");
+
+    val(16, 7, [/\[[^\]]*\bfor\s+\w+\s+in\s+[^\]]*\bfor\s+\w+\s+in\b[^\]]*\]/]);
+    val(33, 7, [/\bclass\s+\w+[\s\S]*\n[ \t]+\w+\s*:\s*(int|str|float|bool|list|dict)\b/]);
+
+    // L30 Dekorator berargumen: tiga fungsi bersarang + dipasang dengan @nama(...)
+    all(30, function (t, i) {
+        if (i === 9) return;
+        const base = t.validate;
+        t.validate = function (c) { return NEST3.test(c) && /\breturn\b/.test(c) && base(c); };
+    });
+    chk(30, 0, C(["calls = []", "@ulang(3)", "def _t():", "    calls.append(1)", "_t()", "assert len(calls) == 3, 'ulang(3) harus menjalankan fungsi 3 kali'"]));
+
+    // L24 generator expression
+    [1, 6].forEach(function (i) { val(24, i, [/\(\s*[^\n()]+\s+for\s+\w+\s+in\s+[^\n]+\)/]); });
+
+    // L40 / L44 / L48 / dst.
+    val(40, 8, [/def\s+\w+\s*\([^)]*:[^)]*\)\s*->\s*\w+/, /("""|''')[\s\S]*?\1/]);
+    val(44, 8, [/def\s+\w+[^\n]*\n(?:.*\n)*?[ \t]+def\s+\w+/, /(\*\*kwargs|\*args)/]);
+    val(44, 9, [/("""|''')[\s\S]*?\1/, /\b__init__\b/, /\bclass\b/]);
+    val(48, 4, [/def\s+\w+[\s\S]*?\n[ \t]+def\s+\w+/, /__name__/, /\*args/, /\bprint\s*\(/]);
+    val(66, 8, [/\[\s*['"][\d-]+['"]\s*:\s*['"][\d-]+['"]\s*\]/]);
+
+    // L62 ETL
+    val(62, 0, [/def\s+extract\s*\(/, /\breturn\b/]);
+    val(62, 1, [/def\s+transform\s*\(/, /\.strip\s*\(/, /\.upper\s*\(/]);
+    val(62, 2, [/def\s+load\s*\(/, /(open\s*\(|print\s*\(|\.append|\.to_csv|\.write|json|sqlite|\.execute)/]);
+    val(62, 3, [/def\s+run_etl\s*\(/, /extract\s*\(/, /transform\s*\(/, /load\s*\(/]);
+    val(62, 8, [/def\s+test_\w+/, /\bassert\b/]);
+
+    val(67, 7, [/class\s+\w*Pipeline\w*/, /def\s+process_item\s*\(\s*self/]);
+    val(57, 4, [/def\s+\w+[\s\S]*?\n[ \t]+def\s+\w+/, /(\.get\s*\(|redis)/, /(\.set\s*\(|setex)/]);
+    val(53, 6, [/def\s+get_current_user/, /decode\s*\(/]);
+    val(54, 4, [/class\s+\w*(Manager|Connection)\w*/, /(connect|accept)\s*\(/, /(append|add)\b/]);
+    val(54, 5, [/def\s+broadcast/, /\bfor\b/, /send/]);
+    val(58, 4, [/httpx\.(get|post|request|AsyncClient|Client)/]);
+    val(77, 3, [/class\s+(\w+)\s*\(\s*nn\.Module\s*\)[\s\S]*=\s*\1\s*\(/, /\bprint\s*\(/]);
+    val(91, 3, [/tracemalloc/, /statistics\s*\(/, /\[\s*:\s*5\s*\]|range\s*\(\s*5\s*\)|\bhead\b/, /\bprint\b/]);
+    L(100).tasks[9].expect = { test: function (s) {
+        const ln = String(s).split("\n").map(function (x) { return x.trim(); }).filter(Boolean);
+        return ln.length === 5 && ln.every(function (x) { return /[A-Za-z]{2,}/.test(x); });
+    } };
+    val(100, 9, [/\bfor\b/, /\bprint\b/, /\[[^\]\n]+,[^\]\n]+,[^\]\n]+,[^\]\n]+,[^\]\n]+\]/]);
+
+    // L36 Metaclass: periksa perilaku metaclass sungguhan, bukan sekadar kata kunci
+    const MF = ["_M = [v for v in list(globals().values()) if isinstance(v, type) and issubclass(v, type) and v is not type and v.__module__ == '__main__']",
+                "assert _M, 'Belum ada metaclass (class turunan type)'", "_m = _M[0]"];
+    const META_ONLY = C(MF.concat(["assert any(n in vars(_m) for n in ('__new__', '__init__', '__call__')), 'Metaclass belum mengatur pembuatan class'"]));
+    L(36).tasks[0].task = "Buat metaclass turunan 'type' yang menolak (raise TypeError) setiap class baru yang tidak punya atribut wajib 'versi'.";
+    chk(36, 0, C(MF.concat(["try:", "    _m('Tanpa', (), {})", "    _ok = False", "except Exception:", "    _ok = True", "assert _ok, 'Class tanpa atribut versi harus ditolak'", "_m('Dengan', (), {'versi': 1})"])));
+    chk(36, 1, "assert any(isinstance(v, type) and type(v) is not type and issubclass(type(v), type) and v.__module__ == '__main__' for v in list(globals().values())), 'Belum ada class yang memakai metaclass kustom'");
+    val(36, 2, [/\btype\s*\(\s*[^,()]+,\s*\(/]);
+    chk(36, 3, C(MF.concat(["C_ = _m('X', (), {'halo': lambda self: 1})", "assert hasattr(C_, 'HALO') and not hasattr(C_, 'halo'), 'Nama method harus menjadi huruf kapital'"])));
+    chk(36, 4, C(MF.concat(["import io, contextlib", "_b = io.StringIO()", "with contextlib.redirect_stdout(_b):", "    _m('Baru', (), {'versi': 1, 'id': 1})", "assert _b.getvalue().strip() != '', 'Metaclass harus mencetak log saat class dibuat'"])));
+    val(36, 5, [/\bclass\s+\w+/, /def\s+\w+\s*\(\s*\w+/, /\breturn\s+[\w\[\]'"]+\s*\(/]);
+    chk(36, 6, META_ONLY); chk(36, 7, META_ONLY); chk(36, 9, META_ONLY);
+    val(36, 8, [/\btype\s*\(\s*[^,()]+,\s*\([^)]*\)\s*,\s*\{/]);
+
+    // Pola OOP lain: pastikan class yang diminta benar-benar ada dan punya anggota yang dimaksud
+    const HAS = function (m) { return "assert any(isinstance(v, type) and '" + m + "' in vars(v) for v in list(globals().values())), 'Belum ada class yang mendefinisikan " + m + "'"; };
+    all(17, function (t, i) { if (!t.check) t.check = "assert any(isinstance(v, type) and hasattr(v, '__enter__') and hasattr(v, '__exit__') for v in list(globals().values()) if getattr(v, '__module__', '') == '__main__'), 'Belum ada class dengan __enter__ dan __exit__'"; });
+    ["__str__", "__repr__", "__len__", "__add__", "__eq__", "__str__", "__add__", "__len__", "__str__", "__len__"].forEach(function (m, i) { chk(18, i, HAS(m)); });
+    all(19, function (t) { t.check = "import dataclasses\nassert any(isinstance(v, type) and dataclasses.is_dataclass(v) for v in list(globals().values())), 'Belum ada class @dataclass'"; });
+    all(20, function (t, i) {
+        const needSetter = [2, 5, 6, 9].indexOf(i) !== -1;
+        t.check = "assert any(isinstance(v, type) and any(isinstance(a, property)" + (needSetter ? " and a.fset is not None" : "") + " for a in vars(v).values()) for v in list(globals().values())), 'Belum ada property" + (needSetter ? " dengan setter" : "") + "'";
+    });
+    all(21, function (t, i) {
+        const m = [2, 6].indexOf(i) !== -1 ? "__get__" : ([0, 1].indexOf(i) !== -1 ? "__get__" : "__set__");
+        t.check = "assert any(isinstance(v, type) and '" + m + "' in vars(v) for v in list(globals().values())), 'Belum ada class descriptor dengan " + m + "'" + (i < 2 ? "\nassert any(isinstance(v, type) and '__set__' in vars(v) for v in list(globals().values()))" : "");
+    });
+    [0, 2, 3, 4, 5, 7, 8, 9].forEach(function (i) { chk(24, i, "import inspect\nassert any(inspect.isgeneratorfunction(v) for v in list(globals().values())), 'Belum ada fungsi generator (yield)'"); });
+    all(38, function (t, i) {
+        t.check = i === 7 ? "assert any(isinstance(v, type) and '__iter__' in vars(v) for v in list(globals().values()))"
+            : "assert any(isinstance(v, type) and '__iter__' in vars(v) and '__next__' in vars(v) for v in list(globals().values())), 'Belum ada class dengan __iter__ dan __next__'";
+    });
+
+    // Level 1, 2, 3, 6 disusun ulang: EXPECT/CHECKS lama (kunci "id-indeks") dihapus pada tahap normalisasi.
+})();
+
 /* ---------- URUTAN BELAJAR (fondasi dulu, lanjutan kemudian) ----------
-   `id` = identitas tetap (dipakai untuk progress tersimpan), `no` = nomor tampilan. */
+   `id` = identitas tetap (dipakai untuk progress tersimpan, JANGAN diubah), `no` = nomor tampilan.
+   Untuk mengubah urutan cukup edit daftar PHASES di bawah; `no` dihitung otomatis.
+   Aturan prasyarat yang dijaga: if/elif sebelum input(); list (id 9) sebelum string method, break/continue;
+   import (id 107) sebelum pemakaian modul; try/except (id 15) sebelum soal yang memakainya;
+   Pydantic (50) sebelum Settings (79); PySpark (61) sebelum Delta Lake (64); NumPy/Pandas dasar (112) sebelum Pandas lanjutan (59);
+   kriptografi (89) sebelum autentikasi (53); level rangkuman (40) di akhir fase Architecture.
+   Di konsol browser: odysseyLevelMap() menampilkan tabel nomor tampilan <-> id. */
 (function () {
     const PHASES = [
-        ["Beginner", [1, 2, 3, 105, 104, 12, 103, 4, 5, 6, 7, 106]],
-        ["Intermediate", [8, 108, 110, 9, 10, 11, 109, 107, 111, 115, 15, 23, 34, 13, 14, 16, 33, 101]],
-        ["Advanced", [28, 20, 18, 19, 17, 22, 102, 30]],
-        ["Expert", [38, 24, 21, 25, 93, 26, 27, 116, 29]],
-        ["Professional", [114, 31, 32, 35, 95, 36, 37, 39]],
-        ["Architecture", [40, 41, 42, 43, 44, 45, 46, 47, 48]],
-        ["Data Engineering", [112, 59, 60, 66, 62, 65, 64, 63, 61, 67, 68]],
-        ["Web API", [79, 117, 49, 50, 113, 51, 52, 57, 56, 53, 54, 55, 58]],
-        ["AI Engineering", [119, 69, 76, 77, 78, 70, 71, 72, 73, 74, 75]],
-        ["DevOps", [118, 80, 81, 82, 83, 84, 85, 87, 86, 88]],
-        ["Security & Performance", [89, 90, 96, 91, 92, 94]],
-        ["Enterprise Mastery", [97, 98, 99, 100]]
+        ["Beginner", [1, 2, 3, 12, 103, 4, 5, 104, 6, 7, 9, 105, 106, 120, 128]],
+        ["Intermediate", [8, 110, 107, 125, 10, 11, 15, 121, 108, 122, 109, 111, 123, 115, 27, 116, 26, 23, 124, 101, 34, 13, 14, 16, 33, 129]],
+        ["Advanced", [28, 20, 18, 19, 17, 22, 102, 30, 130]],
+        ["Expert", [38, 24, 21, 25, 93, 29, 131]],
+        ["Professional", [114, 31, 32, 35, 95, 37, 39, 36, 48, 132]],
+        ["Architecture", [41, 42, 43, 44, 45, 46, 47, 40, 133]],
+        ["Data Engineering", [112, 59, 60, 66, 62, 65, 63, 61, 64, 67, 126, 68, 134]],
+        ["Web API", [117, 49, 50, 79, 113, 51, 52, 57, 56, 89, 53, 90, 54, 55, 58, 135]],
+        ["AI Engineering", [119, 69, 76, 77, 78, 70, 71, 127, 72, 73, 74, 75, 136]],
+        ["DevOps", [118, 80, 81, 82, 83, 84, 85, 87, 86, 88, 137]],
+        ["Security & Performance", [96, 91, 92, 94, 138]],
+        ["Enterprise Mastery", [97, 98, 99, 139, 100]]
     ];
     const byId = new Map(levelsData.map(function (l) { return [l.id, l]; }));
     const ordered = [];
@@ -2225,6 +2731,11 @@ levelsData.push({
         l.title = "Level " + l.no + ": " + l.title.replace(/^Level\s+\d+\s*:\s*/i, "");
     });
     levelsData.splice(0, levelsData.length, ...ordered);
+    window.odysseyLevelMap = function () {
+        const rows = levelsData.map(function (l) { return { no: l.no, id: l.id, fase: l.category, judul: l.title }; });
+        if (console.table) console.table(rows);
+        return rows;
+    };
 })();
 
 /* =====================================================================
@@ -2254,7 +2765,7 @@ levelsData.push({
 
     // Level yang soalnya berupa konfigurasi/perintah/teks (bukan kode Python valid): tidak dijalankan.
     // Soal dengan validator "c.length > N" (soal uraian) otomatis ikut mode teks.
-    const TEXT_LEVELS = new Set([52, 80, 81, 82, 88, 92, 94, 96, 114, 118]);
+    const TEXT_LEVELS = new Set([52, 80, 81, 82, 88, 92, 94, 96, 114, 118, 125, 137]);
     // Level 1-48 memakai kata kunci Python murni: isi string diabaikan saat cek struktur
     // (kecuali L12 format-spec dan L23 mode file yang memang berada di dalam string).
     const STRING_BLIND_LEVELS = new Set(Array.from({ length: 48 }, function (_, i) { return i + 1; })
@@ -2298,6 +2809,9 @@ levelsData.push({
     ].forEach(function (list, i) { CHECKS["1-" + i] = typed(list); });
     [["umur", 18], ["nilai_ujian", 65], ["uang", 40000], ["angka", 10], ["suhu", 38], ["stok", 0], ["kecepatan", 90], ["tinggi", 155], ["jam", 21], ["poin", 120]]
         .forEach(function (p, i) { CHECKS["4-" + i] = "assert " + p[0] + " == " + p[1] + ", '" + p[0] + " harus bernilai " + p[1] + " sesuai soal'"; });
+
+    // Level 1, 2, 3, dan 6 disusun ulang (kesulitan bertingkat): EXPECT/CHECKS lama dihapus; tiap soal membawa expect/check sendiri.
+    [EXPECT, CHECKS].forEach(function (m) { Object.keys(m).forEach(function (k) { if (/^(1|2|3|6)-\d+$/.test(k)) delete m[k]; }); });
 
     // Kurva XP yang naik rata: Level 1 = 100 XP, Level 100 = 2.080 XP.
     // Ubah fungsi ini jika ingin kurva lain.
@@ -2439,6 +2953,8 @@ levelsData.push({
             "        out.append(base64.b64encode(buf.getvalue()).decode())",
             "    mp.close('all')",
             "    return out",
+            "import warnings",
+            "warnings.filterwarnings('ignore', message='FigureCanvasAgg is non-interactive.*')",
             "def _syntax_check(code):",
             "    try:",
             "        compile(code, '<exec>', 'exec')",
@@ -3303,7 +3819,7 @@ levelsData.push({
                 if (!structOk) return { pass: false, reason: "Kode berjalan tanpa error, tetapi " + notMatching.charAt(0).toLowerCase() + notMatching.slice(1) };
                 const inf = res.info;
                 if (inf) {
-                    if (/(cetak|print|tampilkan|uji|panggil)/i.test(task.task) && inf.unused && inf.unused.length) return { pass: false, reason: "Fungsi " + inf.unused.join(", ") + " dibuat tetapi tidak pernah dipakai. Panggil fungsinya (dan cetak hasilnya jika diminta) agar bisa diperiksa." };
+                    if (!task.skipUnused && /(cetak|print|tampilkan|uji|panggil)/i.test(task.task) && inf.unused && inf.unused.length) return { pass: false, reason: "Fungsi " + inf.unused.join(", ") + " dibuat tetapi tidak pernah dipakai. Panggil fungsinya (dan cetak hasilnya jika diminta) agar bisa diperiksa." };
                     if ((lvl.id === 4 || lvl.id === 5) && inf.trivialIf && inf.trivialIf.length) return { pass: false, reason: "Kondisi if harus berupa perbandingan atau logika (mis. umur >= 17), bukan sekadar nilai variabel atau konstanta." };
                     if (task.needsIn && !inf.cmpIn) return { pass: false, reason: "Soal ini meminta operator keanggotaan: pakai 'in' dalam perbandingan (mis. 'kucing' in hewan), bukan 'for ... in'." };
                     if (lvl.id === 7 && inf.trivialWhile && inf.trivialWhile.length) return { pass: false, reason: "Kondisi while tidak boleh konstanta; pakai kondisi yang berubah (mis. i <= 3)." };
