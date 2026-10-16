@@ -2691,26 +2691,162 @@ levelsData.push({
     // Level 1, 2, 3, 6 disusun ulang: EXPECT/CHECKS lama (kunci "id-indeks") dihapus pada tahap normalisasi.
 })();
 
+/* ---------- AUDIT PRASYARAT: istilah yang dipakai soal harus sudah diajarkan di materi level itu / sebelumnya ---------- */
+(function () {
+    const L = function (id) { return levelsData.find(function (l) { return l.id === id; }); };
+    function add(id, html) { L(id).desc += "<br><br><b>Alat bantu yang dipakai di soal:</b> " + html; }
+
+    add(1, "<code>type(x)</code> menampilkan tipe data suatu nilai; <code>int(\"42\")</code> mengubah teks angka menjadi integer; <code>print(a, b, sep=\" | \")</code> mengatur pemisah antar nilai yang dicetak; <code>x, y = y, x</code> menukar isi dua variabel; <code>p = q = 0</code> mengisi beberapa variabel sekaligus. Konversi tipe dibahas lebih dalam di Level input() &amp; Konversi Tipe Data.");
+    add(2, "<code>+=</code>, <code>-=</code>, <code>*=</code> (<code>x += 1</code> sama dengan <code>x = x + 1</code>) dan <code>round(angka, n)</code> untuk membulatkan ke n desimal. Urutan operasi: kurung, lalu <code>**</code>, lalu <code>* / // %</code>, terakhir <code>+ -</code>.");
+    add(3, "<code>len(teks)</code> menghitung jumlah karakter; <code>teks[0]</code> mengambil karakter pertama (indeks mulai dari 0, dibahas penuh di Level String Method &amp; Slicing); <code>'ha' * 3</code> mengulang teks dan <code>+</code> menyambung teks; <code>\\n</code> pindah baris; <code>{{</code> dan <code>}}</code> mencetak kurung kurawal apa adanya; <code>.title()</code> membuat huruf awal tiap kata menjadi kapital.");
+    add(9, "<code>len(daftar)</code> jumlah elemen, <code>max()</code>/<code>min()</code> nilai terbesar/terkecil, <code>daftar[-1]</code> elemen terakhir, <code>list1 + list2</code> menggabungkan dua list, dan <code>x in daftar</code> memeriksa keberadaan elemen.");
+    add(10, "<code>set(\"PROGRAM\")</code> mengubah urutan menjadi set; operasi set: <code>a | b</code> (union), <code>a &amp; b</code> (irisan), <code>a - b</code> (selisih); <code>len()</code> dan <code>in</code> bekerja seperti pada list.");
+    add(11, "<code>.items()</code> mengembalikan pasangan (kunci, nilai) untuk diulang dengan <code>for k, v in d.items():</code>; <code>del d[\"kunci\"]</code> menghapus pasangan; <code>len(d)</code> jumlah pasangan.");
+    add(15, "<code>else</code> pada try dijalankan bila tidak ada error; <code>except Exception as e</code> menyimpan objek error ke <code>e</code> sehingga pesannya bisa dicetak; <code>raise ValueError(\"pesan\")</code> melempar error sendiri.");
+    add(19, "nilai default pada atribut (<code>port: int = 8000</code>) dan <code>__post_init__(self)</code>, method yang dijalankan otomatis setelah <code>__init__</code> hasil dataclass (cocok untuk validasi).");
+    add(22, "fungsi adalah objek di Python, jadi fungsi boleh dikembalikan dari fungsi lain dan dipanggil kemudian. Itu fondasi closure dan juga decorator (level berikutnya).");
+    add(23, "<code>with open(\"file.txt\", \"w\") as f:</code> membuka file lalu menutupnya otomatis saat blok selesai; <code>with</code> dibahas lebih dalam di Level Custom Context Managers.");
+    add(26, "<code>r'...'</code> (raw string) agar tanda <code>\\</code> pada pola tidak ditafsirkan sebagai escape string; contoh <code>r'\\d+'</code>.");
+    add(41, "<b>ABC</b> (<code>from abc import ABC, abstractmethod</code>) adalah class dasar yang tidak boleh diinstansiasi langsung dan memaksa subclass mengimplementasikan method <code>@abstractmethod</code>; dipakai untuk Abstract Factory dan interface pada level-level berikutnya.");
+    add(46, "<b>Repository</b> adalah antarmuka penyimpanan/pengambilan entity (<code>simpan()</code>, <code>cari()</code>) yang menyembunyikan detail database; pola ini dibahas penuh di level berikutnya. <b>Use Case</b> adalah class yang mengatur satu alur bisnis dengan memanggil entity dan repository.");
+    add(53, "<code>Depends(fungsi)</code> milik FastAPI menyuntikkan hasil sebuah fungsi (mis. pengguna aktif) ke endpoint; <code>OAuth2PasswordBearer</code> mengambil token dari header <code>Authorization: Bearer ...</code>.");
+    add(97, "<b>Message broker</b> (RabbitMQ/Kafka) adalah perantara yang meneruskan pesan antar layanan secara asinkron (dibahas penuh di level Event-Driven berikutnya). <b>Circuit Breaker</b> memutus pemanggilan ke layanan yang terus gagal agar kegagalan tidak menjalar; <b>service discovery</b> adalah registri tempat layanan menemukan alamat layanan lain.");
+    add(115, "<code>time.perf_counter()</code> mengembalikan waktu berpresisi tinggi (detik); selisih dua pemanggilan = durasi eksekusi.");
+    add(124, "<code>shutil.rmtree(folder, ignore_errors=True)</code> menghapus folder beserta isinya (modul <code>shutil</code>, bawaan Python); <code>sorted()</code> mengurutkan hasil <code>glob()</code>.");
+    add(125, "<code>.gitignore</code> adalah berkas teks berisi pola file/folder yang tidak boleh dilacak Git (satu pola per baris); Git sendiri dibahas di Level Git &amp; Terminal Dasar.");
+
+    // L15 soal 8 memakai open() padahal File I/O baru dibahas di Level 23 -> ganti dengan error yang sudah dikenal
+    const t15 = L(15).tasks[7];
+    t15.task = "Buat try-except untuk menangani AttributeError dengan memanggil method yang tidak ada pada string, misalnya 'abc'.tambah().";
+    t15.hint = "Gunakan except AttributeError:";
+    t15.validate = function (c) { return /\btry\b/.test(c) && /except\s+AttributeError/.test(c); };
+
+    // L124 soal 7: petunjuk memakai list comprehension (sudah dibahas sebelum level ini)
+    L(124).tasks[6].hint = "sorted([p.name for p in folder.glob('*.txt')])";
+})();
+
+/* ---------- AUDIT PRASYARAT TAHAP 2: soal yang diganti + materi yang dilengkapi ---------- */
+(function () {
+    const L = function (id) { return levelsData.find(function (l) { return l.id === id; }); };
+    function add(id, html) {
+        const l = L(id);
+        l.desc += (l.desc.indexOf("Alat bantu yang dipakai di soal") === -1 ? "<br><br><b>Alat bantu yang dipakai di soal:</b> " : "<br>") + html;
+    }
+    function has(rs) { rs = [].concat(rs); return function (c) { return rs.every(function (r) { return r.test(c); }); }; }
+    function swap(id, idx, o) {
+        const t = L(id).tasks[idx];
+        t.task = o.task; t.hint = o.hint;
+        t.validate = has(o.v);
+        if (o.text) t.forceText = true;
+    }
+
+    /* ===== A. Soal yang diganti ===== */
+    swap(41, 8, { task: "Buat Builder pattern untuk menyusun pesan email bertahap (penerima, subjek, isi) dengan method chaining, lalu panggil .build() dan cetak hasilnya.",
+        hint: "Setiap method (mis. kepada, subjek, isi) menyimpan nilai lalu mengembalikan self; .build() mengembalikan dictionary atau string akhir.",
+        v: [/class\s+\w+/, /return\s+self/, /\.build\s*\(/] });
+    swap(42, 3, { task: "Buat Adapter yang mengubah teks 'a=1;b=2' menjadi dictionary {'a': '1', 'b': '2'} agar cocok dengan sistem yang hanya menerima dictionary.",
+        hint: "Di dalam method adapter: teks.split(';') lalu split('=') pada tiap bagian.",
+        v: [/class\s+\w+/, /\.split\s*\(/] });
+    swap(43, 1, { task: "Buat Strategy pattern untuk memilih algoritma pengurutan (naik atau turun) saat runtime, lalu uji keduanya pada [3, 1, 2].",
+        hint: "Strategi naik memakai sorted(data), strategi turun memakai sorted(data, reverse=True); Context menerima strategi lewat konstruktor.",
+        v: [/class\s+\w+/, /sorted\s*\(|\.sort\s*\(/] });
+    swap(44, 6, { task: "Buat container IoC sederhana: simpan class plugin di dictionary (nama -> class), lalu buat dan jalankan plugin berdasarkan nama.",
+        hint: "registry = {'email': EmailPlugin}; plugin = registry[nama]()",
+        v: [/class\s+\w+/, /\{\s*['"]\w+['"]\s*:/] });
+    swap(37, 9, { task: "Gunakan cProfile.Profile() dan pstats.Stats(...).sort_stats('cumulative') untuk menampilkan fungsi paling lambat dari sebuah fungsi buatanmu.",
+        hint: "p = cProfile.Profile(); p.enable(); fungsi(); p.disable(); pstats.Stats(p).sort_stats('cumulative').print_stats(5)",
+        v: [/cProfile/, /pstats/, /sort_stats\s*\(/, /def\s+\w+/] });
+    swap(39, 2, { task: "Tulis baris kode yang memasang breakpoint debugger dengan pdb.set_trace() (atau breakpoint()). Soal ini dinilai dari teks karena debugger interaktif tidak bisa dijalankan di browser.",
+        hint: "import pdb lalu pdb.set_trace() di baris tempat program harus berhenti.",
+        v: [/pdb\.set_trace\s*\(\s*\)|\bbreakpoint\s*\(\s*\)/], text: true });
+    swap(39, 7, { task: "Tulis empat perintah dasar pdb beserta artinya, satu per baris: n (next), c (continue), p variabel (print), q (quit).",
+        hint: "Contoh: n = next (jalankan baris berikutnya).",
+        v: [/\bnext\b/i, /\bcontinue\b/i, /\bquit\b/i, /\bp\s+\w+/], text: true });
+
+    /* ===== B. Materi yang dilengkapi ===== */
+    add(12, "<code>{x:.1%}</code> menampilkan persen (0.758 menjadi 75.8%); <code>{n:04d}</code> mengisi angka nol di depan sampai 4 digit; <code>{n:x}</code> heksadesimal; <code>{n:b}</code> biner.");
+    add(104, "<code>bool(x)</code> mengubah nilai menjadi True/False: angka 0, string kosong, dan list kosong menjadi False, selain itu True.");
+    add(9, "<code>sum(daftar)</code> menjumlahkan semua elemen angka.");
+    add(107, "<code>math.pi</code> (konstanta), <code>math.floor(x)</code> membulatkan ke bawah, <code>math.ceil(x)</code> ke atas, <code>random.randint(a, b)</code> bilangan bulat acak (kedua batas ikut).");
+    add(125, "<code>deactivate</code> keluar dari venv, <code>pip list</code> menampilkan paket terpasang, <code>pip uninstall nama</code> menghapus paket.");
+    add(10, "<code>s.add(x)</code> menambah elemen, <code>s.remove(x)</code> menghapus (error bila tidak ada), <code>s.discard(x)</code> menghapus tanpa error.");
+    add(11, "<code>d[\"kunci\"] = nilai</code> menambah pasangan baru, atau mengubah nilainya bila kunci sudah ada.");
+    add(16, "<b>Set comprehension</b> memakai kurung kurawal tanpa pasangan: <code>{x % 3 for x in range(1, 10)}</code>. <b>Dua for</b> dalam satu comprehension: <code>[a + str(b) for a in huruf for b in angka]</code> (for kedua adalah loop dalam).");
+    add(121, "tuple satu elemen wajib memakai koma: <code>(4,)</code>; <code>t + (4,)</code> menghasilkan tuple baru.");
+    add(111, "<code>Counter(x).most_common(n)</code> mengembalikan n pasangan (elemen, jumlah) terbanyak; atribut tanggal <code>d.year</code>, <code>d.month</code>, <code>d.day</code>; <code>d.strftime(\"%d/%m/%Y\")</code> memformat tanggal (%d hari, %m bulan, %Y tahun).");
+    add(115, "<b>Pencarian biner</b> pada list terurut: <code>low = 0</code>, <code>high = len(daftar) - 1</code>; selama <code>low &lt;= high</code> hitung <code>mid = (low + high) // 2</code>; jika <code>daftar[mid]</code> sama dengan target, selesai; jika lebih kecil, <code>low = mid + 1</code>; jika lebih besar, <code>high = mid - 1</code>.");
+    add(116, "tanda <code>@</code> di atas <code>def</code> disebut dekorator, yaitu penambah perilaku pada fungsi (dibahas penuh di level Decorator Dasar); untuk saat ini cukup ditulis persis seperti contoh, mis. <code>@pytest.mark.parametrize(\"a,b\", [(1, 2), (3, 4)])</code>.");
+    add(26, "<code>\\w</code> huruf/angka/underscore, <code>\\b</code> batas kata, <code>{n}</code> tepat n kali, <code>+</code> satu atau lebih, <code>*</code> nol atau lebih, <code>[A-Z]</code> rentang karakter, <code>\\.</code> titik literal, <code>( )</code> kelompok yang diambil; <code>re.search(pola, teks)</code> mengembalikan kecocokan pertama (atau None), <code>re.split(pola, teks)</code> memecah teks berdasarkan pola.");
+    add(23, "<code>f.read()</code> membaca seluruh isi, <code>f.readline()</code> satu baris, <code>f.readlines()</code> list semua baris, <code>f.write(teks)</code> menulis string, <code>f.writelines(list_teks)</code> menulis banyak string.");
+    add(124, "<code>folder.mkdir(parents=True, exist_ok=True)</code> membuat folder (beserta induknya, tanpa error bila sudah ada); <code>p.is_dir()</code>; ukuran file: <code>p.stat().st_size</code> atau <code>os.path.getsize(path)</code>.");
+    add(101, "<b>Class variable</b> ditulis langsung di bawah <code>class</code>, di luar method, dan dimiliki bersama oleh semua objek (<code>Hewan.kingdom</code>); atribut biasa dibuat dengan <code>self.x = ...</code> dan milik tiap objek.");
+    add(34, "<code>json.dumps(obj)</code> objek menjadi string JSON, <code>json.loads(teks)</code> kebalikannya; <code>json.dump(obj, f)</code> dan <code>json.load(f)</code> bekerja dengan file; <code>pickle.dumps(obj)</code> menghasilkan bytes, <code>pickle.loads(data)</code> mengembalikannya; teks JSON rusak melempar <code>json.JSONDecodeError</code>.");
+    add(117, "<code>httpx.get(url, params={...})</code> mengirim GET dengan query string, <code>httpx.post(url, json={...})</code> mengirim body JSON; objek respons punya <code>.status_code</code>, <code>.json()</code>, dan <code>.raise_for_status()</code> (melempar error bila status 4xx/5xx).");
+    add(13, "membongkar koleksi saat memanggil fungsi: <code>f(*daftar)</code> mengirim elemen list sebagai argumen posisi, <code>f(**kamus)</code> mengirim pasangan dictionary sebagai argumen kata kunci.");
+    add(33, "<code>Callable[[int], int]</code> (fungsi dengan parameter int, hasil int), <code>Any</code> (tipe apa saja), <code>int | None</code> (sama dengan Optional[int]), dan <code>list[int]</code> (huruf kecil, tanpa import, Python 3.9+).");
+    add(28, "<code>isinstance(objek, Kelas)</code> memeriksa apakah objek berasal dari class itu atau turunannya; <code>issubclass(Anak, Induk)</code> memeriksa hubungan antar class.");
+    add(18, "<code>__repr__</code> adalah representasi objek untuk programmer (tampil di console dan list), sedangkan <code>__str__</code> untuk pengguna (dipakai <code>print</code>); <code>__eq__(self, other)</code> menentukan hasil operator <code>==</code> antar objek.");
+    add(102, "karena fungsi adalah objek, ia boleh diberi atribut: <code>wrapper.jumlah = 0</code> lalu <code>wrapper.jumlah += 1</code> di dalam wrapper.");
+    add(19, "<code>dataclasses.asdict(obj)</code> mengubah objek dataclass menjadi dictionary; <code>@dataclass(frozen=True)</code> membuat objek tidak bisa diubah (immutable).");
+    add(25, "<code>asyncio.run(main())</code> menjalankan coroutine <code>main</code> dari kode biasa dan menunggunya selesai.");
+    add(93, "<code>asyncio.gather(c1(), c2())</code> menjalankan beberapa coroutine bersamaan dan mengembalikan list hasil; <code>except* Tipe as eg</code> menangkap ExceptionGroup, daftar error ada di <code>eg.exceptions</code>.");
+    add(29, "<code>id(x)</code> alamat identitas objek; <code>del x</code> menghapus nama (referensi); <code>__del__(self)</code> dipanggil saat objek dihancurkan; modul <code>gc</code>: <code>gc.enable()</code>, <code>gc.isenabled()</code>, <code>gc.collect()</code>, <code>gc.get_threshold()</code>.");
+    add(114, "<code>queue.Queue()</code> adalah antrean aman untuk dipakai antar thread: <code>q.put(x)</code> memasukkan, <code>q.get()</code> mengambil (menunggu bila kosong).");
+    add(31, "<code>executor.submit(f, arg)</code> menjadwalkan satu tugas dan mengembalikan objek Future; <code>future.result()</code> mengambil hasilnya; <code>as_completed(daftar_future)</code> memberi future sesuai urutan selesai; <code>executor.map(f, iterable)</code> memetakan fungsi ke banyak data.");
+    add(32, "API-nya sama dengan ThreadPoolExecutor (<code>submit</code>, <code>result</code>, <code>map</code>, <code>max_workers</code>), tetapi fungsi yang dikirim harus bisa di-pickle: didefinisikan di level atas modul, bukan lambda atau fungsi bersarang.");
+    add(35, "socket hanya mengirim <b>bytes</b>: <code>\"teks\".encode(\"utf-8\")</code> mengubah string menjadi bytes untuk <code>.send()</code>, dan <code>data.decode(\"utf-8\")</code> mengubah hasil <code>.recv()</code> kembali menjadi string.");
+    add(36, "<code>type(nama, (basis,), {atribut})</code> membuat class secara dinamis; <code>class Contoh(metaclass=Meta):</code> memakai metaclass kustom untuk class itu.");
+    add(48, "<code>ast.walk(tree)</code> mengiterasi semua node; <code>ast.NodeVisitor</code> (method <code>visit_NamaNode</code>, panggil <code>self.generic_visit(node)</code>) membaca pohon; <code>ast.NodeTransformer</code> mengubahnya (method mengembalikan node baru); setelah transformasi panggil <code>ast.fix_missing_locations(tree)</code>, lalu <code>exec(compile(tree, \"&lt;ast&gt;\", \"exec\"))</code>; <code>inspect.getsource(fungsi)</code> membaca kode sumber fungsi.");
+    add(44, "untuk container yang menyelesaikan dependensi otomatis, <code>inspect.signature(__init__).parameters</code> memberi daftar parameter beserta <code>.annotation</code>-nya (tipe yang diminta).");
+    add(112, "<code>np.arange(1, 7)</code> deret angka, <code>arr.reshape(2, 3)</code> mengubah bentuk, <code>arr.shape</code> bentuk array (tuple), <code>arr.mean()</code> dan <code>arr.sum()</code>; pada DataFrame, <code>df[\"kolom\"].mean()</code> rata-rata satu kolom.");
+    add(126, "<code>fig, axes = plt.subplots(1, 2)</code> membuat dua panel berdampingan (<code>axes[0]</code>, <code>axes[1]</code>); <code>ax.hist(data, bins=5)</code> membagi data ke 5 kelompok.");
+    add(59, "<code>transform(\"mean\")</code> hasil agregasi per kelompok dengan panjang sama seperti data asli; <code>rank()</code> peringkat; <code>shift(1)</code> menggeser nilai satu baris; <code>cumsum()</code> total berjalan; <code>rolling(3).mean()</code> rata-rata bergerak; <code>pd.merge(a, b, on=\"kunci\")</code> menggabungkan dua tabel.");
+    add(60, "<code>df.eval(\"c = a + b\")</code> dan <code>df.query(\"a &gt; 500\")</code> mengevaluasi ekspresi/filter dalam bentuk string; <code>astype(\"category\")</code> menghemat memori kolom berulang; <code>pd.to_numeric(kolom, downcast=\"integer\")</code> memperkecil tipe angka; <code>pd.concat([df, baru], axis=1)</code> menambah banyak kolom sekaligus; <code>pd.read_csv(file, chunksize=n)</code> membaca per potongan; <code>df.memory_usage(deep=True)</code> mengukur memori.");
+    add(66, "<code>s.interpolate()</code> mengisi nilai hilang; <code>idx.year</code>/<code>.month</code>/<code>.day_name()</code> (lewat <code>.dt</code> pada kolom); <code>s.pct_change()</code> persentase perubahan; <code>s.ewm(span=5).mean()</code> rata-rata bergerak eksponensial; irisan tanggal <code>s[\"2026-01-01\":\"2026-01-05\"]</code>; uji stasioneritas <code>adfuller(series)</code> dari <code>statsmodels.tsa.stattools</code>.");
+    add(65, "<code>t1 &gt;&gt; t2</code> berarti t1 jalan dulu baru t2; <code>default_args</code> adalah pengaturan bawaan semua task (retries, retry_delay); <b>XCom</b> mengirim data kecil antar task (<code>ti.xcom_push</code>, <code>ti.xcom_pull</code>); <b>Sensor</b> adalah task yang menunggu suatu kondisi, mis. file muncul (<code>FileSensor</code>).");
+    add(68, "<code>df.corr()</code> menghitung matriks korelasi antar kolom numerik; <code>sns.heatmap(matriks, annot=True)</code> menampilkannya sebagai peta warna berangka.");
+    add(49, "<code>from fastapi import Path, Query</code>: <code>Path(gt=0)</code> membatasi path parameter, <code>Query(max_length=50)</code> membatasi query parameter; <code>@app.post(\"/x\", status_code=201)</code> mengatur kode respons; <code>uvicorn.run(app)</code> menjalankan server.");
+    add(50, "<code>Field(default=0, ge=0)</code> memberi default dan batas; <code>obj.model_dump()</code> menjadi dictionary, <code>obj.model_dump_json()</code> menjadi string JSON; <code>pydantic.ValidationError</code> dilempar saat data tidak valid; model boleh bersarang (atribut bertipe model lain).");
+    add(113, "<code>cur.executemany(sql, daftar_tuple)</code> menjalankan satu perintah untuk banyak baris; <code>cur.fetchone()</code> mengambil satu baris (atau None); <code>cur.lastrowid</code> id baris yang baru disisipkan.");
+    add(51, "<code>create_engine(\"sqlite:///test.db\")</code> membuat koneksi; <code>sessionmaker(bind=engine)</code> pembuat sesi; <code>Base.metadata.create_all(engine)</code> membuat tabel; <code>select(User)</code> membangun query (dijalankan lewat <code>session.scalars(...)</code>); <code>session.query(User).filter_by(username=\"x\").first()</code> filter sederhana gaya lama.");
+    add(89, "kunci asimetris punya pasangan: <b>kunci privat</b> menandatangani data (<code>private_key.sign(...)</code>), <b>kunci publik</b> memverifikasi tanda tangan itu (<code>public_key.verify(...)</code>, error bila palsu); kunci RSA dibuat dengan <code>rsa.generate_private_key(public_exponent=65537, key_size=2048)</code> dan <code>.public_key()</code>.");
+    add(90, "<b>XXE</b>: parser XML yang membaca file/URL luar atas perintah dokumen jahat; <b>Mass Assignment</b>: klien menyelundupkan field tak terduga (mis. is_admin) ke model; <b>CSP</b>: header yang membatasi dari mana skrip boleh dimuat; cookie aman memakai <code>HttpOnly</code> (tak bisa dibaca JavaScript), <code>Secure</code> (hanya HTTPS), <code>SameSite</code> (mengurangi CSRF).");
+    add(76, "<code>a @ b</code> adalah operator perkalian matriks (juga di NumPy), sama dengan <code>torch.matmul(a, b)</code>.");
+    add(127, "<code>max(daftar, key=lambda d: skor(d))</code> mengembalikan elemen dengan skor tertinggi.");
+    add(71, "operator <code>|</code> pada LangChain menyambung komponen menjadi rantai: <code>chain = prompt | llm | parser</code> berarti keluaran komponen kiri menjadi masukan komponen kanan; rantai dijalankan dengan <code>.invoke({...})</code>.");
+    add(80, "<b>User non-root</b>: <code>RUN useradd -m appuser</code> lalu <code>USER appuser</code> agar proses tidak berjalan sebagai root; <b>.dockerignore</b> adalah berkas berisi pola file/folder yang tidak disalin ke image (mis. <code>venv/</code>, <code>__pycache__/</code>).");
+    add(84, "<b>Scrape</b>: Prometheus mengambil endpoint <code>/metrics</code> secara berkala sesuai <code>prometheus.yml</code> (<code>scrape_configs</code> &rarr; <code>static_configs</code> &rarr; <code>targets</code>); <b>Grafana</b> menampilkan dashboard dengan Prometheus sebagai data source; <b>alerting rule</b> berisi <code>alert:</code> dan <code>expr:</code> (kondisi PromQL, mis. <code>rate(...) &gt; 5</code>).");
+    add(86, "<b>IAM role/policy</b> menentukan layanan AWS apa yang boleh diakses fungsi (<code>Effect</code>, <code>Action</code>, <code>Resource</code>); <b>API Gateway</b> mengubah permintaan HTTP menjadi event untuk Lambda; <b>CloudWatch Logs</b> menampung semua <code>print()</code>/logging fungsi.");
+    add(85, "<b>EC2</b> adalah server virtual AWS; <b>Security Group</b> adalah firewall virtual yang mengatur port yang boleh masuk; <b>stack</b> Pulumi adalah satu instansi lingkungan proyek (mis. dev atau prod) dengan state sendiri.");
+    add(94, "<b>Prasyarat:</b> level ini mengasumsikan kamu mengenal dasar bahasa C (fungsi, pointer, <code>#include</code>); soalnya berupa kode C dan dinilai dari isi teks.");
+    add(99, "fixture dengan <code>yield</code>: kode sebelum <code>yield</code> adalah setup, nilai setelah <code>yield</code> dipakai tes, dan kode sesudahnya (teardown) otomatis jalan setelah tes selesai.");
+    add(39, "perintah dasar pdb saat program berhenti di breakpoint: <code>n</code> (next, baris berikutnya), <code>s</code> (step, masuk ke fungsi), <code>c</code> (continue, lanjut sampai breakpoint berikutnya), <code>p variabel</code> (print nilai), <code>l</code> (list, tampilkan kode sekitar), <code>q</code> (quit, keluar).");
+    add(37, "<code>pstats.Stats(profil).sort_stats(\"cumulative\").print_stats(5)</code> menampilkan 5 fungsi yang paling memakan waktu; <code>cProfile.Profile()</code> dipakai dengan <code>.enable()</code> dan <code>.disable()</code> di sekitar kode yang diukur.");
+})();
+
 /* ---------- URUTAN BELAJAR (fondasi dulu, lanjutan kemudian) ----------
    `id` = identitas tetap (dipakai untuk progress tersimpan, JANGAN diubah), `no` = nomor tampilan.
    Untuk mengubah urutan cukup edit daftar PHASES di bawah; `no` dihitung otomatis.
    Aturan prasyarat yang dijaga: if/elif sebelum input(); list (id 9) sebelum string method, break/continue;
    import (id 107) sebelum pemakaian modul; try/except (id 15) sebelum soal yang memakainya;
    Pydantic (50) sebelum Settings (79); PySpark (61) sebelum Delta Lake (64); NumPy/Pandas dasar (112) sebelum Pandas lanjutan (59);
-   kriptografi (89) sebelum autentikasi (53); level rangkuman (40) di akhir fase Architecture.
+   kriptografi (89) sebelum autentikasi (53); level rangkuman (40) di akhir fase Architecture;
+   comprehension (16) setelah dict (11); closure (22) & decorator (102) sebelum @property (20) & @dataclass (19);
+   dunder (18) sebelum context manager (17); HTTP (117) sebelum FastAPI & Scrapy; Matplotlib (126) sebelum time series (66);
+   embedding (127) dan LangChain (71) sebelum HF/Ollama (78); S3 (87) & Lambda (86) sebelum IaC (85).
    Di konsol browser: odysseyLevelMap() menampilkan tabel nomor tampilan <-> id. */
 (function () {
     const PHASES = [
         ["Beginner", [1, 2, 3, 12, 103, 4, 5, 104, 6, 7, 9, 105, 106, 120, 128]],
-        ["Intermediate", [8, 110, 107, 125, 10, 11, 15, 121, 108, 122, 109, 111, 123, 115, 27, 116, 26, 23, 124, 101, 34, 13, 14, 16, 33, 129]],
-        ["Advanced", [28, 20, 18, 19, 17, 22, 102, 30, 130]],
+        ["Intermediate", [8, 110, 107, 125, 10, 11, 16, 15, 121, 108, 122, 109, 111, 123, 115, 27, 116, 26, 23, 124, 101, 34, 117, 13, 14, 33, 129]],
+        ["Advanced", [28, 18, 17, 22, 102, 30, 20, 19, 130]],
         ["Expert", [38, 24, 21, 25, 93, 29, 131]],
         ["Professional", [114, 31, 32, 35, 95, 37, 39, 36, 48, 132]],
         ["Architecture", [41, 42, 43, 44, 45, 46, 47, 40, 133]],
-        ["Data Engineering", [112, 59, 60, 66, 62, 65, 63, 61, 64, 67, 126, 68, 134]],
-        ["Web API", [117, 49, 50, 79, 113, 51, 52, 57, 56, 89, 53, 90, 54, 55, 58, 135]],
-        ["AI Engineering", [119, 69, 76, 77, 78, 70, 71, 127, 72, 73, 74, 75, 136]],
-        ["DevOps", [118, 80, 81, 82, 83, 84, 85, 87, 86, 88, 137]],
+        ["Data Engineering", [112, 126, 59, 60, 66, 62, 65, 63, 61, 64, 67, 68, 134]],
+        ["Web API", [49, 50, 79, 113, 51, 52, 57, 56, 89, 53, 90, 54, 55, 58, 135]],
+        ["AI Engineering", [119, 69, 76, 77, 70, 127, 71, 78, 72, 73, 74, 75, 136]],
+        ["DevOps", [118, 80, 81, 82, 83, 84, 87, 86, 85, 88, 137]],
         ["Security & Performance", [96, 91, 92, 94, 138]],
         ["Enterprise Mastery", [97, 98, 99, 139, 100]]
     ];

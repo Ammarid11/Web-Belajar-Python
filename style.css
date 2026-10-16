@@ -8,11 +8,10 @@ body {
 
 .code-font {
     font-family: 'Fira Code', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-    /* Matikan ligatur agar simbol seperti != atau >= tampil apa adanya saat belajar */
     font-variant-ligatures: none;
 }
 
-/* ---------- Scrollbar ---------- */
+/* ---------- Scrollbar Kustom ---------- */
 * {
     scrollbar-width: thin;
     scrollbar-color: #334155 #0f172a;
@@ -36,7 +35,7 @@ body {
     background: #475569;
 }
 
-/* ---------- Fokus keyboard yang jelas ---------- */
+/* ---------- Fokus Keyboard yang Jelas ---------- */
 button:focus-visible,
 input:focus-visible,
 summary:focus-visible {
@@ -47,7 +46,7 @@ summary:focus-visible {
 kbd {
     font-family: 'Fira Code', ui-monospace, monospace;
     font-size: 10px;
-    padding: 1px 5px;
+    padding: 2px 6px;
     border: 1px solid #334155;
     border-bottom-width: 2px;
     border-radius: 5px;
@@ -55,7 +54,7 @@ kbd {
     color: #94a3b8;
 }
 
-/* ---------- Teks materi ---------- */
+/* ---------- Teks Materi & Kode Tersemat ---------- */
 .lesson b {
     color: #f1f5f9;
 }
@@ -69,7 +68,65 @@ kbd {
     border-radius: 0.35rem;
 }
 
-/* Contoh kode: pertahankan spasi/indentasi Python persis seperti aslinya */
+/* ---------- Kotak "Alat bantu yang dipakai di soal" ---------- */
+.tools-box {
+    margin-bottom: 1.5rem;
+    padding: 1rem 1.15rem 1.1rem;
+    border: 1px solid rgba(245, 158, 11, 0.3);
+    border-left: 4px solid #f59e0b;
+    border-radius: 0.75rem;
+    background: rgba(245, 158, 11, 0.06);
+}
+
+.tools-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #fcd34d;
+}
+
+.tools-sub {
+    margin: 0.3rem 0 0.75rem;
+    font-size: 0.75rem;
+    color: #94a3b8;
+}
+
+.tools-list {
+    display: grid;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.tools-list li {
+    position: relative;
+    padding-left: 1.15rem;
+    font-size: 0.9rem;
+    line-height: 1.65;
+    color: #cbd5e1;
+}
+
+.tools-list li::before {
+    content: "";
+    position: absolute;
+    left: 0.15rem;
+    top: 0.72em;
+    width: 0.4rem;
+    height: 0.4rem;
+    border-radius: 50%;
+    background: #f59e0b;
+}
+
+.tools-box code {
+    color: #fde68a;
+    background: rgba(245, 158, 11, 0.14);
+}
+
 .code-block {
     white-space: pre;
     tab-size: 4;
@@ -79,18 +136,19 @@ kbd {
     font-family: inherit;
 }
 
-/* ---------- Editor dengan nomor baris ---------- */
+/* ---------- Editor dengan Nomor Baris ---------- */
 .editor-wrap {
     display: flex;
     background: #020617;
     border: 1px solid #1e293b;
     border-radius: 0.75rem;
     overflow: hidden;
-    transition: border-color 0.15s;
+    transition: border-color 0.15s ease;
 }
 
 .editor-wrap:focus-within {
     border-color: #6366f1;
+    box-shadow: 0 0 0 1px rgba(99, 102, 241, 0.3);
 }
 
 #line-numbers,
@@ -110,7 +168,7 @@ kbd {
     overflow: hidden;
     user-select: none;
     color: #475569;
-    background: #0b1220;
+    background: #090d16;
     border-right: 1px solid #1e293b;
 }
 
@@ -133,7 +191,7 @@ kbd {
     color: #475569;
 }
 
-/* ---------- Sidebar versi mobile (overlay layar penuh) ---------- */
+/* ---------- Sidebar Versi Mobile (Overlay Layar Penuh) ---------- */
 @media (max-width: 1023px) {
     #sidebar {
         display: none;
@@ -146,10 +204,12 @@ kbd {
         z-index: 60;
         border-radius: 0;
         border: 0;
+        background-color: rgba(15, 23, 42, 0.98);
+        backdrop-filter: blur(8px);
     }
 }
 
-/* ---------- Toast ---------- */
+/* ---------- Toast Notifikasi ---------- */
 #toast-root {
     position: fixed;
     right: 1rem;
@@ -186,7 +246,7 @@ kbd {
     to   { opacity: 1; transform: none; }
 }
 
-/* ---------- Dialog tamat ---------- */
+/* ---------- Dialog Tamat / Selesai ---------- */
 .finish-dialog {
     margin: auto;
     max-width: 26rem;
@@ -196,6 +256,7 @@ kbd {
     background: #0f172a;
     border: 1px solid #334155;
     border-radius: 1rem;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
 }
 
 .finish-dialog::backdrop {
@@ -203,7 +264,7 @@ kbd {
     backdrop-filter: blur(3px);
 }
 
-/* ---------- Hormati preferensi "kurangi gerakan" ---------- */
+/* ---------- Aksesibilitas Gerakan ---------- */
 @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {
         animation-duration: 0.01ms !important;
