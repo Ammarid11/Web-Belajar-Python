@@ -187,6 +187,19 @@ kbd {
     tab-size: 4;
 }
 
+#line-numbers .ln {
+    display: block;
+}
+
+#line-numbers .ln-err {
+    margin: 0 -0.6rem 0 -0.75rem;
+    padding: 0 0.6rem 0 0.75rem;
+    color: #fda4af;
+    font-weight: 700;
+    background: rgba(244, 63, 94, 0.2);
+    box-shadow: inset 3px 0 0 #f43f5e;
+}
+
 #code-input::placeholder {
     color: #475569;
 }

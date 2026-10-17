@@ -53,7 +53,12 @@
         return {
             version: 2, savedAt: Math.max(a.savedAt || 0, b.savedAt || 0), done: done,
             drafts: Object.assign({}, older.drafts, newer.drafts),
-            settings: newer.settings || older.settings, last: newer.last || older.last
+            settings: newer.settings || older.settings, last: newer.last || older.last,
+            activity: (function () {
+                const r = Object.assign({}, a.activity || {});
+                Object.keys(b.activity || {}).forEach(function (k) { r[k] = Math.max(r[k] || 0, b.activity[k]); });
+                return r;
+            })()
         };
     }
 

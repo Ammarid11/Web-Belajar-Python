@@ -2202,14 +2202,14 @@ levelsData.push({
     // Output harus persis sama baris demi baris (spasi berlebih & huruf besar-kecil diabaikan)
     function LINES(arr) {
         const want = arr.map(function (x) { return norm(String(x)); });
-        return { test: function (s) {
+        return { want: arr.map(String), test: function (s) {
             const got = String(s).replace(/\r/g, "").split("\n").map(norm).filter(function (l) { return l !== ""; });
             return got.length === want.length && got.every(function (x, i) { return x === want[i]; });
         } };
     }
     // Seperti LINES, tetapi spasi di awal baris (rata tengah) harus tepat
     function LINESX(arr) {
-        return { test: function (s) {
+        return { want: arr.map(String), test: function (s) {
             const got = String(s).replace(/\r/g, "").split("\n").map(function (l) { return l.replace(/\s+$/, ""); });
             while (got.length && got[got.length - 1] === "") got.pop();
             return got.length === arr.length && got.every(function (x, i) { return x === arr[i]; });
@@ -2355,7 +2355,7 @@ levelsData.push({
     function norm(l) { return l.replace(/\s+/g, " ").trim().toLowerCase(); }
     function LINES(arr) {
         const want = arr.map(function (x) { return norm(String(x)); });
-        return { test: function (s) {
+        return { want: arr.map(String), test: function (s) {
             const got = String(s).replace(/\r/g, "").split("\n").map(norm).filter(function (l) { return l !== ""; });
             return got.length === want.length && got.every(function (x, i) { return x === want[i]; });
         } };
@@ -2524,7 +2524,7 @@ levelsData.push({
     function norm(l) { return l.replace(/\s+/g, " ").trim().toLowerCase(); }
     function LINES(arr) {
         const want = arr.map(function (x) { return norm(String(x)); });
-        return { test: function (s) {
+        return { want: arr.map(String), test: function (s) {
             const got = String(s).replace(/\r/g, "").split("\n").map(norm).filter(function (l) { return l !== ""; });
             return got.length === want.length && got.every(function (x, i) { return x === want[i]; });
         } };
@@ -3440,7 +3440,8 @@ levelsData.push({
         taskIndex: 0,
         done: {},      // { levelId: Set(indexSoal) }
         drafts: {},    // { "level-soal": kode }
-        settings: { lockOrder: false }
+        settings: { lockOrder: false, dailyGoal: 3, track: "all" },
+        activity: {}   // { "2026-10-17": jumlahSoalSelesai }
     };
 
     let storageWarned = false;
@@ -3456,6 +3457,7 @@ levelsData.push({
             done: done,
             drafts: state.drafts,
             settings: state.settings,
+            activity: state.activity,
             last: { levelId: state.levelId, taskIndex: state.taskIndex }
         };
     }
@@ -3497,6 +3499,17 @@ levelsData.push({
         state.done = done;
         state.drafts = drafts;
         state.settings.lockOrder = !!(raw.settings && raw.settings.lockOrder);
+        const rg = raw.settings && raw.settings.dailyGoal;
+        state.settings.dailyGoal = [1, 3, 5, 10].indexOf(rg) !== -1 ? rg : 3;
+        const rt = raw.settings && raw.settings.track;
+        state.settings.track = (typeof rt === "string" && Object.prototype.hasOwnProperty.call(TRACKS, rt)) ? rt : "all";
+        const act = {};
+        if (raw.activity && typeof raw.activity === "object") {
+            Object.keys(raw.activity).forEach(function (k) {
+                if (/^\d{4}-\d{2}-\d{2}$/.test(k) && Number.isInteger(raw.activity[k]) && raw.activity[k] > 0) act[k] = raw.activity[k];
+            });
+        }
+        state.activity = act;
         const last = raw.last || {};
         const lvl = levelById.get(last.levelId);
         if (lvl) {
@@ -3533,8 +3546,28 @@ levelsData.push({
         RANKS.forEach(function (r) { if (pct >= r.pct) rank = r; });
         return rank.name;
     }
+    // Jalur belajar: fondasi (Beginner-Advanced) selalu tampil; level lanjutan menyesuaikan jalur.
+    const FOUNDATION = new Set(["Beginner", "Intermediate", "Advanced"]);
+    const TRACKS = {
+        all: { label: "Semua level", ids: null },
+        data: { label: "Data & Analitik", ids: [113, 112, 126, 59, 60, 66, 62, 65, 63, 61, 64, 67, 68, 134, 119, 69] },
+        backend: { label: "Backend & API", ids: [49, 50, 79, 113, 51, 52, 57, 56, 89, 53, 90, 54, 55, 58, 135, 118, 80, 81, 82, 83, 84, 88, 138, 97, 98, 99, 139] },
+        ai: { label: "AI Engineering", ids: [112, 126, 119, 69, 76, 77, 70, 127, 71, 78, 72, 73, 74, 75, 136] }
+    };
+    Object.keys(TRACKS).forEach(function (k) { TRACKS[k].set = TRACKS[k].ids ? new Set(TRACKS[k].ids) : null; });
+    function inTrack(lvl) {
+        const t = TRACKS[state.settings.track] || TRACKS.all;
+        return !t.set || FOUNDATION.has(lvl.category) || t.set.has(lvl.id);
+    }
+    function visibleLevels() { return levelsData.filter(inTrack); }
+    function prevVisible(lvl) {
+        const v = visibleLevels(), i = v.indexOf(lvl);
+        return i > 0 ? v[i - 1] : null;
+    }
     function isLocked(lvl) {
-        return state.settings.lockOrder && lvl.no > 1 && !isLevelComplete(levelsData[lvl.no - 2]);
+        if (!state.settings.lockOrder) return false;
+        const p = prevVisible(lvl);
+        return !!p && !isLevelComplete(p);
     }
     function firstUndone(lvl) {
         for (let i = 0; i < lvl.tasks.length; i++) if (!isTaskDone(lvl, i)) return i;
@@ -3542,7 +3575,8 @@ levelsData.push({
     }
     function ensureUnlocked() {
         if (!isLocked(currentLevel())) return;
-        const target = levelsData.find(function (l) { return !isLevelComplete(l); }) || levelsData[0];
+        const vis = visibleLevels();
+        const target = vis.find(function (l) { return !isLevelComplete(l); }) || vis[0] || levelsData[0];
         state.levelId = target.id;
         state.taskIndex = firstUndone(target);
     }
@@ -3568,6 +3602,11 @@ levelsData.push({
         const done = totalTasksDone();
         $("total-xp").textContent = totalXp().toLocaleString("id-ID") + " XP";
         $("rank-text").textContent = rankFor(done);
+        const sk = $("streak-text");
+        if (sk) {
+            sk.textContent = streak() + " hari";
+            sk.title = "Target harian: " + (state.activity[dayKey()] || 0) + " / " + state.settings.dailyGoal + " soal";
+        }
         $("progress-text").textContent = completedLevelCount() + " / " + levelsData.length + " Level";
         const pct = Math.round((done / TOTAL_TASKS) * 100);
         $("progress-bar").style.width = pct + "%";
@@ -3611,7 +3650,7 @@ levelsData.push({
         btn.append(num, mid, status);
         btn.addEventListener("click", function () {
             if (locked) {
-                toast("Selesaikan Level " + (lvl.no - 1) + " dulu untuk membuka level ini.", "warn");
+                toast("Selesaikan Level " + (prevVisible(lvl) || { no: lvl.no - 1 }).no + " dulu untuk membuka level ini.", "warn");
                 return;
             }
             goTo(lvl.id, firstUndone(lvl));
@@ -3629,12 +3668,13 @@ levelsData.push({
 
         categoryGroups.forEach(function (group) {
             const matches = group.levels.filter(function (lvl) {
-                return !q || (lvl.no + " " + lvl.category + " " + lvl.shortTitle).toLowerCase().indexOf(q) !== -1;
+                return inTrack(lvl) && (!q || (lvl.no + " " + lvl.category + " " + lvl.shortTitle).toLowerCase().indexOf(q) !== -1);
             });
             if (!matches.length) return;
-            const doneLevels = group.levels.filter(isLevelComplete).length;
+            const groupVis = group.levels.filter(inTrack);
+            const doneLevels = groupVis.filter(isLevelComplete).length;
             const header = el("div", "sticky top-0 z-10 bg-slate-900/95 backdrop-blur-sm flex justify-between items-center px-2 py-1.5 text-[10px] uppercase tracking-wider font-bold text-slate-400");
-            header.append(el("span", "text-indigo-400", group.category), el("span", "", doneLevels + "/" + group.levels.length));
+            header.append(el("span", "text-indigo-400", group.category), el("span", "", doneLevels + "/" + groupVis.length));
             frag.appendChild(header);
             matches.forEach(function (lvl) { frag.appendChild(levelItem(lvl)); shown++; });
         });
@@ -3664,17 +3704,36 @@ levelsData.push({
         wrap.replaceChildren.apply(wrap, dots);
     }
 
+    let errorLine = 0; // baris yang menyebabkan error (0 = tidak ada), disorot di nomor baris
     function updateLineNumbers() {
         const editor = $("code-input");
         const count = editor.value.split("\n").length;
         const nums = $("line-numbers");
-        if (nums.dataset.count !== String(count)) {
-            let s = "";
-            for (let i = 1; i <= count; i++) s += (i === 1 ? "" : "\n") + i;
-            nums.textContent = s;
-            nums.dataset.count = String(count);
+        const key = count + ":" + errorLine;
+        if (nums.dataset.key !== key) {
+            const frag = document.createDocumentFragment();
+            for (let i = 1; i <= count; i++) frag.appendChild(el("div", i === errorLine ? "ln ln-err" : "ln", String(i)));
+            nums.replaceChildren(frag);
+            nums.dataset.key = key;
         }
         nums.scrollTop = editor.scrollTop;
+    }
+    function lineFromMessage(msg) {
+        const re = /File "<exec>", line (\d+)/g;
+        let last = null, x;
+        while ((x = re.exec(msg))) last = x[1];
+        if (!last) { const m = /\(baris (\d+)\)/.exec(msg); if (m) last = m[1]; }
+        return last ? parseInt(last, 10) : 0;
+    }
+    function markErrorLine(n) {
+        const editor = $("code-input");
+        const total = editor.value.split("\n").length;
+        errorLine = (n >= 1 && n <= total) ? n : 0;
+        updateLineNumbers();
+        if (errorLine) {
+            editor.scrollTop = Math.max(0, (errorLine - 3) * 22);
+            $("line-numbers").scrollTop = editor.scrollTop;
+        }
     }
 
     function showPlaceholder(text) {
@@ -3704,12 +3763,20 @@ levelsData.push({
         $("badge-subtask").textContent = "Soal " + (state.taskIndex + 1) + " dari " + lvl.tasks.length;
         setGrading(task.mode === "text" ? "text" : "run");
         $("level-title").textContent = lvl.title;
-        $("level-desc").innerHTML = "<p>" + lvl.desc + "</p>"; // konten kurikulum milik aplikasi (tepercaya)
+        const parts = lvl.desc.split(/(?:<br><br>)?<b>Alat bantu yang dipakai di soal:<\/b>\s*/);
+        $("level-desc").innerHTML = "<p>" + parts[0] + "</p>"; // konten kurikulum milik aplikasi (tepercaya)
+        const tb = $("level-tools");
+        if (parts[1]) {
+            tb.innerHTML = '<div class="tools-title">🧰 Alat bantu yang dipakai di soal</div><p class="tools-sub">Istilah yang muncul di soal, dijelaskan singkat.</p><ul class="tools-list">' +
+                parts[1].split("<br>").filter(Boolean).map(function (x) { return "<li>" + x + "</li>"; }).join("") + "</ul>";
+            tb.dataset.has = "1";
+        } else { tb.innerHTML = ""; tb.dataset.has = ""; }
         $("level-example").firstElementChild.textContent = lvl.example;
         $("level-task").textContent = task.task;
 
         const editor = $("code-input");
         editor.value = state.drafts[draftKey()] || "";
+        errorLine = 0;
         updateLineNumbers();
         const isText = task.mode === "text";
         $("file-label").textContent = isText ? "jawaban.txt" : "main.py";
@@ -3718,6 +3785,33 @@ levelsData.push({
             ? "// Soal ini berupa teks/konfigurasi: tidak dijalankan sebagai Python. Klik Periksa Jawaban untuk menilai isinya."
             : "// Output program akan muncul di sini setelah dijalankan...");
         renderDots();
+        setTab(currentTab);
+    }
+
+    /* ---------- Tab Materi / Contoh / Latihan ---------- */
+    let currentTab = "materi";
+    function setTab(t) {
+        currentTab = t;
+        document.querySelectorAll("[data-pane]").forEach(function (n) {
+            const show = n.dataset.pane === t && (n.id !== "level-tools" || !!n.dataset.has);
+            n.classList.toggle("hidden", !show);
+        });
+        document.querySelectorAll("[data-tab]").forEach(function (b) {
+            const on = b.dataset.tab === t;
+            b.setAttribute("aria-selected", String(on));
+            b.className = "px-4 py-2 text-sm font-semibold rounded-lg border transition " +
+                (on ? "bg-indigo-600 border-indigo-500 text-white" : "bg-slate-900 border-slate-700 text-slate-300 hover:border-slate-500");
+        });
+    }
+
+    /* ---------- Streak harian ---------- */
+    function dayKey(d) { d = d || new Date(); return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); }
+    function streak() {
+        const d = new Date();
+        if (!state.activity[dayKey(d)]) d.setDate(d.getDate() - 1);
+        let n = 0;
+        while (state.activity[dayKey(d)]) { n++; d.setDate(d.getDate() - 1); }
+        return n;
     }
 
     function renderAll() {
@@ -3725,6 +3819,7 @@ levelsData.push({
         renderSidebar();
         renderLevel();
         $("opt-lock").checked = state.settings.lockOrder;
+        $("track-select").value = state.settings.track;
     }
 
     /* ---------- Navigasi ---------- */
@@ -3742,6 +3837,7 @@ levelsData.push({
         const levelChanged = lvl.id !== state.levelId;
         state.levelId = lvl.id;
         state.taskIndex = Math.min(Math.max(taskIndex || 0, 0), lvl.tasks.length - 1);
+        currentTab = levelChanged ? "materi" : "latihan";
         renderAll();
         saveSoon();
         if (levelChanged) {
@@ -3757,11 +3853,11 @@ levelsData.push({
             const i = (state.taskIndex + k) % n;
             if (!isTaskDone(lvl, i)) { goTo(lvl.id, i); return; }
         }
-        const next = levelsData[lvl.no];
+        const next = visibleLevels().find(function (l) { return l.no > lvl.no; });
         if (next && !isLocked(next)) { goTo(next.id, firstUndone(next)); return; }
         if (next) { toast("Level berikutnya masih terkunci. Selesaikan semua soal level ini dulu.", "warn"); return; }
         if (completedLevelCount() === levelsData.length) { showFinish(); return; }
-        const pending = levelsData.find(function (l) { return !isLevelComplete(l) && !isLocked(l); });
+        const pending = visibleLevels().find(function (l) { return !isLevelComplete(l) && !isLocked(l); });
         if (pending) { toast("Ini level terakhir. Pindah ke level yang belum selesai.", "info"); goTo(pending.id, firstUndone(pending)); }
     }
 
@@ -3822,6 +3918,7 @@ levelsData.push({
         const lid = state.levelId, tix = state.taskIndex;
         const same = function () { return lid === state.levelId && tix === state.taskIndex; };
         outPending("Menjalankan kode Python…");
+        markErrorLine(0);
         let started = false;
         let figures = 0;
         function begin() { if (!started) { started = true; outClear(); } }
@@ -3850,6 +3947,32 @@ levelsData.push({
         return res;
     }
 
+    const ERR_ID = {
+        NameError: "Nama/variabel belum dibuat atau salah ketik. Pastikan ejaannya sama persis dan variabel dibuat sebelum dipakai.",
+        SyntaxError: "Tata tulis kode salah: periksa tanda kurung, kutip, titik dua (:) di akhir if/for/def, dan tanda sama dengan.",
+        IndentationError: "Indentasi (spasi menjorok) tidak sesuai. Isi blok if/for/def/class harus menjorok 4 spasi.",
+        TabError: "Indentasi mencampur Tab dan spasi. Pakai spasi saja.",
+        TypeError: "Tipe data tidak cocok untuk operasi ini (mis. teks + angka) atau jumlah argumen fungsi salah.",
+        ValueError: "Nilainya tidak bisa diproses (mis. int('abc')). Periksa isi data yang dikonversi.",
+        IndexError: "Indeks di luar batas list/string. Ingat indeks dimulai dari 0.",
+        KeyError: "Kunci dictionary tidak ditemukan. Periksa ejaan kunci atau pakai .get().",
+        ZeroDivisionError: "Terjadi pembagian dengan nol.",
+        AttributeError: "Objek ini tidak punya atribut/method tersebut. Periksa ejaan dan tipe objeknya.",
+        ModuleNotFoundError: "Modul tidak ditemukan. Periksa ejaan import-nya.",
+        ImportError: "Nama yang diimpor tidak ada di modul itu.",
+        RecursionError: "Fungsi memanggil dirinya terlalu dalam. Pastikan ada kasus dasar yang menghentikan rekursi.",
+        AssertionError: "Pernyataan assert tidak terpenuhi: hasil kode belum sesuai harapan."
+    };
+    function explainError(type, msg) {
+        const base = ERR_ID[type];
+        if (!base) return "";
+        const re = /File "<exec>", line (\d+)/g;
+        let last = null, x;
+        while ((x = re.exec(msg))) last = x[1];
+        if (!last) { const s = /\(baris (\d+)\)/.exec(msg); if (s) last = s[1]; }
+        return "💬 " + base + (last ? " Periksa baris " + last + " di editor." : "");
+    }
+
     function renderResult(res) {
         switch (res.status) {
             case "ok":
@@ -3857,14 +3980,18 @@ levelsData.push({
                 else outLine("\n✔ Selesai (" + res.ms + " ms)", CLS.dim);
                 break;
             case "syntax":
+                markErrorLine(lineFromMessage(res.message));
                 outLine("Kode belum bisa dijalankan karena kesalahan sintaks:", CLS.bad);
                 outLine(res.message, CLS.err);
+                outLine(explainError(res.message.split(":")[0], res.message), CLS.warn);
                 break;
             case "checkfail":
                 outLine((res.chunks.length ? "\n" : "") + "✘ Kode berjalan, tetapi hasilnya belum sesuai soal: " + res.message, CLS.err);
                 break;
             case "error":
+                markErrorLine(lineFromMessage(res.message));
                 outLine((res.chunks.length ? "\n" : "") + res.message, CLS.err);
+                if (explainError(res.errType, res.message)) outLine("\n" + explainError(res.errType, res.message), CLS.warn);
                 break;
             case "timeout":
                 outLine("\n⏱ " + (res.reason === "outlimit"
@@ -3966,7 +4093,7 @@ levelsData.push({
                 const anyOut = res.figures > 0 || res.chunks.some(function (c) { return c.text.trim() !== ""; });
                 if (task.needsStdout && !res.hasOutput) return { pass: false, reason: "Kode berjalan, tetapi tidak menampilkan output. Pastikan memakai print() dan, jika membuat fungsi, memanggilnya." };
                 if (task.needsAnyOutput && !anyOut) return { pass: false, reason: "Soal meminta hasil dicetak, tetapi program tidak menampilkan apa pun. Gunakan print() dan panggil fungsi yang kamu buat." };
-                if (task.expect && !task.expect.test(stdout)) return { pass: false, reason: "Program berjalan, tetapi hasil yang dicetak belum sesuai dengan yang diminta soal. Cek lagi nilai dan teks yang dicetak." };
+                if (task.expect && !task.expect.test(stdout)) return { pass: false, reason: "Program berjalan, tetapi hasil yang dicetak belum sesuai dengan yang diminta soal. Cek lagi nilai dan teks yang dicetak.\n\nOutput kamu:\n" + (stdout.trim().slice(0, 200) || "(kosong)") + (task.expect.want ? "\n\nOutput yang diharapkan:\n" + task.expect.want.join("\n") : "") };
                 return { pass: true };
             }
             default: // limited / engine-failed
@@ -3982,6 +4109,8 @@ levelsData.push({
         if (!set) set = state.done[lvl.id] = new Set();
         if (set.has(idx)) return { newlyDone: false };
         set.add(idx);
+        const dk = dayKey();
+        state.activity[dk] = (state.activity[dk] || 0) + 1;
         const levelCompleted = set.size === lvl.tasks.length;
         return { newlyDone: true, xp: taskXp(lvl), levelCompleted: levelCompleted, bonus: levelCompleted ? levelBonus(lvl) : 0 };
     }
@@ -4013,6 +4142,7 @@ levelsData.push({
         const verdict = judge(code, task, lvl, res);
         outLine("", CLS.dim);
         if (!verdict.pass) {
+            fails[draftKey()] = (fails[draftKey()] || 0) + 1;
             outLine("❌ Jawaban belum tepat", CLS.bad);
             outLine(verdict.reason, CLS.info);
             toast("Jawaban belum tepat", "warn", 2200);
@@ -4029,9 +4159,18 @@ levelsData.push({
         if (result.newlyDone) {
             outLine("🎉 Benar! Soal " + (idx + 1) + " selesai. +" + result.xp + " XP", CLS.ok);
             toast("+" + result.xp + " XP", "xp", 2200);
+            const todayN = state.activity[dayKey()] || 0;
+            if (todayN === state.settings.dailyGoal) {
+                outLine("🎯 Target harian tercapai! (" + todayN + " soal hari ini)", CLS.ok);
+                toast("🎯 Target harian tercapai!", "success", 4500);
+            }
             if (result.levelCompleted) {
+                confetti();
                 outLine("🏆 Level " + lvl.no + " tuntas! Bonus +" + result.bonus + " XP", CLS.ok);
+                outLine(nextLevelText(lvl), CLS.info);
                 toast("🏆 Level " + lvl.no + " tuntas! Bonus +" + result.bonus + " XP", "success", 4500);
+                const grp = categoryGroups.find(function (g) { return g.category === lvl.category; });
+                if (grp && grp.levels.every(isLevelComplete)) toast("🏅 Lencana fase " + lvl.category + " diraih!", "success", 6000);
             }
             const rankAfter = rankFor(totalTasksDone());
             if (rankAfter !== rankBefore) toast("🎖️ Rank baru: " + rankAfter, "success", 4500);
@@ -4052,11 +4191,275 @@ levelsData.push({
         $("code-output").scrollTop = $("code-output").scrollHeight;
     }
 
+    const hintTier = {}, fails = {};
     function onHint() {
         const out = $("code-output");
         if (out.dataset.ph) outClear(); else outLine("", CLS.dim);
-        outLine("💡 Petunjuk untuk soal ini:", "text-amber-400 font-semibold");
-        outLine(currentTask().hint, CLS.info);
+        const k = draftKey();
+        const t = (hintTier[k] || 0) + 1;
+        if (t === 1) {
+            hintTier[k] = 1;
+            outLine("💡 Petunjuk 1/3 (arah umum):", "text-amber-400 font-semibold");
+            outLine(currentTask().hint, CLS.info);
+            outLine("Klik Petunjuk lagi untuk kerangka kode.", CLS.dim);
+        } else if (t === 2) {
+            hintTier[k] = 2;
+            outLine("💡 Petunjuk 2/3 (kerangka dari contoh materi, sesuaikan dengan soal):", "text-amber-400 font-semibold");
+            outLine(currentLevel().example, CLS.info);
+            outLine("Petunjuk 3 terbuka setelah kamu mencoba Periksa Jawaban minimal 2 kali.", CLS.dim);
+        } else if ((fails[k] || 0) >= 2) {
+            outLine("💡 Petunjuk 3/3: baca ulang Materi dan Alat Bantu, lalu cocokkan istilah di soal.", "text-amber-400 font-semibold");
+            setTab("materi");
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        } else {
+            outLine("🔒 Petunjuk 3 terbuka setelah 2 kali Periksa Jawaban yang belum tepat (sudah " + (fails[k] || 0) + "). Coba dulu ya.", CLS.warn);
+        }
+    }
+
+    /* ---------- Pencapaian: konfeti, kalender, lencana, sertifikat, mode Ulangi ---------- */
+    function confetti() {
+        if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+        const cv = el("canvas");
+        cv.style.cssText = "position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:200";
+        cv.width = window.innerWidth; cv.height = window.innerHeight;
+        document.body.appendChild(cv);
+        const cx = cv.getContext("2d"), cols = ["#6366f1", "#22d3ee", "#fbbf24", "#34d399", "#fb7185"];
+        const ps = Array.from({ length: 120 }, function () {
+            return { x: Math.random() * cv.width, y: -20 - Math.random() * cv.height * 0.4, vx: Math.random() * 4 - 2, vy: Math.random() * 3 + 2,
+                     s: Math.random() * 6 + 4, c: cols[Math.floor(Math.random() * cols.length)], r: Math.random() * 6 };
+        });
+        let f = 0;
+        (function step() {
+            cx.clearRect(0, 0, cv.width, cv.height);
+            ps.forEach(function (p) {
+                p.x += p.vx; p.y += p.vy; p.vy += 0.03; p.r += 0.1;
+                cx.fillStyle = p.c; cx.save(); cx.translate(p.x, p.y); cx.rotate(p.r);
+                cx.fillRect(-p.s / 2, -p.s / 2, p.s, p.s * 0.6); cx.restore();
+            });
+            if (++f < 180) requestAnimationFrame(step); else cv.remove();
+        })();
+    }
+
+    function calendarEl() {
+        const wrap = el("div");
+        wrap.appendChild(el("p", "text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2", "Aktivitas 20 minggu terakhir"));
+        const grid = el("div");
+        grid.style.cssText = "display:grid;grid-template-rows:repeat(7,12px);grid-auto-flow:column;grid-auto-columns:12px;gap:3px;overflow-x:auto;padding-bottom:4px";
+        const today = new Date(); today.setHours(0, 0, 0, 0);
+        const start = new Date(today); start.setDate(start.getDate() - start.getDay() - 19 * 7);
+        for (const d = new Date(start); d <= today; d.setDate(d.getDate() + 1)) {
+            const k = dayKey(d), n = state.activity[k] || 0;
+            const c = el("span");
+            c.style.cssText = "border-radius:3px;background:" + (n === 0 ? "#1e293b" : n < 2 ? "#3730a3" : n < 4 ? "#4f46e5" : n < 8 ? "#818cf8" : "#c7d2fe");
+            c.title = k + ": " + n + " soal";
+            grid.appendChild(c);
+        }
+        wrap.appendChild(grid);
+        return wrap;
+    }
+
+    function makeCertificate(phase) {
+        const nama = (window.prompt("Nama yang dicetak di sertifikat:", "") || "").trim();
+        if (!nama) return;
+        const cv = el("canvas"); cv.width = 1200; cv.height = 800;
+        const x = cv.getContext("2d");
+        x.fillStyle = "#020617"; x.fillRect(0, 0, 1200, 800);
+        x.strokeStyle = "#6366f1"; x.lineWidth = 6; x.strokeRect(30, 30, 1140, 740);
+        x.strokeStyle = "#22d3ee"; x.lineWidth = 2; x.strokeRect(48, 48, 1104, 704);
+        x.textAlign = "center";
+        x.fillStyle = "#a5b4fc"; x.font = "700 28px sans-serif"; x.fillText("PYTHON ODYSSEY", 600, 140);
+        x.fillStyle = "#ffffff"; x.font = "800 60px sans-serif"; x.fillText("Sertifikat Penyelesaian", 600, 240);
+        x.fillStyle = "#94a3b8"; x.font = "400 26px sans-serif"; x.fillText("diberikan kepada", 600, 320);
+        x.fillStyle = "#fcd34d"; x.font = "800 64px sans-serif"; x.fillText(nama.slice(0, 40), 600, 410);
+        x.fillStyle = "#94a3b8"; x.font = "400 26px sans-serif"; x.fillText("yang telah menuntaskan seluruh level pada fase", 600, 490);
+        x.fillStyle = "#67e8f9"; x.font = "800 52px sans-serif"; x.fillText(phase, 600, 570);
+        x.fillStyle = "#94a3b8"; x.font = "400 22px sans-serif";
+        x.fillText(new Date().toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" }) + "  ·  " + totalXp().toLocaleString("id-ID") + " XP", 600, 680);
+        cv.toBlob(function (blob) {
+            const url = URL.createObjectURL(blob), a = el("a");
+            a.href = url; a.download = "sertifikat-" + phase.toLowerCase().replace(/[^a-z0-9]+/g, "-") + ".png";
+            document.body.appendChild(a); a.click(); a.remove();
+            setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+        });
+    }
+
+    function repeatRandom() {
+        const pool = [];
+        levelsData.forEach(function (l) { (state.done[l.id] || new Set()).forEach(function (i) { pool.push([l.id, i]); }); });
+        if (!pool.length) { toast("Belum ada soal yang selesai untuk diulang.", "warn"); return; }
+        const p = pool[Math.floor(Math.random() * pool.length)];
+        $("stats-dialog").close();
+        goTo(p[0], p[1]);
+        setTab("latihan");
+        toast("🔁 Mode Ulangi: soal acak dari yang sudah kamu selesaikan (tanpa XP tambahan).", "info", 4500);
+    }
+
+    const BADGE_ICON = {
+        "Beginner": "🌱", "Intermediate": "🔧", "Advanced": "🚀", "Expert": "🧠", "Professional": "💼", "Architecture": "🏛️",
+        "Data Engineering": "📊", "Web API": "🌐", "AI Engineering": "🤖", "DevOps": "⚙️", "Security & Performance": "🛡️", "Enterprise Mastery": "👑"
+    };
+
+    function nextLevelText(lvl) {
+        const nx = visibleLevels().find(function (l) { return l.no > lvl.no; });
+        let t = nx
+            ? "👉 Selanjutnya: Level " + nx.no + " (" + nx.shortTitle + ")" + (nx.category !== lvl.category ? ", fase baru: " + nx.category : "") + "."
+            : "🎓 Ini level terakhir pada jalur yang kamu pilih.";
+        const grp = categoryGroups.find(function (g) { return g.category === lvl.category; });
+        if (lvl.category === "Advanced" && state.settings.track === "all" && grp && grp.levels.every(isLevelComplete)) {
+            t += "\n🧭 Fondasi tuntas! Tentukan arah belajarmu lewat menu “Jalur belajar” di sidebar (Data, Backend, atau AI).";
+        }
+        return t;
+    }
+
+    function goalEl() {
+        const wrap = el("div");
+        const goal = state.settings.dailyGoal, n = state.activity[dayKey()] || 0;
+        wrap.appendChild(el("p", "text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2", "Target harian"));
+        const bar = el("div", "h-2 rounded bg-slate-800 overflow-hidden");
+        const fill = el("div", "h-full " + (n >= goal ? "bg-emerald-400" : "bg-indigo-400"));
+        fill.style.width = Math.min(100, Math.round((n / goal) * 100)) + "%";
+        bar.appendChild(fill);
+        wrap.append(bar, el("p", "text-sm text-slate-300 mt-2", (n >= goal ? "🎯 Target tercapai: " : "") + n + " / " + goal + " soal hari ini"));
+        const row = el("div", "flex flex-wrap items-center gap-2 mt-3");
+        row.appendChild(el("span", "text-xs text-slate-400", "Atur target:"));
+        [1, 3, 5, 10].forEach(function (v) {
+            const b = el("button", "text-xs px-2.5 py-1 rounded-lg border transition " +
+                (v === goal ? "bg-indigo-600 border-indigo-500 text-white" : "bg-slate-900 border-slate-700 text-slate-300 hover:border-slate-500"), v + " soal");
+            b.type = "button";
+            b.setAttribute("aria-pressed", String(v === goal));
+            b.addEventListener("click", function () { state.settings.dailyGoal = v; saveNow(); renderHeader(); renderStats(); });
+            row.appendChild(b);
+        });
+        wrap.appendChild(row);
+        return wrap;
+    }
+
+    function badgesEl() {
+        const wrap = el("div");
+        wrap.appendChild(el("p", "text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2", "Lencana fase"));
+        const grid = el("div", "grid grid-cols-3 sm:grid-cols-4 gap-2");
+        categoryGroups.forEach(function (g) {
+            const done = g.levels.filter(isLevelComplete).length, full = done === g.levels.length;
+            const tile = el("div", "rounded-xl border p-2 text-center flex flex-col items-center gap-1 " +
+                (full ? "border-amber-500/40 bg-amber-500/10" : "border-slate-800 bg-slate-950"));
+            const icon = el("div", "text-3xl leading-none", BADGE_ICON[g.category] || "🏅");
+            icon.setAttribute("aria-hidden", "true");
+            icon.style.filter = full ? "none" : "grayscale(1)";
+            icon.style.opacity = full ? "1" : "0.35";
+            tile.append(icon,
+                el("p", "text-[11px] font-semibold " + (full ? "text-slate-100" : "text-slate-400"), g.category),
+                el("p", "text-[10px] text-slate-400", full ? "Diraih ✔" : done + "/" + g.levels.length));
+            if (full) {
+                const b = el("button", "mt-1 text-[10px] px-2 py-1 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-semibold", "🎓 Sertifikat");
+                b.type = "button";
+                b.addEventListener("click", function () { makeCertificate(g.category); });
+                tile.appendChild(b);
+            }
+            tile.setAttribute("aria-label", g.category + (full ? ", lencana diraih" : ", " + done + " dari " + g.levels.length + " level"));
+            grid.appendChild(tile);
+        });
+        wrap.appendChild(grid);
+        return wrap;
+    }
+
+    /* ---------- Jalur belajar: pilih jalur + tes penempatan ---------- */
+    function setTrack(v) {
+        saveDraftNow();
+        state.settings.track = Object.prototype.hasOwnProperty.call(TRACKS, v) ? v : "all";
+        const vis = visibleLevels();
+        if (vis.indexOf(currentLevel()) === -1) {
+            const t = vis.find(function (l) { return !isLevelComplete(l); }) || vis[0];
+            state.levelId = t.id;
+            state.taskIndex = firstUndone(t);
+            currentTab = "materi";
+        }
+        ensureUnlocked();
+        saveNow();
+        renderAll();
+        toast("Jalur: " + TRACKS[state.settings.track].label + " (" + visibleLevels().length + " level)", "info", 3000);
+    }
+
+    const PLACEMENT = [
+        { g: "Beginner", q: "print(type(3.0))", o: ["<class 'int'>", "<class 'float'>", "<class 'str'>", "Error"], a: 1 },
+        { g: "Beginner", q: "print(7 // 2, 7 % 2)", o: ["3.5 1", "3 1", "4 1", "3 0"], a: 1 },
+        { g: "Beginner", q: "for i in range(3):\n    print(i)", o: ["0 1 2 3", "1 2 3", "0 1 2", "1 2"], a: 2 },
+        { g: "Intermediate", q: "def f(x, y=2):\n    return x * y\n\nprint(f(3))", o: ["6", "3", "Error", "5"], a: 0 },
+        { g: "Intermediate", q: "d = {\"a\": 1}\nprint(d.get(\"b\", 0))", o: ["None", "KeyError", "0", "1"], a: 2 },
+        { g: "Intermediate", q: "print([x * x for x in range(4) if x % 2 == 0])", o: ["[0, 4]", "[0, 1, 4, 9]", "[1, 9]", "[0, 2]"], a: 0 },
+        { g: "Advanced", q: "Apa yang dilakukan blok  with open('a.txt') as f:  ?", o: ["Menghapus file setelah dibaca", "Menutup file otomatis saat blok selesai", "Mengunci file selamanya", "Membaca file lebih cepat"], a: 1 },
+        { g: "Advanced", q: "Method khusus apa yang dipakai print(objek) untuk menghasilkan teks?", o: ["__init__", "__len__", "__str__", "__call__"], a: 2 },
+        { g: "Advanced", q: "Kata kunci yield di dalam sebuah fungsi membuat fungsi itu menjadi...", o: ["Dekorator", "Generator", "Kelas", "Konstanta"], a: 1 }
+    ];
+
+    function openPlacement() {
+        const body = $("placement-body");
+        const intro = el("p", "text-sm text-slate-300", "Jawab 9 soal pilihan ganda (tanpa menjalankan kode). Hasilnya hanya rekomendasi titik mulai: tidak memberi XP dan tidak menandai level selesai.");
+        const form = el("div", "space-y-3");
+        PLACEMENT.forEach(function (q, i) {
+            const box = el("fieldset", "border border-slate-800 rounded-xl p-3");
+            box.appendChild(el("legend", "px-1 text-xs font-bold text-indigo-300", (i + 1) + ". " + q.g));
+            box.appendChild(el("pre", "code-font text-sm text-cyan-300 whitespace-pre-wrap mb-2", q.q));
+            q.o.forEach(function (opt, j) {
+                const lab = el("label", "flex items-center gap-2 text-sm text-slate-300 py-0.5 cursor-pointer");
+                const r = el("input", "accent-indigo-500");
+                r.type = "radio"; r.name = "pl" + i; r.value = String(j);
+                lab.append(r, el("span", "code-font", opt));
+                box.appendChild(lab);
+            });
+            form.appendChild(box);
+        });
+        const result = el("div", "text-sm text-slate-200");
+        result.setAttribute("role", "status");
+        const go = el("button", "px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-sm", "Lihat hasil");
+        go.type = "button";
+        go.addEventListener("click", function () {
+            const answers = PLACEMENT.map(function (q, i) {
+                const c = body.querySelector('input[name="pl' + i + '"]:checked');
+                return c ? Number(c.value) : -1;
+            });
+            if (answers.indexOf(-1) !== -1) {
+                result.replaceChildren(el("p", "text-amber-300", "Jawab semua soal dulu ya (" + answers.filter(function (a) { return a !== -1; }).length + "/9 terjawab)."));
+                return;
+            }
+            const score = { Beginner: 0, Intermediate: 0, Advanced: 0 };
+            PLACEMENT.forEach(function (q, i) { if (answers[i] === q.a) score[q.g]++; });
+            let target = "Beginner";
+            if (score.Beginner === 3) {
+                target = "Intermediate";
+                if (score.Intermediate === 3) {
+                    target = "Advanced";
+                    if (score.Advanced === 3) target = "Expert";
+                }
+            }
+            const lvl = levelsData.find(function (l) { return l.category === target; });
+            const total = score.Beginner + score.Intermediate + score.Advanced;
+            const box = el("div", "bg-slate-950 border border-slate-800 rounded-xl p-4 space-y-2");
+            box.appendChild(el("p", "font-bold text-slate-100", "Skor " + total + "/9 (Beginner " + score.Beginner + "/3, Intermediate " + score.Intermediate + "/3, Advanced " + score.Advanced + "/3)"));
+            box.appendChild(el("p", "text-slate-300", target === "Beginner"
+                ? "Mulailah dari awal supaya fondasinya kuat: Level " + lvl.no + " (" + lvl.shortTitle + ")."
+                : "Kamu sudah menguasai fase sebelum " + target + ". Rekomendasi mulai: Level " + lvl.no + " (" + lvl.shortTitle + ")."));
+            const b = el("button", "px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm", "Mulai dari Level " + lvl.no);
+            b.type = "button";
+            b.addEventListener("click", function () { $("placement-dialog").close(); goTo(lvl.id, firstUndone(lvl)); });
+            box.appendChild(b);
+            result.replaceChildren(box);
+        });
+        body.replaceChildren(intro, form, go, result);
+        $("placement-dialog").showModal();
+    }
+
+    function renderStats() {
+        const body = $("stats-body");
+        const sum = el("div", "grid grid-cols-3 gap-3");
+        [["🔥 Streak", streak() + " hari"], ["📅 Hari aktif", Object.keys(state.activity).length + " hari"], ["✅ Soal hari ini", String(state.activity[dayKey()] || 0)]].forEach(function (s) {
+            const b = el("div", "bg-slate-950 border border-slate-800 rounded-xl p-3 text-center");
+            b.append(el("p", "text-[11px] text-slate-400", s[0]), el("p", "text-base font-bold text-slate-100", s[1]));
+            sum.appendChild(b);
+        });
+        const ph = badgesEl();
+                const rb = el("button", "w-full px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-100 font-semibold text-sm border border-slate-700", "🔁 Ulangi soal acak dari yang sudah selesai");
+        rb.type = "button"; rb.addEventListener("click", repeatRandom);
+        body.replaceChildren(sum, goalEl(), calendarEl(), ph, rb);
     }
 
     function showFinish() {
@@ -4083,6 +4486,7 @@ levelsData.push({
         let tabEscaped = false;
 
         editor.addEventListener("input", function () {
+            errorLine = 0;
             updateLineNumbers();
             saveDraftNow();
             saveSoon();
@@ -4215,6 +4619,7 @@ levelsData.push({
         if (!window.confirm("Hapus SEMUA progress, XP, dan draf kode? Tindakan ini tidak bisa dibatalkan.")) return;
         state.done = {};
         state.drafts = {};
+        state.activity = {};
         state.levelId = 1;
         state.taskIndex = 0;
         try { localStorage.removeItem(STORAGE_KEY); } catch (e) { /* abaikan */ }
@@ -4283,6 +4688,16 @@ levelsData.push({
             editor.focus();
         });
 
+        $("btn-stats").addEventListener("click", function () { renderStats(); $("stats-dialog").showModal(); });
+        $("btn-stats-close").addEventListener("click", function () { $("stats-dialog").close(); });
+        $("btn-run-example").addEventListener("click", async function () {
+            if (busy) return;
+            if (TEXT_LEVELS.has(currentLevel().id)) { toast("Contoh level ini berupa konfigurasi/perintah, tidak dijalankan.", "warn"); return; }
+            setBusy(true);
+            try { await runAndRender(currentLevel().example); } finally { setBusy(false); }
+            $("code-output").scrollIntoView({ block: "nearest", behavior: "smooth" });
+        });
+        document.querySelectorAll("[data-tab]").forEach(function (b) { b.addEventListener("click", function () { setTab(b.dataset.tab); }); });
         $("level-search").addEventListener("input", renderSidebar);
         $("opt-lock").addEventListener("change", function (e) {
             state.settings.lockOrder = e.target.checked;
@@ -4299,6 +4714,9 @@ levelsData.push({
             e.target.value = "";
         });
         $("btn-reset").addEventListener("click", resetProgress);
+        $("track-select").addEventListener("change", function (e) { setTrack(e.target.value); });
+        $("btn-placement").addEventListener("click", openPlacement);
+        $("btn-placement-close").addEventListener("click", function () { $("placement-dialog").close(); });
         $("btn-finish-close").addEventListener("click", function () { $("finish-dialog").close(); });
 
         document.addEventListener("keydown", function (e) {
