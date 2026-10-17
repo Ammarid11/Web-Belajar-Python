@@ -63,6 +63,7 @@
                     </div>
                 </div>
             </div>
+            <button id="btn-account" type="button" class="text-xs font-semibold px-3 py-2 rounded-xl border border-slate-700 text-slate-300 bg-slate-950/60 hover:bg-slate-800 transition">💾 Lokal</button>
         </div>
         <div class="h-1 bg-slate-900" role="progressbar" aria-label="Progress keseluruhan" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progress-track">
             <div id="progress-bar" class="h-full bg-gradient-to-r from-indigo-500 via-sky-400 to-cyan-400 transition-all duration-500" style="width:0%"></div>
@@ -227,6 +228,9 @@
         </div>
     </dialog>
 
+    <!-- Supabase (versi dikunci) -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
     <script src="app.js"></script>
+    <script src="cloud.js"></script>
 </body>
 </html>

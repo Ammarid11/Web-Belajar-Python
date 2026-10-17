@@ -3452,6 +3452,7 @@ levelsData.push({
         });
         return {
             version: 2,
+            savedAt: Date.now(),
             done: done,
             drafts: state.drafts,
             settings: state.settings,
@@ -3468,6 +3469,7 @@ levelsData.push({
                 toast("Penyimpanan browser tidak tersedia. Progress akan hilang saat halaman ditutup.", "warn", 6000);
             }
         }
+        if (window.OdysseyCloud) window.OdysseyCloud.markDirty(); // sinkron ke Supabase (jika login)
     }
     const saveSoon = debounce(saveNow, 300);
 
@@ -4218,6 +4220,7 @@ levelsData.push({
         try { localStorage.removeItem(STORAGE_KEY); } catch (e) { /* abaikan */ }
         renderAll();
         toast("Progress direset.", "info");
+        if (window.OdysseyCloud) window.OdysseyCloud.markDirty(true);
     }
 
     function setupEngineBadge() {
@@ -4312,6 +4315,18 @@ levelsData.push({
         // Mesin Python (~10 MB) dimuat malas: saat editor pertama kali difokuskan atau saat Run/Periksa.
         $("code-input").addEventListener("focus", function () { PyEngine.start(); }, { once: true });
     }
+
+    // API untuk cloud.js (Supabase): baca/terapkan progress tanpa memicu sinkron berulang
+    window.OdysseyApp = {
+        serialize: function () { saveDraftNow(); return serialize(); },
+        apply: function (raw) {
+            state.levelId = 1; state.taskIndex = 0;
+            applyData(raw);
+            ensureUnlocked();
+            try { localStorage.setItem(STORAGE_KEY, JSON.stringify(serialize())); } catch (e) { /* abaikan */ }
+            renderAll();
+        }
+    };
 
     if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
     else init();
