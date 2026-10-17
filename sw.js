@@ -4,7 +4,7 @@
  * - Pyodide (URL berversi): cache-first.
  * - Supabase tidak disentuh.
  * Naikkan SHELL setiap kali app.js dan curriculum.js berubah bersamaan, agar keduanya selalu serasi. */
-const SHELL = "odyssey-shell-v4";
+const SHELL = "odyssey-shell-v5";
 const PYO = "odyssey-pyodide-v1";
 const NETWORK_TIMEOUT_MS = 4000;
 const SHELL_FILES = ["./", "index.html", "tailwind.css", "style.css", "curriculum.js", "app.js", "cloud.js"];

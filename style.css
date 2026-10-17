@@ -600,3 +600,44 @@ kbd {
 
 /* ---------- Teks khusus pembaca layar ---------- */
 .sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+
+/* ---------- Materi terstruktur (kartu per bagian) ---------- */
+.lesson{font-size:.95rem}
+.lesson .ls{margin:0 0 .9rem;padding:.85rem 1.05rem;border:1px solid #1e293b;border-left:4px solid #6366f1;border-radius:.75rem;background:rgba(15,23,42,.55)}
+.ls-h{display:flex;align-items:center;gap:.5rem;margin:0 0 .5rem;font-size:.78rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#a5b4fc}
+.ls-h::before{content:"\1F4D8"}
+.ls-key{border-left-color:#10b981!important}.ls-key .ls-h{color:#6ee7b7}.ls-key .ls-h::before{content:"\1F4CC"}
+.ls-ex{border-left-color:#22d3ee!important}.ls-ex .ls-h{color:#67e8f9}.ls-ex .ls-h::before{content:"\1F9EA"}
+.ls-warn{border-left-color:#f43f5e!important;background:rgba(244,63,94,.06)!important}.ls-warn .ls-h{color:#fda4af}.ls-warn .ls-h::before{content:"\26A0\FE0F"}
+.ls p{margin:0 0 .45rem;line-height:1.75}.ls p:last-child{margin-bottom:0}
+.ls ul{list-style:none;margin:.2rem 0 0;padding:0;display:grid;gap:.45rem}
+.ls li{position:relative;padding-left:1.15rem;line-height:1.7}
+.ls li::before{content:"";position:absolute;left:.1rem;top:.72em;width:.4rem;height:.4rem;border-radius:50%;background:currentColor;opacity:.5}
+/* ---------- Soal & contoh kode ---------- */
+#level-task{padding:.8rem .95rem;border-radius:.65rem;background:rgba(2,6,23,.55);border:1px solid rgba(99,102,241,.25);font-weight:500;line-height:1.75}
+#level-task code{font-family:'Fira Code',ui-monospace,monospace;font-size:.85em;color:#a5b4fc;background:rgba(99,102,241,.18);padding:.1rem .35rem;border-radius:.35rem}
+#level-example{color:#e2e8f0;line-height:1.7;border-left:3px solid #22d3ee}
+#level-example code{font-size:inherit}
+
+/* ---------- Alat bantu: kartu istilah + penjelasan ---------- */
+.tools-list{gap:.55rem}
+.tools-list li{display:grid;grid-template-columns:minmax(7rem,max-content) 1fr;gap:.3rem 1rem;align-items:start;padding:.65rem .8rem;border:1px solid rgba(245,158,11,.2);border-radius:.6rem;background:rgba(2,6,23,.45)}
+.tools-list li::before{display:none}
+.tools-list li.tl-note{grid-template-columns:1fr}
+.tl-term{line-height:2;font-weight:700;color:#fde68a}
+.tl-term code{display:inline-block;padding:.1rem .45rem;border:1px solid rgba(245,158,11,.3);font-weight:600}
+.tl-desc{line-height:1.7;color:#cbd5e1;font-size:.88rem}
+.tl-desc code{font-size:.85em}
+@media (max-width:640px){.tools-list li{grid-template-columns:1fr}}
+
+/* ---------- Penjelasan kode contoh ---------- */
+.ex-box{margin-top:1rem;padding:.9rem 1rem;border:1px solid rgba(34,211,238,.25);border-left:4px solid #22d3ee;border-radius:.75rem;background:rgba(15,23,42,.55)}
+.ex-head{font-size:.78rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#67e8f9;margin-bottom:.4rem}
+.ex-how{margin:0 0 .8rem;font-size:.85rem;line-height:1.65;color:#94a3b8}
+.ex-list{list-style:none;margin:0;padding:0;display:grid;gap:.5rem}
+.ex-list li{display:grid;grid-template-columns:1.6rem minmax(8rem,17rem) 1fr;gap:.5rem .75rem;align-items:start;font-size:.85rem;line-height:1.65}
+.ex-n{color:#475569;font:600 .75rem 'Fira Code',monospace;text-align:right;padding-top:.3rem}
+.ex-code{display:block;overflow-x:auto;white-space:pre;padding:.25rem .55rem;border-radius:.4rem;background:#020617;border:1px solid #1e293b;font:.8rem 'Fira Code',ui-monospace,monospace;color:#e2e8f0}
+.ex-what{color:#cbd5e1}
+.ex-what code{font:.85em 'Fira Code',monospace;color:#a5b4fc;background:rgba(99,102,241,.16);padding:.05rem .3rem;border-radius:.3rem}
+@media (max-width:640px){.ex-list li{grid-template-columns:1.6rem 1fr}.ex-what{grid-column:2}}
