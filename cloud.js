@@ -147,33 +147,84 @@
     /* Panel kiri: merek + demo ketikan kode (hanya dekorasi, disembunyikan dari pembaca layar) */
     function hl(line) {
         const esc = line.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-        return esc.replace(/(f?"[^"]*"?)|\b(def|return)\b|\b(print)\b/g, function (m, s, k, b) {
-            return s ? '<span class="s">' + s + "</span>" : k ? '<span class="k">' + k + "</span>" : '<span class="b">' + b + "</span>";
-        });
+        return esc.replace(
+            /(#.*$)|(f?"[^"]*"?|f?'[^']*'?)|\b(def|return|for|in|if|elif|else|class|import|from|while)\b|\b(print|range|len|input|self)\b|\b(\d+)\b/g,
+            function (m, c, s, k, b, n) {
+                return c ? '<span class="c">' + c + "</span>"
+                    : s ? '<span class="s">' + s + "</span>"
+                    : k ? '<span class="k">' + k + "</span>"
+                    : b ? '<span class="b">' + b + "</span>"
+                    : '<span class="n">' + n + "</span>";
+            });
     }
 
+    const DEMOS = [
+        { file: "main.py", code: ["def sapa(nama):", '    return f"Halo, {nama}!"', "", 'print(sapa("kamu"))'],
+          out: ["Halo, kamu!", "✔ Soal selesai  +10 XP"] },
+        { file: "loop.py", code: ["for i in range(1, 4):", '    print("Level", i, "✔")'],
+          out: ["Level 1 ✔", "Level 2 ✔", "Level 3 ✔", "🏆 Rank naik: Coder"] },
+        { file: "hero.py", code: ["class Hero:", "    def __init__(self, xp=0):", "        self.xp = xp", "    def naik(self):", "        self.xp += 10", "", "h = Hero()", "h.naik()", 'print("XP:", h.xp)'],
+          out: ["XP: 10", "✔ Soal selesai  +10 XP"] }
+    ];
+
     function typeDemo(body) {
-        const src = ["def sapa(nama):", '    return f"Halo, {nama}!"', "", 'print(sapa("kamu"))'].join("\n");
-        const out = ["Halo, kamu!", "✔ Soal selesai  +10 XP"];
-        let i = 0, o = 0, wait = 0;
+        const term = body.parentNode;
+        const fileEl = term.querySelector(".auth-file");
+        let d = 0, pos = 0, outN = 0, phase = "type";
+        const text = function () { return DEMOS[d].code.join("\n"); };
+
         function draw() {
-            let html = src.slice(0, i).split("\n").map(hl).join("\n");
-            if (o > 0) html += "\n\n" + out.slice(0, o).map(function (t) { return '<span class="o">' + t + "</span>"; }).join("\n");
-            body.innerHTML = html + '<span class="auth-caret"></span>';
+            const typed = text().slice(0, pos).split("\n");
+            let html = typed.map(function (ln, i) {
+                return '<span class="l">' + hl(ln) + (i === typed.length - 1 ? '<span class="auth-caret"></span>' : "") + "</span>";
+            }).join("");
+            if (outN > 0) {
+                html += '<span class="o-box">' + DEMOS[d].out.slice(0, outN).map(function (t) {
+                    return '<span class="o">' + t + "</span>";
+                }).join("") + "</span>";
+            }
+            body.innerHTML = html;
         }
-        if (REDUCE()) { i = src.length; o = out.length; draw(); return; }
+        function tick(ms, fn) {
+            typingTimer = setTimeout(function () { if (body.isConnected) fn(); }, ms);
+        }
+        function step() {
+            const total = text().length;
+            if (phase === "type") {
+                if (pos < total) {
+                    const ch = text()[pos++];
+                    draw();
+                    tick(ch === "\n" ? 280 : 35 + Math.random() * 65, step);
+                } else { phase = "run"; tick(500, step); }
+            } else if (phase === "run") {
+                term.classList.add("running");
+                if (outN < DEMOS[d].out.length) {
+                    tick(outN === 0 ? 900 : 480, function () { outN++; draw(); step(); });
+                } else {
+                    term.classList.remove("running");
+                    phase = "hold"; tick(2800, step);
+                }
+            } else if (phase === "hold") {
+                outN = 0; phase = "erase"; draw(); step();
+            } else { // erase
+                pos = Math.max(0, pos - 4); draw();
+                if (pos === 0) {
+                    d = (d + 1) % DEMOS.length;
+                    fileEl.textContent = DEMOS[d].file;
+                    phase = "type"; tick(450, step);
+                } else tick(16, step);
+            }
+        }
+
+        fileEl.textContent = DEMOS[0].file;
+        // Animasi ketik tetap jalan walau OS memakai "reduce motion" (kecil & dekoratif); gerakan besar dimatikan lewat CSS.
         draw();
-        typingTimer = setInterval(function () {
-            if (i < src.length) i++;
-            else if (wait < 10) wait++;
-            else if (o < out.length) { o++; wait = 0; }
-            else clearInterval(typingTimer);
-            draw();
-        }, 55);
+        tick(700, step);
     }
 
     function brandPanel() {
         const p = mk("aside", "auth-brand");
+        p.append(mk("div", "auth-orb o1"), mk("div", "auth-orb o2"), mk("div", "auth-grid"));
         const logo = mk("div", "auth-logo");
         logo.append(mk("span", "auth-logo-mark", "🐍"), mk("span", "", "Python Odyssey"));
         const top = mk("div", "auth-brand-top");
@@ -183,8 +234,9 @@
         const term = mk("div", "auth-term");
         term.setAttribute("aria-hidden", "true");
         const bar = mk("div", "auth-term-bar");
-        bar.append(mk("i"), mk("i"), mk("i"), mk("span", "", "main.py"));
-        term.append(bar, mk("pre", "auth-term-body"));
+        bar.append(mk("i"), mk("i"), mk("i"), mk("span", "auth-file", "main.py"), mk("b", "auth-run", "▶ Run"));
+        term.append(bar, mk("pre", "auth-term-body"),
+            mk("span", "auth-chip c1", "⚡ +10 XP"), mk("span", "auth-chip c2", "🎖️ Level naik"));
         const facts = mk("ul", "auth-facts");
         [["139", "level"], ["1.256", "soal"], ["0", "instalasi"]].forEach(function (f) {
             const li = mk("li"); li.append(mk("strong", "", f[0]), mk("span", "", f[1])); facts.appendChild(li);
