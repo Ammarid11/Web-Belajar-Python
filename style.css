@@ -152,6 +152,7 @@ kbd {
 }
 
 #line-numbers,
+#code-hl,
 #code-input {
     font-family: 'Fira Code', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
     font-variant-ligatures: none;
@@ -201,7 +202,7 @@ kbd {
 }
 
 #code-input::placeholder {
-    color: #475569;
+    color: #64748b;
 }
 
 /* ---------- Sidebar Versi Mobile (Overlay Layar Penuh) ---------- */
@@ -563,3 +564,39 @@ kbd {
 @media (prefers-reduced-motion: reduce) {
     .auth-orb, .auth-term, .auth-chip, .auth-logo-mark, .auth-btn::after { animation: none !important; }
 }
+
+/* ---------- Editor: overlay pewarnaan sintaks ---------- */
+.editor-body { position: relative; flex: 1; min-width: 0; }
+.hl-clip { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+#code-hl { position: absolute; top: 0; left: 0; margin: 0; min-width: 100%; padding: 0.75rem 1rem; white-space: pre; tab-size: 4; color: #e2e8f0; background: transparent; will-change: transform; }
+.hl-errband { display: none; position: absolute; left: 0; right: 0; height: 22px; background: rgba(244, 63, 94, 0.16); box-shadow: inset 3px 0 0 #f43f5e; }
+.editor-wrap.hl-on #code-input { position: relative; z-index: 1; display: block; width: 100%; color: transparent; caret-color: #e2e8f0; }
+.editor-wrap.hl-on #code-input::selection { color: transparent; background: rgba(99, 102, 241, 0.4); }
+.hl-k { color: #c4b5fd; }
+.hl-s { color: #fcd34d; }
+.hl-b { color: #67e8f9; }
+.hl-c { color: #64748b; font-style: italic; }
+.hl-n { color: #fb923c; }
+.hl-d { color: #f0abfc; }
+
+/* ---------- Bilah simbol (HP) + tombol Jalankan/Periksa menempel di bawah layar ---------- */
+.symbol-bar { display: flex; gap: 0.4rem; overflow-x: auto; padding-bottom: 0.25rem; }
+.symbol-bar button { flex: none; min-width: 2.5rem; height: 2.25rem; padding: 0 0.6rem; border-radius: 0.5rem; border: 1px solid #334155; background: #0f172a; color: #e2e8f0; font: 600 0.9rem 'Fira Code', ui-monospace, monospace; }
+.symbol-bar button:active { background: #334155; }
+.run-bar { position: sticky; bottom: 0; z-index: 30; margin: 0 -0.5rem; padding: 0.5rem 0.5rem calc(0.5rem + env(safe-area-inset-bottom, 0px)); background: rgba(15, 23, 42, 0.96); backdrop-filter: blur(8px); border-top: 1px solid #1e293b; }
+@media (min-width: 768px) {
+    .symbol-bar { display: none; }
+    .run-bar { position: static; margin: 0; padding: 0; background: none; backdrop-filter: none; border: 0; }
+}
+
+/* ---------- Saran kode ---------- */
+.ac-pop { position: absolute; z-index: 5; min-width: 9rem; max-width: 18rem; padding: 0.2rem; background: #0f172a; border: 1px solid #334155; border-radius: 0.5rem; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5); font: 13px/1.4 'Fira Code', ui-monospace, monospace; }
+.ac-pop[hidden] { display: none; }
+.ac-item { padding: 0.2rem 0.5rem; border-radius: 0.35rem; color: #cbd5e1; cursor: pointer; }
+.ac-item.on { background: #4338ca; color: #fff; }
+
+/* ---------- Login: jeda animasi saat tab tidak aktif ---------- */
+#auth-root.paused *, #auth-root.paused *::before, #auth-root.paused *::after { animation-play-state: paused !important; }
+
+/* ---------- Teks khusus pembaca layar ---------- */
+.sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
