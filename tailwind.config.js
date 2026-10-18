@@ -1,1 +1,1 @@
-module.exports = { content: ["./index.html", "./app.js", "./cloud.js", "./curriculum.js"], theme: { extend: {} }, plugins: [] };
+module.exports = { content: ["./index.html", "./app.js", "./cloud.js"], theme: { extend: {} }, plugins: [] };

@@ -4,6 +4,6 @@
   "scripts": {
     "css": "npx tailwindcss@3.4.17 -c tailwind.config.js -i tailwind.input.css -o tailwind.css --minify",
     "check": "node tools/check-curriculum.js",
-    "test": "node tests/beginner-run.js"
+    "min": "npx esbuild curriculum.js app.js cloud.js sw.js --minify --outdir=dist"
   }
 }
