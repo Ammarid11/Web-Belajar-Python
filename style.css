@@ -64,7 +64,7 @@ kbd {
     font-size: 0.85em;
     color: #a5b4fc;
     background: rgba(99, 102, 241, 0.14);
-    padding: 0.1rem 0.35rem;
+    padding: 0.1rem 0.2rem;
     border-radius: 0.35rem;
 }
 
@@ -721,3 +721,6 @@ kbd {
 
 .lesson ul.pts li .sub { display: block; margin-top: 0.25rem; color: #b6c2d4; }
 .lesson ul.pts li .sub .lead { color: #e2e8f0; }
+
+/* ---------- Kode inline: rapatkan jarak ke tanda baca di sebelahnya ---------- */
+.lesson code, .tools-box code, .task-body code { margin: 0 0.05rem; }
