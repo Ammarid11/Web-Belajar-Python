@@ -78,6 +78,135 @@
     // Level 1, 2, 3, dan 6 disusun ulang (kesulitan bertingkat): EXPECT/CHECKS lama dihapus; tiap soal membawa expect/check sendiri.
     [EXPECT, CHECKS].forEach(function (m) { Object.keys(m).forEach(function (k) { if (/^(1|2|3|6)-\d+$/.test(k)) delete m[k]; }); });
 
+
+    // Token pemanggilan (mis. .add(), json.dumps(), TaskGroup()) yang disebut soal: jawaban lemah wajib memuat sebagian besar.
+    function apiTokens(text) {
+        const out = [], seen = Object.create(null);
+        const re = /(?:^|[^\w])((?:[A-Za-z_]\w*\.)*[A-Za-z_]\w*)\(/g;
+        const skip = /^(contoh|misal|mis|dst|yaitu|atau|dan|dengan|untuk|buat|cetak|lalu|jika|maka)$/i;
+        let m;
+        while ((m = re.exec(text)) && out.length < 4) {
+            const last = m[1].split(".").pop();
+            if (last.length < 3 || skip.test(last) || seen[last]) continue;
+            seen[last] = 1;
+            out.push(last);
+        }
+        return out;
+    }
+    // Istilah kunci dari soal/petunjuk (nama berunderscore, bertitik, CamelCase, atau dalam kutip) untuk soal uraian.
+    function keyTerms(text) {
+        const out = [], seen = Object.create(null);
+        const re = /['"]([^'"\n]{3,30})['"]|\b([A-Za-z_][\w.]*)\b/g;
+        let m;
+        while ((m = re.exec(text)) && out.length < 6) {
+            const w = (m[1] || m[2] || "").trim();
+            if (w.length < 4) continue;
+            const codey = m[1] || /[_.]/.test(w) || /[a-z][A-Z]/.test(w) || /^[A-Z]{2,}$/.test(w) || /^[A-Z][a-z]+[A-Z]/.test(w);
+            const k = w.toLowerCase();
+            if (!codey || seen[k]) continue;
+            seen[k] = 1;
+            out.push(k);
+        }
+        return out;
+    }
+    function textNeedOk(code, task) {
+        if (!task.textNeed || !task.textNeed.length) return true;
+        const low = code.toLowerCase();
+        const hit = task.textNeed.filter(function (w) { return low.indexOf(w) !== -1; }).length;
+        return hit >= Math.min(2, task.textNeed.length);
+    }
+    function apiOk(code, task) {
+        if (!task.apiNeed || !task.apiNeed.length) return true;
+        const need = Math.ceil(task.apiNeed.length / 2);
+        const hit = task.apiNeed.filter(function (w) { return new RegExp("(^|[^A-Za-z0-9_])" + w + "([^A-Za-z0-9_]|$)").test(code); }).length;
+        return hit >= need;
+    }
+
+    // Glosarium: istilah yang muncul di materi dijelaskan otomatis di bagian "Istilah" tiap level.
+    const GLOSSARY = [
+        ["lazy evaluation", "evaluasi malas: nilai baru dihitung saat benar-benar diminta, bukan di muka. Hemat memori."],
+        ["idempoten", "operasi yang hasilnya sama walau dijalankan berkali-kali (mis. memproses pesan yang sama dua kali tidak menggandakan efeknya)."],
+        ["cold start", "jeda awal ketika fungsi serverless dijalankan pertama kali setelah lama tidak dipakai (lingkungannya perlu disiapkan dulu)."],
+        ["bottleneck", "bagian program yang paling lambat dan menahan kecepatan keseluruhan."],
+        ["race condition", "bug saat dua thread mengubah data bersama bersamaan sehingga hasilnya bergantung pada siapa yang lebih dulu."],
+        ["call stack", "tumpukan pemanggilan fungsi: setiap pemanggilan baru ditaruh di atas, dan dibongkar dari atas saat fungsi selesai."],
+        ["immutable", "tidak bisa diubah setelah dibuat (int, str, tuple). Lawannya mutable (list, dict, set)."],
+        ["mutable", "bisa diubah di tempat setelah dibuat (list, dict, set)."],
+        ["iterator", "objek yang memberi nilai satu per satu lewat next(); dipakai di belakang layar oleh for."],
+        ["iterable", "apa pun yang bisa diulang dengan for (list, string, range, generator)."],
+        ["coroutine", "fungsi async yang bisa dijeda dengan await lalu dilanjutkan, tanpa memblokir tugas lain."],
+        ["thread", "jalur eksekusi dalam satu proses; beberapa thread berbagi memori yang sama."],
+        ["gil", "Global Interpreter Lock: di CPython hanya satu thread yang menjalankan bytecode pada satu waktu."],
+        ["i/o", "input/output: menunggu jaringan, file, atau disk. Waktu tunggu inilah yang bisa dimanfaatkan thread/asyncio."],
+        ["pickle", "format biner Python untuk menyimpan objek; jangan membuka pickle dari sumber tak tepercaya."],
+        ["wrapper", "fungsi pembungkus yang menambah perilaku sebelum/sesudah fungsi aslinya dipanggil."],
+        ["dependensi", "objek/pustaka lain yang dibutuhkan sebuah class atau program agar bisa bekerja."],
+        ["loosely coupled", "komponen saling bergantung seminimal mungkin sehingga mudah diganti dan diuji."],
+        ["mock", "objek palsu pengganti dependensi asli saat pengujian."],
+        ["fixture", "kode persiapan (dan pembersihan) yang disuntikkan otomatis ke fungsi tes oleh pytest."],
+        ["endpoint", "alamat URL pada API yang menerima permintaan dan membalas respons."],
+        ["middleware", "kode perantara yang mencegat setiap permintaan/respons sebelum sampai ke tujuan."],
+        ["orm", "Object-Relational Mapper: memetakan class Python ke tabel database sehingga data dikelola sebagai objek."],
+        ["migrasi", "perubahan struktur tabel database yang dicatat berversi supaya bisa diterapkan atau dibatalkan."],
+        ["cache", "penyimpanan sementara hasil yang mahal dihitung agar permintaan berikutnya lebih cepat."],
+        ["ttl", "Time-To-Live: lama data cache boleh hidup sebelum kedaluwarsa."],
+        ["broker", "perantara pesan (Redis, RabbitMQ, Kafka) yang menampung dan meneruskan pesan antar program."],
+        ["jwt", "JSON Web Token: token bertanda tangan yang membuktikan identitas pengguna pada tiap permintaan."],
+        ["hash", "sidik jari satu arah dari data; tidak bisa dikembalikan ke data aslinya."],
+        ["salt", "teks acak yang ditambahkan sebelum hashing agar dua password sama menghasilkan hash berbeda."],
+        ["embedding", "daftar angka (vektor) yang mewakili makna sebuah teks; teks mirip menghasilkan vektor berdekatan."],
+        ["overfitting", "model terlalu hafal data latih sehingga buruk pada data baru."],
+        ["tensor", "array multidimensi (seperti array NumPy) yang bisa dihitung di GPU dan dilacak turunannya."],
+        ["gradien", "turunan yang menunjukkan ke arah mana bobot model harus digeser untuk mengurangi kesalahan."],
+        ["dag", "Directed Acyclic Graph: kumpulan langkah berurutan tanpa putaran balik."],
+        ["etl", "Extract (ambil), Transform (olah), Load (simpan): alur dasar pipeline data."],
+        ["vektorisasi", "mengerjakan operasi ke seluruh array sekaligus oleh kode C, bukan loop Python per elemen."],
+        ["serverless", "kode dijalankan sebagai fungsi yang dipicu event tanpa mengelola server sendiri."],
+        ["kontainer", "paket terisolasi berisi aplikasi beserta dependensinya sehingga berjalan sama di mana pun."],
+        ["replika", "salinan identik sebuah aplikasi yang berjalan bersamaan untuk berbagi beban."],
+        ["linter", "alat yang memeriksa kode tanpa menjalankannya untuk menemukan salah tulis dan gaya buruk."],
+        ["xss", "Cross-Site Scripting: penyerang menyisipkan skrip lewat input yang ditampilkan tanpa di-escape."],
+        ["csrf", "Cross-Site Request Forgery: situs lain memaksa browser pengguna mengirim permintaan tanpa sepengetahuannya."],
+        ["sql injection", "penyerang menyisipkan perintah SQL lewat input; dicegah dengan query berparameter."]
+    ];
+    function glossaryFor(text) {
+        const low = text.toLowerCase().replace(/<[^>]*>/g, " ");
+        return GLOSSARY.filter(function (g) {
+            return new RegExp("(^|[^a-z0-9])" + g[0].replace(/[.*+?^${}()|[\]\\\/]/g, "\\$&") + "([^a-z0-9]|$)").test(low);
+        }).slice(0, 6);
+    }
+    const PHASE_PREREQ = {
+        "Professional": "Prasyarat: fondasi Python (fungsi, class, exception, file) dari fase Beginner sampai Expert.",
+        "Architecture": "Prasyarat: OOP (class, pewarisan, dunder method) dan tes dasar dengan assert.",
+        "Data Engineering": "Prasyarat: fondasi Python, list/dict/comprehension, dan baca-tulis file. Pandas dan NumPy diperkenalkan di awal fase.",
+        "Web API": "Prasyarat: fungsi, class, dictionary/JSON, dan konsep HTTP dasar (Level HTTP &amp; REST).",
+        "AI Engineering": "Prasyarat: list/dict, fungsi, class, dan dasar NumPy. Matematika yang dipakai cukup perkalian dan penjumlahan.",
+        "DevOps": "Prasyarat: dasar terminal dan Git. Soal berupa berkas konfigurasi sehingga dinilai dari isi teks.",
+        "Security & Performance": "Prasyarat: fungsi, class, exception, dan dasar jaringan (socket). Soal pustaka eksternal dinilai dari struktur kode.",
+        "Enterprise Mastery": "Prasyarat: seluruh fase Web API dan DevOps. Level ini menggabungkan keduanya."
+    };
+
+    // Petunjuk tingkat 1: pertanyaan penuntun (tanpa kode). Tingkat 2 baru memberi hint asli, tingkat 3 contoh materi.
+    function conceptHint(task, lvl) {
+        const t = (task.task + " " + (lvl.title || "")).toLowerCase();
+        const q = [];
+        if (/rekursi|recurs/.test(t)) q.push("Apa kasus dasarnya (kondisi berhenti)? Lalu bagaimana soal bisa dikecilkan satu langkah pada pemanggilan berikutnya?");
+        else if (/closure|nonlocal|fungsi dalam|bersarang/.test(t)) q.push("Variabel mana yang harus diingat fungsi dalam? Siapa yang menyimpannya, dan apa yang dikembalikan fungsi luar: fungsinya atau hasilnya?");
+        else if (/\bwhile\b/.test(t)) q.push("Apa nilai awalnya, kapan kondisi menjadi salah, dan baris mana yang mengubah nilai agar loop akhirnya berhenti?");
+        else if (/\bfor\b|perulangan|loop|range/.test(t)) q.push("Apa yang berubah di tiap putaran, dan berapa kali perulangan harus berjalan? Tulis dulu daftar nilai yang diharapkan.");
+        else if (/class|objek|atribut|method/.test(t)) q.push("Data apa yang disimpan objek (atribut) dan apa yang bisa dilakukannya (method)? Apa yang diterima __init__?");
+        else if (/dekorator|decorator|wrapper/.test(t)) q.push("Fungsi apa yang dibungkus, perilaku tambahan apa yang disisipkan, dan apa yang harus di-return oleh dekorator dan wrapper?");
+        else if (/fungsi|def |return/.test(t)) q.push("Apa masukan (parameter) fungsi ini dan apa yang harus dikembalikan? Sudahkah fungsinya dipanggil dan hasilnya dicetak?");
+        else if (/list|tuple|set|dictionary|kunci/.test(t)) q.push("Struktur data apa yang paling cocok untuk data ini, dan operasi mana (tambah, hapus, ambil) yang diminta soal?");
+        else if (/format|f-string|string|teks|huruf/.test(t)) q.push("Teks apa yang harus tampil persis, dan bagian mana yang berasal dari variabel atau hitungan?");
+        else if (/test|assert|pytest|uji/.test(t)) q.push("Apa yang harus selalu benar dari fungsi ini? Tulis satu masukan dan hasil yang kamu harapkan sebelum menulis assert.");
+        else if (/jika|if |kondisi|bandingkan/.test(t)) q.push("Kondisi apa yang diperiksa, dan apa yang tercetak untuk tiap kemungkinan (benar dan salah)?");
+        else q.push("Pecah soal menjadi langkah kecil: apa yang harus dibuat, apa yang harus diproses, dan apa yang harus dicetak?");
+        const toks = apiTokens(task.task);
+        q.push("Cari di tab Materi/Alat bantu istilah yang disebut soal" + (toks.length ? " (" + toks.join(", ") + ")" : "") + " dan baca contohnya.");
+        return task.hint0 ? task.hint0 : q.join(" ");
+    }
+
     // Kurva XP yang naik rata: Level 1 = 100 XP, Level 100 = 2.080 XP.
     // Ubah fungsi ini jika ingin kurva lain.
     function xpForLevel(id) {
@@ -95,6 +224,12 @@
             t.noStrings = STRING_BLIND_LEVELS.has(lvl.id);
             const lengthOnly = /^\s*c\s*=>\s*c\.length\s*>\s*\d+\s*$/.test(vsrc);
             t.minChars = (lengthOnly && !TEXT_LEVELS.has(lvl.id)) ? 25 : 6; // soal uraian wajib dijawab dengan beberapa kalimat/baris
+            if (!t.noAuto && !t.expect && !t.check && !t.forceText && !TEXT_LEVELS.has(lvl.id) && /^\s*c\s*=>\s*(!?c\.includes\([^)]*\)\s*(&&|\|\|)?\s*)+$/.test(vsrc) && !/[\/]/.test(vsrc.replace(/"[^"]*"|'[^']*'/g, ""))) {
+                t.weak = true;
+                if (t.minStmt === undefined) t.minStmt = 2;
+                t.apiNeed = apiTokens(t.task);
+            }
+            if (lengthOnly && !t.forceText) t.textNeed = keyTerms(t.task + " " + (t.hint || ""));
             if (TEXT_LEVELS.has(lvl.id) || lengthOnly || (lvl.id === 85 && i >= 5 && i <= 8)) t.mode = "text";
             if (t.forceText) { t.mode = "text"; t.minChars = Math.max(t.minChars, 15); }
         });
@@ -267,10 +402,13 @@
             "    fn = (ast.FunctionDef, ast.AsyncFunctionDef)",
             "    unused = [n.name for n in t.body if isinstance(n, fn) and not n.decorator_list and not n.name.startswith('_') and not n.name.startswith('test') and n.name not in used]",
             "    cond = (ast.Compare, ast.BoolOp, ast.UnaryOp)",
-            "    tif = [n.lineno for n in ast.walk(t) if isinstance(n, ast.If) and not any(isinstance(x, cond) for x in ast.walk(n.test))]",
+            "    tif = [n.lineno for n in ast.walk(t) if isinstance(n, ast.If) and (not any(isinstance(x, cond) for x in ast.walk(n.test)) or (isinstance(n.test, ast.Compare) and isinstance(n.test.left, ast.Constant) and all(isinstance(c, ast.Constant) for c in n.test.comparators)))]",
             "    twh = [n.lineno for n in ast.walk(t) if isinstance(n, ast.While) and isinstance(n.test, ast.Constant)]",
             "    cin = any(isinstance(n, ast.Compare) and any(isinstance(o, (ast.In, ast.NotIn)) for o in n.ops) for n in ast.walk(t))",
-            "    return {'unused': unused, 'trivialIf': tif, 'trivialWhile': twh, 'cmpIn': cin}"
+            "    nst = sum(1 for n in ast.walk(t) if isinstance(n, ast.stmt))",
+            "    loops = (ast.For, ast.While, ast.If)",
+            "    emp = [n.lineno for n in ast.walk(t) if isinstance(n, loops) and len(n.body) == 1 and isinstance(n.body[0], ast.Pass)]",
+            "    return {'unused': unused, 'trivialIf': tif, 'trivialWhile': twh, 'cmpIn': cin, 'nstmt': nst, 'emptyBody': emp}"
         ].join("\n");
 
         let pyodide = null;
@@ -795,8 +933,8 @@
                 toast("Selesaikan Level " + (prevVisible(lvl) || { no: lvl.no - 1 }).no + " dulu untuk membuka level ini.", "warn");
                 return;
             }
-            goTo(lvl.id, firstUndone(lvl));
             closeSidebar();
+            goTo(lvl.id, firstUndone(lvl));
         });
         return btn;
     }
@@ -1039,8 +1177,11 @@
         $("example-ln").textContent = lvl.example.split("\n").map(function (_, i) { return i + 1; }).join("\n");
         $("example-file").textContent = isText ? "contoh.txt" : "contoh.py";
         const n = $("example-notes");
-        n.innerHTML = notesHtml; // konten kurikulum milik aplikasi (tepercaya)
-        n.classList.toggle("hidden", !notesHtml);
+        const imp = (lvl.example.match(/^\s*(?:from|import)\s+([A-Za-z_]\w*)/gm) || []).map(function (x) { return x.replace(/^\s*(from|import)\s+/, ""); });
+        const blocked = imp.filter(function (m) { return UNAVAILABLE_LIBS.test(m); });
+        const note = (blocked.length && !isText) ? '<p class="ex-note">🧩 Contoh ini memakai <code>' + blocked.join("</code>, <code>") + '</code> yang tidak tersedia di browser. Baca sebagai <b>contoh tampilan</b>; hasil di komentar bawah kode adalah gambaran keluaran aslinya.</p>' : "";
+        n.innerHTML = note + notesHtml; // konten kurikulum milik aplikasi (tepercaya)
+        n.classList.toggle("hidden", !(note + notesHtml));
     }
 
     function renderLevel() {
@@ -1054,7 +1195,10 @@
         $("level-title").textContent = lvl.title;
         const parts = lvl.desc.split(/(?:<br><br>)?<b>Alat bantu yang dipakai di soal:<\/b>\s*/);
         const lz = lessonParts(parts[0]);
-        $("level-desc").innerHTML = lz.materi; // konten kurikulum milik aplikasi (tepercaya)
+        const gl = glossaryFor(parts[0]);
+        const pre = PHASE_PREREQ[lvl.category];
+        $("level-desc").innerHTML = (pre && lz.materi.indexOf("Prasyarat:") === -1 ? '<p class="prereq">' + pre + "</p>" : "") + lz.materi +
+            (gl.length ? '<span class="sec">Istilah</span><ul class="pts">' + gl.map(function (g) { return "<li><b class=\"lead\">" + g[0] + "</b>: " + g[1] + "</li>"; }).join("") + "</ul>" : ""); // konten milik aplikasi (tepercaya)
         const tb = $("level-tools");
         if (parts[1]) {
             tb.innerHTML = '<div class="tools-title">🧰 Alat bantu yang dipakai di soal</div><p class="tools-sub">Istilah yang muncul di soal, dijelaskan singkat.</p><ul class="tools-list">' +
@@ -1137,6 +1281,12 @@
             const active = $("level-list").querySelector('[aria-current="true"]');
             if (active) active.scrollIntoView({ block: "nearest" });
         }
+        // HP & tablet: layar sempit, jadi bawa pembaca ke awal materi/soal setelah pindah
+        if (window.matchMedia && window.matchMedia("(max-width: 1023px)").matches) {
+            const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+            const t = $("level-title");
+            if (t) t.scrollIntoView({ block: "start", behavior: reduce ? "auto" : "smooth" });
+        }
     }
 
     function goNext() {
@@ -1155,8 +1305,19 @@
     }
 
     /* ---------- Sidebar mobile ---------- */
-    function openSidebar() { $("sidebar").classList.add("mobile-open"); document.body.style.overflow = "hidden"; }
-    function closeSidebar() { $("sidebar").classList.remove("mobile-open"); document.body.style.overflow = ""; }
+    function openSidebar() {
+        $("sidebar").classList.add("mobile-open");
+        document.body.style.overflow = "hidden";
+        $("btn-menu").setAttribute("aria-expanded", "true");
+        $("level-search").focus({ preventScroll: true });
+    }
+    function closeSidebar() {
+        const sb = $("sidebar");
+        if (!sb.classList.contains("mobile-open")) return;
+        sb.classList.remove("mobile-open");
+        document.body.style.overflow = "";
+        $("btn-menu").setAttribute("aria-expanded", "false");
+    }
 
     /* ------------------------------------------------------------------
        7. TERMINAL OUTPUT
@@ -1349,10 +1510,11 @@
     function structureOk(code, task, lvl) {
         if (task.mode === "text") {
             // Teks apa adanya: tanda # bermakna di Dockerfile/YAML/C, jadi komentar tidak dibuang.
-            return runValidator(task, lvl, code) && code.replace(/\s+/g, "").length >= (task.minChars || 6);
+            return runValidator(task, lvl, code) && code.replace(/\s+/g, "").length >= (task.minChars || 6) && textNeedOk(code, task);
         }
         // Komentar dibuang; untuk level 1-48 isi string juga dikosongkan agar print("def return") tidak lolos.
-        return runValidator(task, lvl, stripPyComments(code, !!task.noStrings));
+        const stripped = stripPyComments(code, !!task.noStrings);
+        return runValidator(task, lvl, stripped) && apiOk(stripPyComments(code, false), task);
     }
 
     function judge(code, task, lvl, res) {
@@ -1386,6 +1548,8 @@
                     if (!task.skipUnused && /(cetak|print|tampilkan|uji|panggil)/i.test(task.task) && inf.unused && inf.unused.length) return { pass: false, reason: "Fungsi " + inf.unused.join(", ") + " dibuat tetapi tidak pernah dipakai. Panggil fungsinya (dan cetak hasilnya jika diminta) agar bisa diperiksa." };
                     if ((lvl.id === 4 || lvl.id === 5) && inf.trivialIf && inf.trivialIf.length) return { pass: false, reason: "Kondisi if harus berupa perbandingan atau logika (mis. umur >= 17), bukan sekadar nilai variabel atau konstanta." };
                     if (task.needsIn && !inf.cmpIn) return { pass: false, reason: "Soal ini meminta operator keanggotaan: pakai 'in' dalam perbandingan (mis. 'kucing' in hewan), bukan 'for ... in'." };
+                    if (inf.emptyBody && inf.emptyBody.length && !task.allowPass) return { pass: false, reason: "Ada perulangan/percabangan yang isinya hanya 'pass' (baris " + inf.emptyBody.join(", ") + "). Isi blok dengan kode yang benar-benar mengerjakan soal." };
+                    if (task.minStmt && inf.nstmt < task.minStmt) return { pass: false, reason: "Jawabanmu terlalu singkat untuk soal ini (minimal " + task.minStmt + " pernyataan kode). Lengkapi langkah-langkah yang diminta soal." };
                     if (lvl.id === 7 && inf.trivialWhile && inf.trivialWhile.length) return { pass: false, reason: "Kondisi while tidak boleh konstanta; pakai kondisi yang berubah (mis. i <= 3)." };
                 }
                 const stdout = res.chunks.filter(function (c) { return c.stream === "stdout"; }).map(function (c) { return c.text; }).join("");
@@ -1496,20 +1660,23 @@
         if (out.dataset.ph) outClear(); else outLine("", CLS.dim);
         const k = draftKey();
         const t = (hintTier[k] || 0) + 1;
+        const task = currentTask(), lvl = currentLevel();
         if (t === 1) {
             hintTier[k] = 1;
-            outLine("💡 Petunjuk 1/3 (arah umum):", "text-amber-400 font-semibold");
-            outLine(currentTask().hint, CLS.info);
-            outLine("Klik Petunjuk lagi untuk kerangka kode.", CLS.dim);
+            outLine("💡 Petunjuk 1/3 (pertanyaan penuntun, tanpa kode):", "text-amber-400 font-semibold");
+            outLine(conceptHint(task, lvl), CLS.info);
+            outLine("Klik Petunjuk lagi untuk arah teknis.", CLS.dim);
         } else if (t === 2) {
             hintTier[k] = 2;
-            outLine("💡 Petunjuk 2/3 (kerangka dari contoh materi, sesuaikan dengan soal):", "text-amber-400 font-semibold");
-            outLine(currentLevel().example, CLS.info);
-            outLine("Petunjuk 3 terbuka setelah kamu mencoba Periksa Jawaban minimal 2 kali.", CLS.dim);
+            outLine("💡 Petunjuk 2/3 (arah teknis):", "text-amber-400 font-semibold");
+            outLine(task.hint, CLS.info);
+            outLine("Petunjuk 3 (kerangka dari contoh materi) terbuka setelah 2 kali Periksa Jawaban yang belum tepat.", CLS.dim);
         } else if ((fails[k] || 0) >= 2) {
-            outLine("💡 Petunjuk 3/3: baca ulang Materi dan Alat Bantu, lalu cocokkan istilah di soal.", "text-amber-400 font-semibold");
-            setTab("materi");
-            window.scrollTo({ top: 0, behavior: "smooth" });
+            hintTier[k] = 3;
+            outLine("💡 Petunjuk 3/3 (kerangka dari contoh materi, sesuaikan dengan soal):", "text-amber-400 font-semibold");
+            outLine(lvl.example, CLS.info);
+            outLine("Masih bingung? Baca ulang Materi dan Alat bantu di tab Materi.", CLS.dim);
+            if (t > 3) { setTab("materi"); window.scrollTo({ top: 0, behavior: "smooth" }); }
         } else {
             outLine("🔒 Petunjuk 3 terbuka setelah 2 kali Periksa Jawaban yang belum tepat (sudah " + (fails[k] || 0) + "). Coba dulu ya.", CLS.warn);
         }
@@ -2250,6 +2417,18 @@
         });
         $("btn-menu").addEventListener("click", openSidebar);
         $("btn-close-sidebar").addEventListener("click", closeSidebar);
+        // Tablet: laci level tidak menutupi layar penuh, jadi ketuk di luar laci untuk menutup
+        document.addEventListener("click", function (e) {
+            const sb = $("sidebar");
+            if (sb.classList.contains("mobile-open") && window.innerWidth >= 640 &&
+                !sb.contains(e.target) && !$("btn-menu").contains(e.target)) closeSidebar();
+        });
+        // Layar diputar / jendela dilebarkan sampai mode desktop: tutup mode overlay
+        if (window.matchMedia) {
+            const mq = window.matchMedia("(min-width: 1024px)");
+            const onMq = function (e) { if (e.matches) closeSidebar(); };
+            if (mq.addEventListener) mq.addEventListener("change", onMq); else if (mq.addListener) mq.addListener(onMq);
+        }
         $("btn-export").addEventListener("click", exportProgress);
         $("btn-import").addEventListener("click", function () { $("import-file").click(); });
         $("import-file").addEventListener("change", function (e) {

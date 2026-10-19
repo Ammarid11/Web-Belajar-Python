@@ -1,0 +1,725 @@
+/* =====================================================================
+   PYTHON ODYSSEY - curriculum-perbaikan.js
+   Menerapkan PENJELASAN-UPDATE.md: alat bantu yang bolong, penjelasan baris demi baris,
+   "kapan dipakai", contoh dengan output, validator ketat, dan petunjuk konseptual.
+   Dimuat SETELAH curriculum.js dan SEBELUM app.js. id level tidak diubah.
+   ===================================================================== */
+(function () {
+    "use strict";
+    const MARK = "<b>Alat bantu yang dipakai di soal:</b>";
+    const L = function (id) {
+        const l = levelsData.find(function (x) { return x.id === id; });
+        if (!l) throw new Error("perbaikan: level id " + id + " tidak ditemukan");
+        return l;
+    };
+    const sec = function (t) { return '<span class="sec">' + t + "</span>"; };
+    const bl = function (a) { return a.map(function (x) { return "• " + x; }).join("<br>"); };
+    function beforeMark(l, html) {
+        const i = l.desc.indexOf(MARK);
+        if (i < 0) l.desc += "<br>" + html;
+        else l.desc = l.desc.slice(0, i).replace(/(<br>)+$/, "") + "<br>" + html + "<br><br>" + l.desc.slice(i);
+    }
+    function addTools(id, items) {
+        const l = L(id);
+        if (l.desc.indexOf(MARK) !== -1) { l.desc += "<br>" + items.join("<br>"); return; }
+        l.desc += "<br><br>" + MARK + " " + items.join("<br>");
+    }
+    function addBaris(id, items) {
+        const l = L(id);
+        if (/baris demi baris/i.test(l.desc)) return;
+        const html = sec("Baca contoh baris demi baris") + bl(items);
+        const m = /(<span class="sec">Contoh &amp; output<\/span>|<br><br><b>Contoh &amp; output:<\/b>)/.exec(l.desc);
+        if (m) l.desc = l.desc.slice(0, m.index) + html + l.desc.slice(m.index);
+        else beforeMark(l, html);
+    }
+    function addKapan(id, text) {
+        const l = L(id);
+        if (/Kapan dipakai/.test(l.desc)) return;
+        beforeMark(l, sec("Kapan dipakai") + text);
+    }
+    function addTrace(id, title, items) { beforeMark(L(id), sec(title) + bl(items)); }
+    function setOutput(id, html) {
+        const l = L(id);
+        const re = /(<span class="sec">Contoh &amp; output<\/span>)([\s\S]*?)(<span class="sec">Kesalahan umum<\/span>)/;
+        if (re.test(l.desc)) l.desc = l.desc.replace(re, function (m, a, b, c) { return a + html + c; });
+    }
+    function addEx(id, code) { const l = L(id); l.example = l.example.replace(/\s+$/, "") + "\n\n" + code; }
+
+    /* ---------- A. ALAT BANTU untuk level yang soalnya memakai API tertentu ---------- */
+    addTools(8, [
+        "<code>def nama(p1, p2):</code> membuat fungsi; <code>return nilai</code> mengembalikan hasil ke pemanggil. Fungsi baru bekerja bila <b>dipanggil</b>: <code>nama(1, 2)</code>.",
+        "<code>print(fungsi(argumen))</code> mencetak hasil kembalian; <code>return</code> sendiri tidak mencetak apa pun.",
+        "Rumus soal: luas lingkaran <code>3.14 * r ** 2</code>; ganjil/genap <code>angka % 2 == 0</code> menghasilkan <code>True</code> atau <code>False</code> yang bisa langsung di-<code>return</code>.",
+        "Sapaan: <code>return f\"Halo {nama}\"</code> (f-string dibahas di level F-String)."
+    ]);
+    addTools(17, [
+        "<code>with Kelas() as x:</code> memanggil <code>__enter__</code> di awal blok dan <code>__exit__</code> di akhir; nilai yang di-<code>return</code> oleh <code>__enter__</code> menjadi <code>x</code>.",
+        "<code>def __exit__(self, exc_type, exc_val, exc_tb):</code> selalu butuh empat parameter; mengembalikan <code>True</code> membuat error di dalam blok diredam, selain itu error diteruskan.",
+        "<code>time.perf_counter()</code> memberi waktu berpresisi tinggi; selisih dua pemanggilan = durasi.",
+        "<code>pass</code> berarti \"tidak melakukan apa pun\"; dipakai untuk blok <code>with</code> yang sengaja kosong."
+    ]);
+    addTools(20, [
+        "<code>@property</code> di atas method membuat <code>obj.nama</code> (tanpa kurung) memanggil method itu; <code>@nama.setter</code> mengatur validasi saat <code>obj.nama = nilai</code>.",
+        "Simpan nilai asli di atribut berawalan garis bawah (<code>self._saldo</code>) dan jangan menulis ke <code>self.saldo</code> di dalam setter (akan memanggil dirinya sendiri tanpa henti).",
+        "<code>raise ValueError(\"pesan\")</code> menolak nilai tak valid; membatasi rentang 0-100: <code>min(max(nilai, 0), 100)</code>.",
+        "Property tanpa setter bersifat read-only: mengisinya memicu <code>AttributeError</code>."
+    ]);
+    addTools(24, [
+        "<code>yield nilai</code> mengeluarkan satu nilai lalu menjeda fungsi; <code>for x in generator():</code> atau <code>next(g)</code> meminta nilai berikutnya.",
+        "Generator expression memakai kurung biasa: <code>(x ** 2 for x in range(1, 4))</code>; bungkus dengan <code>list(...)</code> bila ingin melihat semua isinya.",
+        "Deret Fibonacci: mulai <code>a, b = 1, 1</code>; di tiap putaran <code>yield a</code> lalu <code>a, b = b, a + b</code>.",
+        "Generator hanya bisa dipakai <b>sekali</b>; setelah habis, buat ulang dengan memanggil fungsinya lagi."
+    ]);
+    addTools(27, [
+        "<code>assert hasil == diharapkan</code> diam bila benar dan memicu <code>AssertionError</code> bila salah; tambahkan pesan: <code>assert x == 1, \"x harus 1\"</code>.",
+        "Yang diuji adalah <b>fungsi buatanmu</b>: panggil fungsinya di dalam assert, mis. <code>assert pangkat_dua(4) == 16</code>, bukan menulis ulang hitungannya (<code>assert 4 * 4 == 16</code> tidak menguji apa pun).",
+        "Uji juga kasus batas: nol, bilangan negatif, teks kosong.",
+        "Tes yang lolos tidak mencetak apa pun; cetak teks seperti <code>\"Test Lolos!\"</code> setelah semua assert bila ingin penanda."
+    ]);
+    addTools(38, [
+        "<code>__iter__(self)</code> mengembalikan iterator (biasanya <code>return self</code>); <code>__next__(self)</code> mengembalikan nilai berikutnya.",
+        "<code>raise StopIteration</code> di <code>__next__</code> menandakan data habis; tanpa itu <code>for</code> berjalan tanpa akhir.",
+        "Simpan posisi di atribut (<code>self.sekarang</code>) dan naikkan di tiap <code>__next__</code>: <code>self.sekarang += 1</code>.",
+        "<code>for x in HitungMaju(3):</code> memakai kedua method itu secara otomatis."
+    ]);
+    addTools(62, [
+        "<code>teks.strip()</code> membuang spasi di ujung; <code>teks.upper()</code> huruf kapital; keduanya dirangkai: <code>d[\"val\"].strip().upper()</code>.",
+        "<code>len(data)</code> membandingkan jumlah baris sebelum dan sesudah transformasi; <code>try/except</code> per tahap mencatat kegagalan.",
+        "<code>logging.info(\"extract selesai\")</code> mencatat kemajuan; pemuatan inkremental memakai penanda waktu (mis. hanya baris dengan <code>tanggal &gt; terakhir</code>).",
+        "Tes fungsi <code>transform</code>: <code>def test_transform(): assert transform([...]) == [...]</code>."
+    ]);
+    addTools(61, [
+        "<code>SparkSession.builder.appName(\"nama\").getOrCreate()</code> membuka sesi; <code>spark.stop()</code> menutupnya.",
+        "<code>spark.createDataFrame(data, [\"id\", \"val\"])</code> membuat tabel dari list tuple; <code>df.show()</code> dan <code>df.collect()</code> adalah <b>aksi</b> yang memicu eksekusi.",
+        "Transformasi: <code>df.filter(df[\"id\"] &gt; 1)</code>, <code>df.withColumn(\"baru\", df[\"val\"] * 2)</code>, <code>df.groupBy(\"kolom\").count()</code>.",
+        "<code>spark.read.option(\"header\", True).csv(\"file.csv\")</code> membaca CSV; <code>df.write.parquet(\"folder\")</code> menulis Parquet.",
+        "<code>df.createOrReplaceTempView(\"tabel\")</code> lalu <code>spark.sql(\"SELECT ... FROM tabel\")</code> menjalankan SQL."
+    ]);
+    addTools(64, [
+        "<code>df.to_parquet(\"f.parquet\")</code> dan <code>pd.read_parquet(\"f.parquet\", columns=[\"a\"])</code>; memilih kolom saat membaca menghemat memori (column pruning).",
+        "Perbandingan CSV vs Parquet: simpan keduanya lalu bandingkan ukuran dengan <code>os.path.getsize(path)</code> atau waktu bacanya dengan <code>time.perf_counter()</code>.",
+        "Delta Lake (di Spark): <code>df.write.format(\"delta\").save(path)</code>; membaca versi lama dengan opsi <code>versionAsOf</code> atau <code>timestampAsOf</code>.",
+        "<code>DeltaTable.forPath(spark, path).alias(\"t\").merge(sumber, \"t.id = s.id\")</code> menggabungkan perubahan (update/insert); <code>optimize</code> merapikan file kecil, <code>vacuum</code> menghapus file lama.",
+        "<b>ACID</b>: transaksi bersifat atomik (semua atau tidak sama sekali), konsisten, terisolasi, dan tahan lama."
+    ]);
+    addTools(67, [
+        "Spider: <code>class MySpider(scrapy.Spider):</code> dengan <code>name</code>, <code>start_urls</code>, dan <code>def parse(self, response):</code>.",
+        "Selector: <code>response.css(\"tag::text\").getall()</code> (CSS) dan <code>response.xpath(\"//a/@href\").getall()</code> (XPath); <code>.get()</code> mengambil satu hasil, <code>.getall()</code> semuanya.",
+        "Pagination: <code>yield scrapy.Request(url=next_url, callback=self.parse)</code> mengikuti tautan berikutnya.",
+        "Terminal: <code>scrapy crawl nama -o hasil.json</code> menyimpan item; <code>settings.py</code>: <code>DOWNLOAD_DELAY = 2</code>, <code>ROBOTSTXT_OBEY = True</code>.",
+        "Item pipeline: class dengan <code>def process_item(self, item, spider):</code> yang membersihkan/menyimpan lalu <code>return item</code>; menjalankan spider dari skrip: <code>CrawlerProcess</code> atau <code>CrawlerRunner</code>."
+    ]);
+    addTools(52, [
+        "<code>alembic init alembic</code> membuat folder migrasi; di <code>alembic/env.py</code> isi <code>target_metadata = Base.metadata</code>.",
+        "<code>alembic revision --autogenerate -m \"pesan\"</code> membuat berkas migrasi dari perubahan model; <code>alembic upgrade head</code> menerapkan, <code>alembic downgrade -1</code> membatalkan satu langkah.",
+        "<code>alembic history</code> dan <code>alembic current</code> menampilkan riwayat dan posisi saat ini.",
+        "Dalam fungsi <code>upgrade()</code>: <code>op.add_column(\"users\", sa.Column(\"email\", sa.String()))</code>.",
+        "Lacak folder <code>versions/</code> di Git (<code>git add alembic/versions</code>)."
+    ]);
+    addTools(57, [
+        "<code>redis.Redis(host=\"localhost\", port=6379, db=0)</code> membuat klien; <code>client.set(\"kunci\", \"nilai\", ex=60)</code> menyimpan dengan TTL 60 detik; <code>client.get(\"kunci\")</code> mengembalikan <b>bytes</b> sehingga perlu <code>.decode(\"utf-8\")</code>.",
+        "Dictionary disimpan sebagai teks: <code>client.set(k, json.dumps(data))</code> lalu <code>json.loads(client.get(k))</code>.",
+        "<code>client.hset(\"user:1\", mapping={...})</code> dan <code>client.hget(\"user:1\", \"nama\")</code> untuk objek bertingkat; <code>client.delete(\"kunci\")</code> menghapus cache saat data sumber berubah.",
+        "Cache-Aside: <code>data = client.get(k)</code>; bila <code>None</code> ambil dari database lalu <code>client.set(...)</code>. Kebijakan memori: <code>maxmemory-policy allkeys-lru</code> di <code>redis.conf</code>."
+    ]);
+    addTools(56, [
+        "<code>Celery(\"tasks\", broker=\"redis://localhost:6379/0\")</code> membuat aplikasi; <code>@app.task</code> menandai fungsi sebagai tugas.",
+        "<code>tugas.delay(1, 2)</code> memasukkan tugas ke antrean dan langsung kembali; <code>hasil.get(timeout=10)</code> menunggu nilai kembalian.",
+        "Terminal: <code>celery -A modul worker --loglevel=info</code> menjalankan worker; <code>celery -A modul flower</code> membuka panel pantau.",
+        "Jadwal berkala: <code>app.conf.beat_schedule = {...}</code>; gagal ulang: <code>@app.task(bind=True)</code> lalu <code>self.retry(exc=e, countdown=5)</code>; callback kegagalan: override <code>on_failure</code> pada class Task."
+    ]);
+    addTools(58, [
+        "<code>app.add_middleware(CORSMiddleware, allow_origins=[...], allow_methods=[\"*\"], allow_headers=[\"*\"])</code>; <code>allow_credentials=True</code> tidak boleh digabung dengan <code>allow_origins=[\"*\"]</code>.",
+        "Middleware kustom: <code>@app.middleware(\"http\")</code> pada <code>async def f(request, call_next):</code>; panggil <code>response = await call_next(request)</code> lalu ubah <code>response.headers[...]</code>.",
+        "Rate limit: hitung per IP di Redis dengan <code>incr</code> dan <code>expire</code>; lebih dari batas &rarr; balas status <code>429</code>.",
+        "Header yang dicek/ditambah: <code>X-API-Key</code>, <code>X-Content-Type-Options: nosniff</code>, <code>Strict-Transport-Security</code>; ukuran body dari header <code>content-length</code> (tolak dengan <code>413</code>).",
+        "Gateway: <code>httpx.get(url)</code> atau <code>httpx.AsyncClient()</code> meneruskan permintaan ke layanan backend."
+    ]);
+    addTools(119, [
+        "<code>train_test_split(X, y, test_size=0.25, random_state=42)</code> mengembalikan <b>empat</b> nilai: <code>X_train, X_test, y_train, y_test</code>.",
+        "<code>model = LogisticRegression()</code> lalu <code>model.fit(X_train, y_train)</code> melatih; <code>model.predict(X_test)</code> memprediksi; <code>model.score(X, y)</code> mengembalikan akurasi (0 sampai 1).",
+        "<code>accuracy_score(y_test, y_pred)</code> dari <code>sklearn.metrics</code> membandingkan label asli dan prediksi.",
+        "Skor latih tinggi tetapi skor uji jauh lebih rendah = tanda overfitting."
+    ]);
+    addTools(69, [
+        "<code>scaler = StandardScaler()</code>; <code>X_scaled = scaler.fit_transform(X_train)</code> (fit hanya pada data latih), data uji cukup <code>scaler.transform(X_test)</code>.",
+        "<code>model = RandomForestClassifier(n_estimators=100, random_state=42)</code>; <code>model.fit(X_train, y_train)</code>; <code>y_pred = model.predict(X_test)</code>.",
+        "<code>accuracy_score(y_test, y_pred)</code> dan <code>confusion_matrix(y_test, y_pred)</code> (kedua dari <code>sklearn.metrics</code>).",
+        "<code>Pipeline([(\"scaler\", StandardScaler()), (\"model\", RandomForestClassifier())])</code> menyambung langkah; <code>GridSearchCV(pipe, param_grid, cv=3)</code> mencari hiperparameter.",
+        "<code>joblib.dump(model, \"model.pkl\")</code> menyimpan model; <code>joblib.load(\"model.pkl\")</code> memuatnya kembali."
+    ]);
+    addTools(77, [
+        "<code>class Model(nn.Module):</code> dengan <code>super().__init__()</code> di baris pertama <code>__init__</code>; lapisan: <code>self.fc1 = nn.Linear(masuk, keluar)</code>.",
+        "<code>def forward(self, x): return torch.relu(self.fc1(x))</code> mendefinisikan alur data; memanggil <code>model(x)</code> otomatis menjalankan <code>forward</code>.",
+        "<code>criterion = nn.MSELoss()</code>; <code>optimizer = torch.optim.Adam(model.parameters(), lr=0.01)</code>.",
+        "Satu langkah latih berurutan: <code>optimizer.zero_grad()</code>, <code>outputs = model(inputs)</code>, <code>loss = criterion(outputs, targets)</code>, <code>loss.backward()</code>, <code>optimizer.step()</code>.",
+        "<code>for epoch in range(n):</code> mengulang pelatihan; cetak <code>loss.item()</code> untuk memantau penurunannya."
+    ]);
+    addTools(70, [
+        "<code>client = OpenAI(api_key=os.getenv(\"OPENAI_API_KEY\"))</code>; permintaan: <code>client.chat.completions.create(model=\"gpt-4o-mini\", messages=[{\"role\": \"user\", \"content\": \"Halo\"}])</code>.",
+        "Jawaban: <code>response.choices[0].message.content</code>; riwayat percakapan = list pesan dengan <code>role</code> <code>system</code>, <code>user</code>, atau <code>assistant</code>.",
+        "<code>stream=True</code> menghasilkan potongan; baca tiap <code>chunk.choices[0].delta.content</code>; <code>temperature=0.7</code> mengatur kreativitas; <code>response_format={\"type\": \"json_object\"}</code> meminta keluaran JSON.",
+        "Anthropic: <code>client = Anthropic()</code>; <code>client.messages.create(model=..., max_tokens=100, messages=[...])</code>; teks jawaban di <code>response.content[0].text</code>.",
+        "Tangkap batas laju: <code>try: ... except RateLimitError:</code> (kelas ini ada di SDK masing-masing)."
+    ]);
+    addTools(78, [
+        "<code>pipeline(\"text-generation\", model=\"gpt2\")</code> membuat generator; <code>generator(\"Teks awal\", max_length=30)</code> mengembalikan list dictionary berisi <code>generated_text</code>.",
+        "Cara manual: <code>AutoTokenizer.from_pretrained(nama)</code> dan <code>AutoModelForCausalLM.from_pretrained(nama)</code>; <code>tokenizer(teks, return_tensors=\"pt\")</code> menghasilkan tensor masukan.",
+        "<code>model.generate(**inputs, max_new_tokens=50)</code> membuat token baru; <code>tokenizer.decode(hasil[0], skip_special_tokens=True)</code> mengembalikannya menjadi teks.",
+        "Ollama: <code>llm = ChatOllama(model=\"qwen2.5\")</code>; <code>llm.invoke(\"pertanyaan\").content</code> berisi balasan."
+    ]);
+    addTools(72, [
+        "<code>chromadb.PersistentClient(path=\"./chroma_db\")</code> menyimpan ke disk; <code>client.get_or_create_collection(\"nama\")</code> membuat/mengambil koleksi.",
+        "<code>collection.add(documents=[\"teks\"], ids=[\"doc1\"])</code> (id harus unik); <code>collection.query(query_texts=[\"kueri\"], n_results=2)</code> mengembalikan dictionary hasil.",
+        "Dokumen terdekat: <code>hasil[\"documents\"][0]</code> (list pertama = hasil untuk kueri pertama).",
+        "Qdrant: <code>QdrantClient(\":memory:\")</code>; <code>client.upsert(collection_name=..., points=[...])</code>; <code>client.search(collection_name=..., query_vector=[...], limit=3)</code>; <code>client.delete_collection(\"nama\")</code>."
+    ]);
+    addTools(73, [
+        "<code>RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=50)</code>; <code>splitter.split_text(teks)</code> menghasilkan list string, <code>splitter.create_documents([teks])</code> menghasilkan list dokumen.",
+        "<code>Chroma.from_documents(chunks, embeddings)</code> menyimpan potongan sebagai vektor; <code>vectorstore.as_retriever(search_kwargs={\"k\": 3})</code> membuat pencari.",
+        "<code>docs = retriever.invoke(kueri)</code>; konteks: <code>\"\\n\".join([d.page_content for d in docs])</code>.",
+        "Prompt RAG: <code>f\"Jawab hanya berdasarkan konteks berikut: {context}\"</code>; kirim dengan <code>llm.invoke(prompt)</code>; rantai siap pakai: <code>create_retrieval_chain</code>."
+    ]);
+    addTools(74, [
+        "<code>Agent(role=..., goal=..., backstory=...)</code> mendefinisikan agen; <code>Task(description=..., expected_output=..., agent=agen)</code> memberi tugas.",
+        "<code>Crew(agents=[a, b], tasks=[t1, t2], process=Process.sequential)</code> menyatukan tim (atau <code>Process.hierarchical</code>); <code>crew.kickoff()</code> menjalankan.",
+        "Alat agen: <code>tools=[SerperDevTool()]</code> pada <code>Agent</code>; log langkah: <code>verbose=True</code>.",
+        "AutoGen: <code>ConversableAgent(name=\"assistant\", ...)</code>; <code>assistant.initiate_chat(coder, message=\"tugas\")</code> memulai percakapan antar agen."
+    ]);
+    addTools(75, [
+        "JSONL = satu objek JSON per baris, tiap baris: <code>{\"messages\": [{\"role\": \"system\", ...}, {\"role\": \"user\", ...}, {\"role\": \"assistant\", ...}]}</code>.",
+        "Unggah: <code>client.files.create(file=open(\"data.jsonl\", \"rb\"), purpose=\"fine-tune\")</code>; mulai: <code>client.fine_tuning.jobs.create(training_file=\"file-id\", model=\"gpt-4o-mini\")</code>; pantau: <code>client.fine_tuning.jobs.retrieve(\"job-id\")</code>.",
+        "Few-shot: beri contoh <code>Input: ... Output: ...</code> sebelum pertanyaan; Chain-of-Thought: tambahkan \"pikirkan langkah demi langkah\"; Role prompting: \"Anda adalah ...\"; batasan negatif: \"jangan ...\".",
+        "Evaluasi: bandingkan akurasi/skor jawaban model dasar <b>sebelum</b> dan model fine-tuning <b>sesudah</b> pada soal uji yang sama."
+    ]);
+    addTools(81, [
+        "<code>services:</code> adalah kunci utama; di bawahnya tiap layanan: <code>web:</code>, <code>db:</code>, <code>redis:</code> dengan <code>build: .</code> atau <code>image: nama:tag</code>.",
+        "<code>ports: - \"8000:8000\"</code> (host:kontainer); <code>environment:</code> berisi variabel seperti <code>POSTGRES_USER</code>/<code>POSTGRES_PASSWORD</code>; <code>depends_on:</code> mengatur urutan mulai.",
+        "<code>volumes:</code> pada layanan (<code>- postgres_data:/var/lib/postgresql/data</code>) dan deklarasi <code>volumes:</code> di tingkat atas menyimpan data database.",
+        "Perintah: <code>docker compose up -d</code>, <code>docker compose logs -f</code>, <code>docker compose down</code>; antar layanan memakai nama layanan sebagai host (<code>db</code>, <code>redis</code>)."
+    ]);
+    addTools(87, [
+        "<code>s3 = boto3.client(\"s3\")</code> (kredensial dibaca dari lingkungan); <code>boto3.resource(\"s3\")</code> menyediakan antarmuka objek (<code>s3.Bucket(\"nama\")</code>).",
+        "<code>s3.upload_file(\"lokal.txt\", \"bucket\", \"remote.txt\")</code>, <code>s3.download_file(\"bucket\", \"remote.txt\", \"lokal.txt\")</code>, <code>s3.list_objects_v2(Bucket=\"bucket\")</code>, <code>s3.delete_object(Bucket=..., Key=...)</code>, <code>s3.create_bucket(Bucket=\"nama\")</code>.",
+        "<code>s3.generate_presigned_url(\"get_object\", Params={\"Bucket\": ..., \"Key\": ...}, ExpiresIn=3600)</code> membuat tautan sementara.",
+        "Error: <code>from botocore.exceptions import ClientError</code> lalu <code>except ClientError as e:</code>; keamanan: aktifkan <b>Block Public Access</b>."
+    ]);
+    addTools(137, [
+        "Dockerfile: <code>FROM</code>, <code>WORKDIR</code>, <code>COPY requirements.txt</code>, <code>RUN pip install --no-cache-dir -r requirements.txt</code>, <code>COPY . .</code>, <code>CMD [...]</code> (salin requirements dulu agar layer di-cache).",
+        "Compose: <code>services:</code> &rarr; <code>web:</code> (<code>build</code>, <code>ports</code>, <code>depends_on</code>) dan <code>redis:</code> (<code>image: redis:alpine</code>).",
+        "GitHub Actions: <code>on:</code>, <code>jobs:</code> &rarr; <code>runs-on: ubuntu-latest</code> &rarr; <code>steps:</code> berisi <code>uses: actions/checkout@v4</code>, <code>uses: actions/setup-python@v5</code>, <code>run: pytest</code>.",
+        "Kubernetes: <code>kind: Deployment</code> (<code>replicas</code>, <code>containerPort</code>) dan <code>kind: Service</code>, dipisah <code>---</code>; rilis: <code>pytest</code> &rarr; <code>docker build</code> &rarr; <code>kubectl apply -f</code> &rarr; <code>kubectl rollout status</code>."
+    ]);
+    addTools(98, [
+        "RabbitMQ (<code>pika</code>): <code>connection = pika.BlockingConnection(pika.ConnectionParameters(\"localhost\"))</code>; <code>channel = connection.channel()</code>; <code>channel.queue_declare(queue=\"nama\")</code>.",
+        "Kirim: <code>channel.basic_publish(exchange=\"\", routing_key=\"nama\", body=\"pesan\")</code>; terima: <code>channel.basic_consume(queue=\"nama\", on_message_callback=callback)</code> lalu <code>channel.start_consuming()</code>.",
+        "Callback: <code>def callback(ch, method, properties, body):</code>; pengakuan: <code>ch.basic_ack(delivery_tag=method.delivery_tag)</code> setelah pesan selesai diproses.",
+        "Kafka: <code>KafkaProducer(bootstrap_servers=[\"localhost:9092\"])</code> dengan <code>producer.send(\"topik\", b\"data\")</code>; <code>KafkaConsumer(\"topik\", ...)</code> yang diiterasi dengan <code>for pesan in consumer:</code>."
+    ]);
+    addTools(100, [
+        "Capstone ini merangkai alat dari level sebelumnya: FastAPI (rute <code>@app.post</code>), SQLAlchemy (<code>Mapped</code>), Celery (<code>.delay()</code>), Redis (cache), Docker/Compose, Kubernetes, GitHub Actions, bcrypt, dan Pydantic.",
+        "Soal 10 (dinilai sebagai program): daftar Python <code>technologies = [\"FastAPI\", \"SQLAlchemy\", ...]</code> dan perulangan <code>for t in technologies: print(t)</code>; cetak tepat 5 baris."
+    ]);
+
+    /* ---------- B. PENJELASAN BARIS DEMI BARIS untuk 31 level format "Konsep" ---------- */
+    addBaris(110, [
+        "<code>def faktorial(n):</code> : fungsi yang menerima satu angka <code>n</code>.",
+        "<code>if n &lt;= 1: return 1</code> : <b>kasus dasar</b>. Pada n = 1 (atau 0) fungsi berhenti dan tidak memanggil dirinya lagi.",
+        "<code>return n * faktorial(n - 1)</code> : <b>langkah rekursif</b>. Soal diperkecil satu angka (n - 1) lalu hasilnya dikalikan n.",
+        "<code>print(faktorial(4))</code> : memanggil fungsi pertama kali dengan n = 4."
+    ]);
+    addTrace(110, "Penelusuran faktorial(4) langkah demi langkah", [
+        "Naik (tiap pemanggilan menunggu hasil pemanggilan di bawahnya): <code>faktorial(4)</code> butuh <code>faktorial(3)</code> &rarr; butuh <code>faktorial(2)</code> &rarr; butuh <code>faktorial(1)</code> yang langsung mengembalikan <code>1</code>.",
+        "Turun (hasil dikembalikan satu per satu): <code>faktorial(2) = 2 * 1 = 2</code>, lalu <code>faktorial(3) = 3 * 2 = 6</code>, lalu <code>faktorial(4) = 4 * 6 = 24</code>.",
+        "<b>Call stack</b> (tumpukan pemanggilan) saat paling dalam berisi empat pemanggilan sekaligus: <code>faktorial(4)</code> di dasar, <code>faktorial(1)</code> di puncak. Python membatasi kedalamannya (sekitar 1000), karena itu tanpa kasus dasar terjadi <code>RecursionError</code>.",
+        "Cara mengecek rekursi buatanmu: tulis tangan hasil untuk masukan terkecil (kasus dasar), lalu satu tingkat di atasnya, lalu yakinkan diri bahwa tiap pemanggilan mendekati kasus dasar."
+    ]);
+    addBaris(107, [
+        "<code>import math</code> : memuat seluruh modul; fungsinya dipanggil dengan awalan <code>math.</code>.",
+        "<code>from random import choice</code> : hanya mengambil satu nama, sehingga dipanggil tanpa awalan.",
+        "<code>print(math.sqrt(16))</code> : akar kuadrat 16, selalu bertipe float (<code>4.0</code>).",
+        "<code>print(choice([\"a\", \"b\"]))</code> : memilih satu elemen secara acak; hasil bisa berbeda tiap dijalankan."
+    ]);
+    addBaris(125, [
+        "<code>python -m venv .venv</code> : membuat folder <code>.venv</code> berisi Python terisolasi untuk proyek ini.",
+        "<code>source .venv/bin/activate</code> : mengaktifkan lingkungan itu (Windows: <code>.venv\\Scripts\\activate</code>); prompt biasanya berubah menjadi <code>(.venv)</code>.",
+        "<code>pip install requests==2.32.3</code> : memasang paket <b>ke dalam venv</b> pada versi yang dikunci.",
+        "<code>pip freeze &gt; requirements.txt</code> : menyimpan daftar paket terpasang ke berkas agar orang lain bisa memasang hal yang sama."
+    ]);
+    addBaris(121, [
+        "<code>a = [1, 2]</code> : membuat satu objek list; nama <code>a</code> menunjuknya.",
+        "<code>b = a</code> : <b>tidak menyalin</b>; <code>b</code> menunjuk objek list yang sama.",
+        "<code>c = a.copy()</code> : membuat list baru berisi isi yang sama; <code>c</code> objek terpisah.",
+        "<code>b.append(3)</code> : mengubah objek bersama, sehingga <code>a</code> ikut menjadi <code>[1, 2, 3]</code> sedangkan <code>c</code> tetap <code>[1, 2]</code>.",
+        "<code>a is b</code> (True), <code>a is c</code> (False), <code>a == c</code> (False karena isinya kini beda). <code>is</code> membandingkan objeknya, <code>==</code> membandingkan isinya."
+    ]);
+    addBaris(108, [
+        "<code>def sapa(nama, sapaan=\"Halo\"):</code> : <code>sapaan</code> punya nilai bawaan sehingga boleh tidak diisi.",
+        "<code>return f\"{sapaan}, {nama}!\"</code> : mengembalikan teks gabungan, bukan mencetaknya.",
+        "<code>print(sapa(\"Ani\"))</code> : argumen kedua tidak dikirim, jadi dipakai <code>\"Halo\"</code> &rarr; <code>Halo, Ani!</code>.",
+        "<code>print(sapa(\"Ani\", sapaan=\"Hai\"))</code> : argumen kata kunci menimpa nilai bawaan &rarr; <code>Hai, Ani!</code>."
+    ]);
+    addTrace(108, "Penelusuran scope (variabel lokal vs global)", [
+        "Contoh: <code>x = \"global\"</code>; di dalam <code>def coba(): x = \"lokal\"; print(x)</code>. Saat <code>coba()</code> dipanggil, <code>x</code> di dalam fungsi adalah variabel <b>baru</b> yang hanya hidup selama fungsi berjalan.",
+        "Setelah fungsi selesai, <code>print(x)</code> di luar tetap mencetak <code>global</code>: variabel lokal sudah lenyap dan yang global tidak pernah berubah.",
+        "Agar fungsi mengubah variabel global, tulis <code>global x</code> di awal fungsi; tanpa itu Python menganggap penugasan sebagai pembuatan variabel lokal."
+    ]);
+    addBaris(122, [
+        "<code>print(\"Mulai\")</code> : baris 2 berjalan normal dan teks <code>Mulai</code> tercetak.",
+        "<code>umur = int(\"dua puluh\")</code> : baris 3 gagal karena teks itu bukan angka, Python melempar <code>ValueError</code> dan <b>berhenti di sini</b>.",
+        "<code>print(umur)</code> : tidak pernah dijalankan karena program sudah berhenti.",
+        "Baca traceback dari <b>bawah</b>: jenis dan pesan error (<code>ValueError: invalid literal for int()...</code>), lalu nomor baris di atasnya menunjuk letak kesalahan."
+    ]);
+    addBaris(109, [
+        "<code>nama</code> dan <code>nilai</code> : dua list sejajar (elemen ke-i saling berpasangan).",
+        "<code>zip(nama, nilai)</code> : menggabungkan menjadi pasangan (\"Ani\", 90) dan (\"Budi\", 80).",
+        "<code>enumerate(..., start=1)</code> : menambah nomor urut yang dimulai dari 1; tiap putaran menghasilkan <code>(nomor, (nama, nilai))</code>.",
+        "<code>for i, (n, v) in ...</code> : membongkar nomor, nama, dan nilai ke tiga variabel sekaligus.",
+        "<code>sorted(nilai, reverse=True)</code> : list baru terurut menurun (<code>[90, 80]</code>); list <code>nilai</code> asli tidak berubah."
+    ]);
+    addBaris(111, [
+        "<code>Counter(\"aab\")</code> : menghitung kemunculan tiap huruf &rarr; <code>Counter({'a': 2, 'b': 1})</code>.",
+        "<code>date(2026, 12, 25) - date(2026, 12, 1)</code> : dua tanggal bisa dikurangkan; hasilnya objek selisih waktu.",
+        "<code>.days</code> : mengambil jumlah hari dari selisih itu (<code>24</code>)."
+    ]);
+    addBaris(123, [
+        "<code>from itertools import combinations, chain</code> : memuat dua pembangun iterator.",
+        "<code>combinations(\"ABC\", 2)</code> : semua pasangan 2 huruf tanpa memperhatikan urutan: AB, AC, BC.",
+        "<code>list(...)</code> : iterator harus dijadikan list agar isinya terlihat saat dicetak.",
+        "<code>chain([1, 2], [3])</code> : menyambung dua urutan seolah satu: <code>[1, 2, 3]</code>."
+    ]);
+    addBaris(115, [
+        "<code>stack = [1, 2, 3]</code> : list dipakai sebagai stack (tumpukan).",
+        "<code>stack.pop()</code> : mengambil elemen <b>terakhir</b> (3) dan membuangnya; ini perilaku LIFO.",
+        "<code>antrean = deque([1, 2, 3])</code> : <code>deque</code> dari collections cepat di kedua ujung.",
+        "<code>antrean.popleft()</code> : mengambil elemen <b>pertama</b> (1); ini perilaku FIFO. Memakai <code>list.pop(0)</code> untuk hal yang sama berjalan O(n) dan lambat."
+    ]);
+    addBaris(116, [
+        "<code>def tambah(a, b): return a + b</code> : fungsi yang diuji.",
+        "<code>def test_tambah():</code> : nama berawalan <code>test_</code> sehingga pytest menemukannya otomatis.",
+        "<code>assert tambah(2, 3) == 5</code> : lolos diam-diam bila benar; bila salah, muncul <code>AssertionError</code>.",
+        "<code>test_tambah()</code> lalu <code>print(\"lolos\")</code> : di sini tes dipanggil manual; <code>print</code> hanya tercapai bila assert di atasnya benar."
+    ]);
+    addBaris(124, [
+        "<code>p = Path(\"/tmp/data/laporan.txt\")</code> : membuat objek path (belum menyentuh disk).",
+        "<code>p.name</code>, <code>p.stem</code>, <code>p.suffix</code> : <code>laporan.txt</code>, <code>laporan</code>, <code>.txt</code>.",
+        "<code>p.parent</code> : folder induk <code>/tmp/data</code>.",
+        "<code>Path(\"/tmp\") / \"data\" / \"a.txt\"</code> : operator <code>/</code> menggabungkan bagian path dengan pemisah yang benar."
+    ]);
+    addBaris(117, [
+        "<code>urlencode({\"q\": \"python\", \"page\": 2})</code> : mengubah dictionary menjadi query string <code>q=python&amp;page=2</code>.",
+        "<code>json.loads('{\"nama\": \"Ani\"}')</code> : mengurai teks JSON menjadi dictionary Python.",
+        "<code>data[\"nama\"]</code> : mengambil nilai kunci <code>nama</code> &rarr; <code>Ani</code>."
+    ]);
+    addBaris(129, [
+        "<code>def rata_rata(daftar):</code> : fungsi yang menerima list angka.",
+        "<code>sum(daftar) / len(daftar) if daftar else 0</code> : jika list tidak kosong hitung rata-rata, jika kosong kembalikan 0 (mencegah <code>ZeroDivisionError</code>).",
+        "<code>nilai = {...}</code> : dictionary nama &rarr; nilai untuk soal-soal berikutnya.",
+        "<code>print(rata_rata([80, 90, 70]))</code> : (80 + 90 + 70) / 3 = <code>80.0</code>."
+    ]);
+    addBaris(130, [
+        "<code>class Rekening:</code> dan <code>__init__(self, pemilik, saldo=0)</code> : cetak biru dengan dua atribut; saldo awal bernilai 0 bila tidak diisi.",
+        "<code>def setor(self, jumlah):</code> : method yang mengubah saldo objek.",
+        "<code>if jumlah &lt;= 0: raise ValueError(...)</code> : validasi di awal; nilai tak valid ditolak sebelum saldo diubah.",
+        "<code>self.saldo += jumlah</code> : menambah saldo milik objek ini saja.",
+        "<code>r = Rekening(\"Ani\", 100)</code>, <code>r.setor(50)</code>, <code>print(r.saldo)</code> : saldo 100 + 50 = <code>150</code>."
+    ]);
+    addBaris(131, [
+        "<code>LOG = [...]</code> : data contoh berisi 5 baris log (3 di antaranya ber-level ERROR).",
+        "<code>def error_saja(baris):</code> : fungsi generator karena memakai <code>yield</code>.",
+        "<code>if \" ERROR \" in b: yield b</code> : hanya baris ERROR yang dikeluarkan, satu per satu, tanpa membangun list penuh.",
+        "<code>len(list(error_saja(LOG)))</code> : <code>list(...)</code> menghabiskan generator, <code>len</code> menghitung hasilnya &rarr; <code>3</code>."
+    ]);
+    addBaris(114, [
+        "<code>def kerja(n): print(\"kerja\", n)</code> : tugas yang akan dijalankan di thread.",
+        "<code>threading.Thread(target=kerja, args=(1,))</code> : membuat thread (belum jalan); <code>args</code> harus tuple, karena itu ada koma di <code>(1,)</code>.",
+        "<code>t.start()</code> : thread mulai berjalan bersamaan dengan program utama.",
+        "<code>t.join()</code> : program utama menunggu thread selesai sebelum lanjut."
+    ]);
+    addBaris(132, [
+        "<code>@dataclass</code> : membuat <code>__init__</code>, <code>__repr__</code>, dan <code>__eq__</code> otomatis.",
+        "<code>nama: str</code> : field wajib bertipe str. <code>port: int = 8000</code> dan <code>debug: bool = False</code> : field dengan nilai bawaan.",
+        "<code>Konfigurasi(\"app\")</code> : hanya <code>nama</code> diisi; sisanya memakai nilai bawaan.",
+        "Hasil cetak: <code>Konfigurasi(nama='app', port=8000, debug=False)</code>."
+    ]);
+    addBaris(133, [
+        "<code>class DiskonMember:</code> : satu strategi diskon.",
+        "<code>def hitung(self, total): return total * 0.9</code> : mengembalikan 90% dari total; strategi lain cukup punya method <code>hitung</code> yang sama.",
+        "<code>DiskonMember().hitung(1000)</code> : membuat objek lalu langsung memanggil method-nya &rarr; <code>900.0</code>."
+    ]);
+    addBaris(112, [
+        "<code>np.array([1, 2, 3])</code> : array angka; <code>arr * 2</code> mengalikan <b>setiap elemen</b> &rarr; <code>[2 4 6]</code> (tanpa koma).",
+        "<code>pd.DataFrame({...})</code> : tabel dari dictionary; tiap kunci menjadi kolom.",
+        "<code>df[\"nilai\"] &gt; 80</code> : menghasilkan deretan True/False untuk tiap baris.",
+        "<code>df[df[\"nilai\"] &gt; 80]</code> : memakai deretan itu untuk menyaring, hanya baris True yang tampil (Ani)."
+    ]);
+    addBaris(126, [
+        "<code>fig, ax = plt.subplots()</code> : membuat kanvas (<code>fig</code>) dan satu area gambar (<code>ax</code>).",
+        "<code>ax.plot([1, 2, 3], [2, 4, 8])</code> : menggambar garis; daftar pertama untuk sumbu x, kedua untuk sumbu y (panjang harus sama).",
+        "<code>ax.set_title(\"Contoh\")</code> : memberi judul pada area itu.",
+        "<code>plt.show()</code> : menampilkan grafik (di aplikasi ini gambar muncul di bawah terminal)."
+    ]);
+    addBaris(134, [
+        "<code>DATA = {...}</code> : tiga kolom (produk, qty, harga) dengan 5 baris.",
+        "<code>pd.DataFrame(DATA)</code> : mengubahnya menjadi tabel.",
+        "<code>df[\"total\"] = df[\"qty\"] * df[\"harga\"]</code> : kolom baru hasil perkalian per baris (operasi vektor, tanpa loop).",
+        "<code>print(df)</code> : menampilkan tabel lengkap dengan kolom <code>total</code>."
+    ]);
+    addBaris(113, [
+        "<code>sqlite3.connect(\":memory:\")</code> : database sementara di memori; <code>conn.cursor()</code> alat untuk menjalankan perintah.",
+        "<code>CREATE TABLE siswa (...)</code> : membuat tabel dengan dua kolom.",
+        "<code>INSERT INTO siswa VALUES (?, ?)</code> dengan tuple <code>(\"Ani\", 90)</code> : tanda <code>?</code> adalah placeholder aman (mencegah SQL injection).",
+        "<code>conn.commit()</code> : menyimpan perubahan; <code>SELECT * FROM siswa</code> lalu <code>.fetchall()</code> mengembalikan list tuple <code>[('Ani', 90)]</code>."
+    ]);
+    addBaris(135, [
+        "<code>def tangani(metode, path):</code> : mensimulasikan router: menerima metode HTTP dan alamat.",
+        "<code>if metode == \"GET\" and path == \"/ping\":</code> : mencocokkan rute yang dikenal.",
+        "<code>return (200, \"pong\")</code> : tuple (status, isi respons); 200 berarti sukses.",
+        "<code>return (404, \"tidak ditemukan\")</code> : rute lain dijawab 404."
+    ]);
+    addBaris(119, [
+        "<code>X</code> dan <code>y</code> : 8 data; fitur berupa angka 1 sampai 8, label 0 untuk angka kecil dan 1 untuk angka besar.",
+        "<code>train_test_split(..., test_size=0.25, random_state=42)</code> : 25% data (2 baris) disisihkan untuk uji; <code>random_state</code> membuat pembagian bisa diulang.",
+        "<code>LogisticRegression().fit(X_train, y_train)</code> : melatih model hanya dengan data latih.",
+        "<code>model.score(X_test, y_test)</code> : akurasi pada data yang belum pernah dilihat model (<code>1.0</code> berarti semua tebakan benar)."
+    ]);
+    addBaris(127, [
+        "<code>dot(a, b)</code> : jumlah hasil kali elemen sejajar; <code>norma(v)</code> : panjang vektor (<code>akar dari dot(v, v)</code>).",
+        "<code>cosine(a, b) = dot(a, b) / (norma(a) * norma(b))</code> : mengukur arah, bukan panjang.",
+        "<code>cosine([1, 2, 3], [2, 4, 6])</code> : searah &rarr; <code>1.0</code>; <code>cosine([1, 0], [0, 1])</code> : tegak lurus &rarr; <code>0.0</code>."
+    ]);
+    addBaris(136, [
+        "<code>import re</code> : memuat modul regex.",
+        "<code>teks.lower()</code> : menyamakan huruf besar-kecil agar \"Kucing\" dan \"kucing\" dianggap kata yang sama.",
+        "<code>re.findall(r\"\\w+\", ...)</code> : mengambil deretan huruf/angka dan membuang tanda baca.",
+        "Hasil: <code>['kucing', 'makan', 'ikan']</code> : bahan dasar untuk membangun kosakata dan embedding berikutnya."
+    ]);
+    addBaris(118, [
+        "<code>git init</code> : membuat repositori Git kosong di folder saat ini (folder tersembunyi <code>.git</code>).",
+        "<code>git add .</code> : menandai semua perubahan untuk disimpan (staging).",
+        "<code>git commit -m \"versi pertama\"</code> : menyimpan snapshot perubahan beserta pesan yang menjelaskannya."
+    ]);
+    addBaris(137, [
+        "<code>FROM python:3.11-slim</code> : image dasar Python ringan.",
+        "<code>WORKDIR /srv</code> : folder kerja di dalam kontainer.",
+        "<code>COPY app.py .</code> : menyalin kode (contoh ini belum memakai cache dependensi; kerjakan di soal).",
+        "<code>CMD [\"python\", \"app.py\"]</code> : perintah awal saat kontainer dijalankan."
+    ]);
+    addBaris(138, [
+        "<code>hashlib.pbkdf2_hmac(\"sha256\", b\"rahasia\", b\"garam\", 100_000)</code> : hash lambat; password dan salt harus bytes, 100.000 adalah jumlah putaran.",
+        "<code>.hex()</code> : mengubah hasil bytes menjadi teks heksadesimal yang bisa disimpan.",
+        "<code>len(...)</code> : 32 byte menjadi 64 karakter heksadesimal, jadi hasilnya <code>64</code>."
+    ]);
+    addBaris(139, [
+        "<code>self.handlers = {}</code> : kamus event &rarr; daftar fungsi pendengar.",
+        "<code>subscribe(event, handler)</code> : <code>setdefault(event, [])</code> membuat daftar bila belum ada lalu menambahkan handler.",
+        "<code>publish(event, data)</code> : memanggil semua handler milik event itu dengan data yang sama.",
+        "<code>bus.subscribe(\"halo\", print)</code> lalu <code>bus.publish(\"halo\", \"dunia\")</code> : <code>print</code> menjadi pendengar, sehingga <code>dunia</code> tercetak."
+    ]);
+    addTrace(131, "Penelusuran generator", [
+        "<code>error_saja(LOG)</code> belum menjalankan apa pun; ia hanya membuat objek generator. Baris baru diperiksa saat <code>list(...)</code> atau <code>for</code> meminta nilai berikutnya.",
+        "Tiap permintaan menjalankan fungsi sampai <code>yield</code> berikutnya, lalu menjeda. Karena itu generator hanya bisa dipakai sekali."
+    ]);
+
+    /* ---------- C. KAPAN DIPAKAI (contoh penggunaan nyata) ---------- */
+    [
+        [8, "Setiap kali sebuah hitungan atau langkah dipakai lebih dari sekali: pajak, diskon, validasi, format teks. Tulis sekali sebagai fungsi, panggil di mana saja."],
+        [110, "Menelusuri struktur bertingkat: folder di dalam folder, komentar berbalas, pohon menu. Untuk hitungan sederhana, loop biasa biasanya lebih jelas dan lebih hemat memori."],
+        [108, "Fungsi dengan pengaturan opsional (<code>round(x, 2)</code>, <code>print(sep=...)</code>) dan saat perlu memahami kenapa variabel \"hilang\" di luar fungsi."],
+        [109, "Memberi nomor urut pada daftar, menggabungkan dua data sejajar (nama dan nilai), dan mengurutkan data berdasarkan aturan sendiri (panjang kata, nilai tertinggi)."],
+        [121, "Menghindari bug \"list berubah sendiri\": saat fungsi menerima list, ia mengubah list milik pemanggil. Salin dengan <code>.copy()</code> bila perlu data terpisah."],
+        [15, "Input pengguna, file yang mungkin tidak ada, dan jaringan yang bisa gagal: kejadian yang tidak bisa dicegah sebelumnya, hanya ditangani."],
+        [16, "Mengubah atau menyaring data dalam satu baris: membersihkan daftar nama, mengambil kolom, membuat kamus pencarian."],
+        [17, "Apa pun yang harus dibersihkan setelah dipakai: file, koneksi database, kunci (lock), transaksi."],
+        [18, "Membuat objek buatanmu terasa seperti tipe bawaan: bisa dicetak rapi (<code>__str__</code>), dijumlahkan, atau dibandingkan."],
+        [19, "Menyimpan data murni (konfigurasi, baris data, respons API) tanpa menulis konstruktor berulang."],
+        [20, "Validasi nilai saat diubah (saldo tidak negatif, umur masuk akal) tanpa mengubah cara pemakaian <code>obj.atribut</code>."],
+        [22, "Membuat fungsi \"pabrik\" dengan pengaturan tertentu (pengali, penghitung, kurs) dan menjadi dasar dekorator."],
+        [24, "Membaca file besar baris demi baris, atau deret tak berujung, tanpa memuat semuanya ke memori."],
+        [25, "Banyak permintaan jaringan sekaligus (scraping, memanggil banyak API) yang sebagian besar waktunya menunggu."],
+        [28, "Beberapa class berbagi perilaku dasar (Hewan &rarr; Kucing, Anjing). Pakai bila hubungannya \"adalah-sebuah\"; selain itu pilih komposisi."],
+        [30, "Dekorator yang bisa diatur: coba ulang n kali, batasi peran pengguna, catat waktu dengan label."],
+        [31, "Mengunduh banyak berkas atau memanggil banyak API bersamaan. Bukan untuk perhitungan berat."],
+        [32, "Perhitungan berat yang bisa dipecah: pemrosesan gambar, simulasi, hitung statistik pada data besar."],
+        [36, "Framework yang memeriksa struktur class pengguna (ORM, validasi). Jarang ditulis sendiri; kenali agar paham cara kerja pustaka."],
+        [38, "Membuat koleksi sendiri yang bisa dipakai di <code>for</code>: halaman hasil, antrean tugas, data berurutan."],
+        [41, "Singleton: konfigurasi atau koneksi tunggal. Factory: memilih class berdasarkan input. Builder: objek dengan banyak pengaturan opsional (query, email)."],
+        [42, "Adapter: menyambung pustaka lama ke kode baru. Facade: satu pintu sederhana ke sistem rumit. Decorator: menambah fitur tanpa mengubah class asli."],
+        [43, "Observer: notifikasi dan event UI. Strategy: aturan yang bisa ditukar (pajak, ongkir). Command: antrean tugas dan undo/redo."],
+        [44, "Setiap kali kode perlu diuji tanpa database/jaringan asli: suntikkan objek palsu sebagai pengganti."],
+        [45, "Saat kode terasa sulit diubah: satu class mengerjakan terlalu banyak hal, atau tiap fitur baru memaksa mengedit kode lama."],
+        [46, "Aplikasi bisnis yang hidup lama: aturan bisnis dijaga tetap murni sehingga framework dan database bisa diganti."],
+        [47, "Saat beberapa operasi data harus berhasil bersama (transfer uang, pesanan + stok) dan kode bisnis tidak boleh tahu jenis database."],
+        [56, "Mengirim email, membuat laporan, memanggil LLM: pekerjaan lama yang tidak boleh membuat pengguna menunggu."],
+        [57, "Hasil kueri berat yang sering diminta (daftar produk populer, profil pengguna) dan jarang berubah."],
+        [58, "Setiap API publik: batasi pemanggil, atur siapa (CORS) yang boleh memanggil dari browser, dan tolak permintaan berlebihan."],
+        [62, "Memindahkan data dari sumber ke tujuan secara terjadwal: ekspor penjualan harian, sinkronisasi database."],
+        [63, "Sebelum data dipakai untuk laporan atau model: tangkap nilai kosong, duplikat, atau di luar rentang lebih awal."],
+        [65, "Pipeline yang harus berjalan terjadwal dan bisa dipantau: ETL harian, pelatihan ulang model mingguan."],
+        [72, "Pencarian berdasarkan makna: tanya jawab dokumen, rekomendasi, pencarian gambar mirip."],
+        [73, "Chatbot yang harus menjawab dari dokumen perusahaan sendiri (kebijakan, manual) tanpa mengarang."],
+        [74, "Tugas bertahap yang cocok dibagi peran (riset, penulis, pemeriksa). Pertimbangkan biaya dan batas langkah."],
+        [80, "Mengirim aplikasi ke server mana pun dengan hasil yang sama: \"jalan di laptop saya\" tidak lagi jadi alasan."],
+        [81, "Menjalankan seluruh sistem (web, database, cache) di laptop dengan satu perintah untuk pengembangan dan tes."],
+        [82, "Setiap perubahan kode otomatis dites dan dibangun sebelum digabung, sehingga bug ketahuan lebih awal."],
+        [83, "Mencari penyebab error produksi dari ribuan baris log: log terstruktur bisa disaring, Sentry memberi tahu saat error baru muncul."],
+        [84, "Mengetahui layanan lambat atau error sebelum pengguna mengeluh: grafik permintaan, latensi, dan alarm."],
+        [85, "Membuat lingkungan yang sama berulang (dev, staging, prod) tanpa klik manual di konsol cloud."],
+        [86, "Pekerjaan singkat yang dipicu kejadian (unggah gambar, webhook) dengan lalu lintas tak menentu."],
+        [97, "Tim besar atau bagian aplikasi yang skalanya berbeda-beda. Untuk aplikasi kecil, monolit biasanya lebih sederhana."],
+        [98, "Saat satu kejadian (pesanan dibuat) harus memicu banyak hal (email, stok, tagihan) tanpa layanan saling menunggu."],
+        [99, "Memastikan bagian-bagian yang sudah lolos tes sendiri benar-benar bekerja bersama sebelum rilis."]
+    ].forEach(function (p) { addKapan(p[0], p[1]); });
+
+    /* ---------- D. CONTOH & OUTPUT yang lebih nyata (ditandai sebagai contoh tampilan) ---------- */
+    [
+        [49, "Contoh tampilan: server dimulai dengan <code>Uvicorn running on http://127.0.0.1:8000</code>. Membuka <code>/items/5?q=abc</code> menampilkan <code>{\"item_id\": 5, \"q\": \"abc\"}</code>; <code>/items/abc</code> dijawab status <code>422</code> karena bukan integer."],
+        [50, "<code>User(username=\"a\", age=20)</code> tercetak <code>username='a' age=20</code>. Dengan <code>age=10</code> muncul <code>ValidationError: 1 validation error for User ... Value error, Harus dewasa</code>."],
+        [51, "Setelah <code>create_all</code> tabel <code>users</code> ada; <code>session.query(User).count()</code> mengembalikan <code>1</code> setelah satu <code>add</code> dan <code>commit</code> (contoh tampilan)."],
+        [54, "Contoh tampilan: klien mengirim <code>halo</code> dan menerima <code>Pesan diterima: halo</code>; saat klien menutup tab, server menangkap <code>WebSocketDisconnect</code>."],
+        [55, "Contoh tampilan pytest: <code>test_app.py .  [100%]</code> lalu <code>1 passed in 0.12s</code>; bila gagal, <code>assert 404 == 200</code> menunjukkan nilai yang didapat."],
+        [56, "Contoh tampilan: <code>add.delay(2, 3)</code> langsung mengembalikan objek <code>AsyncResult</code>; log worker menulis <code>Task tasks.add succeeded in 0.01s: 5</code>."],
+        [57, "Contoh tampilan: <code>client.get('kunci')</code> &rarr; <code>b'nilai'</code>; setelah 60 detik &rarr; <code>None</code>."],
+        [58, "Contoh tampilan: dari domain yang diizinkan respons membawa <code>access-control-allow-origin</code>; permintaan ke-101 dalam semenit dijawab <code>429 Too Many Requests</code>."],
+        [59, "Hasil <code>groupby('kategori')['nilai'].sum()</code> berupa Series: <code>A    30</code> dan <code>B    30</code> (nama kolom indeks <code>kategori</code>)."],
+        [60, "<code>df.head(3)</code> menampilkan kolom <code>a</code>, <code>b</code>, <code>c</code> dengan <code>c = a + b</code>: baris 0 &rarr; <code>0 0 0</code>, baris 1 &rarr; <code>1 1 2</code>, baris 2 &rarr; <code>2 2 4</code>."],
+        [61, "Contoh tampilan <code>df.show()</code>: tabel teks dengan pinggiran <code>+---+---+</code>, kolom <code>id</code> dan <code>val</code>, baris <code>1 | A</code> dan <code>2 | B</code>."],
+        [63, "Contoh tampilan: hasil validasi memuat <code>success: False</code> dan daftar nilai tak valid, mis. <code>unexpected_count: 2</code>."],
+        [64, "Contoh tampilan: <code>pd.read_parquet('data.parquet')</code> mengembalikan tabel yang sama persis; ukuran file Parquet biasanya jauh lebih kecil daripada CSV setara."],
+        [65, "Contoh tampilan: di UI Airflow, DAG <code>my_dag</code> muncul sebagai kotak <code>t1</code> berwarna hijau setelah dijalankan; log task mencetak keluaran fungsinya."],
+        [67, "Contoh tampilan: <code>scrapy crawl quotes -o hasil.json</code> menghasilkan <code>[{\"text\": \"Dunia adalah panggung...\"}, ...]</code>."],
+        [68, "Satu jendela grafik garis dengan judul dan sumbu (di aplikasi ini gambar PNG tampil di bawah terminal)."],
+        [69, "Contoh tampilan: <code>accuracy_score(y_test, y_pred)</code> menghasilkan angka seperti <code>0.9667</code>; <code>confusion_matrix</code> berupa array 2 x 2 atau 3 x 3."],
+        [70, "Contoh tampilan: <code>response.choices[0].message.content</code> berisi teks balasan, mis. <code>Halo! Ada yang bisa saya bantu?</code>; hasilnya berbeda tiap dipanggil."],
+        [72, "Contoh tampilan: <code>results[\"documents\"][0]</code> &rarr; <code>['Teks 1']</code> (dokumen terdekat terlebih dulu)."],
+        [73, "Contoh tampilan: <code>splitter.split_text(...)</code> menghasilkan list string seperti <code>['Teks panjang...', '...lanjutan']</code> dengan sedikit tumpang tindih antar potongan."],
+        [76, "<code>tensor([12.])</code> (turunan 3x<sup>2</sup> di x = 2); <code>print(x.grad)</code> baru ada setelah <code>y.backward()</code>."],
+        [77, "<code>print(model)</code> menampilkan <code>SimpleNN(  (linear): Linear(in_features=10, out_features=1, bias=True))</code>."],
+        [79, "Contoh tampilan: <code>Settings()</code> membaca <code>APP_NAME</code> dan <code>DATABASE_URL</code> dari lingkungan; bila ada yang hilang, muncul <code>ValidationError ... Field required</code>."],
+        [83, "Contoh tampilan (JSON): <code>{\"event\": \"pengguna_login\", \"user_id\": 123, \"status\": \"sukses\", \"level\": \"info\", \"timestamp\": \"2026-10-18T09:00:00Z\"}</code>."],
+        [84, "Contoh tampilan di <code>/metrics</code>: <code># TYPE request_total counter</code> lalu <code>request_total 3.0</code>."],
+        [85, "Contoh tampilan <code>pulumi preview</code>: <code>+ aws:s3:Bucket my-bucket create</code> dan ringkasan <code>1 to create</code>; setelah <code>pulumi up</code> muncul <code>bucket_name: my-bucket-1a2b3c</code>."],
+        [86, "<code>{'statusCode': 200, 'body': 'Halo dari AWS Lambda!'}</code> (bisa dicoba langsung: panggil <code>lambda_handler({}, None)</code>)."],
+        [87, "Contoh tampilan: setelah <code>upload_file</code>, <code>list_objects_v2</code> memuat <code>Contents: [{'Key': 'remote.txt', 'Size': 12}]</code>."],
+        [89, "Contoh tampilan: <code>encrypt</code> menghasilkan token seperti <code>b'gAAAAAB...'</code> (berbeda tiap dijalankan); <code>decrypt</code> mengembalikan <code>b'Data rahasia'</code>."],
+        [91, "Contoh tampilan: <code>script.py:12: size=4096 KiB, count=1, average=4096 KiB</code> (baris dengan alokasi terbesar lebih dulu)."],
+        [97, "Contoh tampilan: <code>GET /users/1</code> &rarr; <code>{\"user_id\": 1, \"service\": \"user-microservice\"}</code>."],
+        [98, "Contoh tampilan: konsol RabbitMQ memperlihatkan antrean <code>task_queue</code> dengan <code>1 Ready</code> sampai ada consumer yang mengambil pesan <code>Hello Event!</code>."],
+        [99, "Contoh tampilan: <code>tests/test_workflow.py .  [100%]</code> dan ringkasan <code>1 passed</code>; dengan <code>--cov</code> ada tabel persentase cakupan per berkas."]
+    ].forEach(function (p) { setOutput(p[0], p[1]); });
+
+    /* ---------- E. CONTOH KODE: tambah print() / contoh tampilan ---------- */
+    function sample(id, lines) { addEx(id, "# Contoh tampilan hasil (library ini tidak berjalan di browser):\n" + lines.map(function (x) { return "# " + x; }).join("\n")); }
+    addEx(23, 'with open("test.txt", "r") as f:\n    print(f.read())   # Belajar File I/O');
+    addEx(39, 'print("selesai")   # pesan logging tampil di terminal sebagai INFO:root:...');
+    addEx(126, 'print("jumlah garis:", len(ax.lines))   # jumlah garis: 1');
+    addEx(60, 'print(df.head(3))   # tiga baris pertama beserta kolom c');
+    addEx(86, 'print(lambda_handler({}, None))   # {\'statusCode\': 200, \'body\': \'Halo dari AWS Lambda!\'}');
+    addEx(50, 'print(User(username="a", age=20))   # username=\'a\' age=20\ntry:\n    User(username="b", age=10)\nexcept ValueError as e:        # ValidationError turunan ValueError\n    print("Ditolak:", "Harus dewasa" in str(e))   # Ditolak: True');
+    L(90).example = '# Mencegah SQL Injection: pakai placeholder ?, jangan sambung teks SQL\nimport sqlite3, html\n\nconn = sqlite3.connect(":memory:")\nconn.execute("CREATE TABLE users (username TEXT)")\nconn.execute("INSERT INTO users VALUES (?)", ("ani",))\n\nusername = "ani\' OR \'1\'=\'1"   # masukan jahat\nbaris = conn.execute("SELECT * FROM users WHERE username = ?", (username,)).fetchone()\nprint(baris)   # None: injeksi gagal karena nilai diperlakukan sebagai data\n\nprint(html.escape("<script>alert(1)</script>"))   # &lt;script&gt;alert(1)&lt;/script&gt;\n\n# Dengan ORM SQLAlchemy ekuivalennya: session.query(User).filter(User.username == username).first()';
+    sample(49, ["GET /items/5?q=abc  ->  {\"item_id\": 5, \"q\": \"abc\"}"]);
+    sample(51, ["session.query(User).count()  ->  1"]);
+    sample(52, ["INFO  [alembic.runtime.migration] Running upgrade  -> 1a2b3c, Add user table"]);
+    sample(54, ["klien kirim 'halo'  ->  server balas 'Pesan diterima: halo'"]);
+    sample(55, ["tests/test_app.py .   [100%]", "1 passed in 0.12s"]);
+    sample(56, ["add.delay(2, 3)  ->  <AsyncResult: 6f2c...>", "worker: Task tasks.add succeeded in 0.01s: 5"]);
+    sample(57, ["client.get('kunci')  ->  b'nilai'   (setelah 60 detik: None)"]);
+    sample(58, ["permintaan ke-101 dalam semenit  ->  429 Too Many Requests"]);
+    sample(61, ["+---+---+", "| id|val|", "+---+---+", "|  1|  A|", "|  2|  B|", "+---+---+"]);
+    sample(63, ["{'success': False, 'result': {'unexpected_count': 2}}"]);
+    sample(64, ["pd.read_parquet('data.parquet')  ->  tabel a, b yang sama dengan df"]);
+    sample(65, ["UI Airflow: DAG my_dag -> task t1 berstatus success (hijau)"]);
+    sample(67, ["[{'text': 'Dunia adalah panggung...'}, {'text': '...'}]"]);
+    sample(68, ["Satu grafik garis dengan judul dan label sumbu"]);
+    sample(69, ["accuracy_score(y_test, y_pred)  ->  0.9667"]);
+    sample(70, ["response.choices[0].message.content  ->  'Halo! Ada yang bisa saya bantu?'"]);
+    sample(72, ["results['documents'][0]  ->  ['Teks 1']"]);
+    sample(73, ["['Teks panjang...', '...lanjutan teks']"]);
+    sample(74, ["crew.kickoff()  ->  laporan ringkas hasil kerja agen"]);
+    sample(75, ["{\"messages\": [{\"role\": \"system\", \"content\": \"Bot\"}, ...]}   <- satu baris per contoh"]);
+    sample(77, ["SimpleNN(", "  (linear): Linear(in_features=10, out_features=1, bias=True)", ")"]);
+    sample(79, ["Settings(app_name='contoh', database_url='sqlite:///a.db')"]);
+    sample(80, ["docker build -t app .   ->  naming to docker.io/library/app", "docker run -p 8000:8000 app"]);
+    sample(81, ["docker compose up -d   ->  Container web Started, Container redis Started"]);
+    sample(82, ["Tab Actions: workflow CI berstatus hijau setelah checkout, setup-python, dan pytest berhasil"]);
+    sample(83, ["{\"event\": \"pengguna_login\", \"user_id\": 123, \"status\": \"sukses\"}"]);
+    sample(84, ["# TYPE request_total counter", "request_total 3.0"]);
+    sample(85, ["+ aws:s3:Bucket my-bucket create", "bucket_name: my-bucket-1a2b3c"]);
+    sample(87, ["list_objects_v2  ->  Contents: [{'Key': 'remote.txt', 'Size': 12}]"]);
+    sample(88, ["NAME               READY   STATUS    RESTARTS", "python-app-abc12    1/1     Running   0", "python-app-def34    1/1     Running   0", "python-app-ghi56    1/1     Running   0"]);
+    sample(92, ["import hitung; hitung.jumlah(2, 3)  ->  5   (modul biner hasil kompilasi)"]);
+    sample(94, ["import mymodule; mymodule.custom_func()  ->  hasil dihitung oleh kode C"]);
+    sample(96, ["Run started ... No issues identified.   (atau: >> Issue: [B307:blacklist] Use of eval)"]);
+    sample(97, ["GET /users/1  ->  {\"user_id\": 1, \"service\": \"user-microservice\"}"]);
+    sample(98, ["RabbitMQ: queue 'task_queue' -> 1 Ready (pesan: Hello Event!)"]);
+    sample(99, ["tests/test_workflow.py .   [100%]", "1 passed"]);
+    sample(100, ["Tidak ada keluaran: ini diagram arsitektur dalam komentar."]);
+    sample(118, ["Initialized empty Git repository in .../.git/", "[main (root-commit) a1b2c3d] versi pertama"]);
+    sample(125, ["(.venv) $ pip install requests==2.32.3  ->  Successfully installed requests-2.32.3"]);
+    sample(137, ["Berkas konfigurasi: Dockerfile, docker-compose.yml, .github/workflows/ci.yml, deployment.yaml"]);
+
+    addEx(139, '# keluaran contoh di atas: dunia   (print dipanggil sebagai handler)');
+
+    /* ---------- F. SOAL: validator ketat, soal ambigu diperjelas, celah penilaian ditutup ---------- */
+    function T(id, idx) { return L(id).tasks[idx]; }
+    function tight(id, idx, rs, o) {
+        o = o || {};
+        const t = T(id, idx), list = [].concat(rs);
+        t.validate = function (c) { return list.every(function (r) { return r.test(c); }); };
+        if (o.task) t.task = o.task;
+        if (o.hint) t.hint = o.hint;
+        if (o.expect) t.expect = o.expect;
+        if (o.check) t.check = o.check;
+        if (o.text) t.forceText = true;
+        if (o.run) t.forceText = false;
+    }
+    const ANYV = function (cond) { return "assert any(" + cond + " for v in list(globals().values())), 'Variabel yang diminta soal belum dibuat atau nilainya belum sesuai'"; };
+
+    // F1. Soal "Pahami/Uji/Simulasikan" yang dulu lolos dengan satu kata kunci
+    tight(23, 0, [/open\s*\([^)]*['"]w['"]/, /\.write\s*\(/]);
+    tight(23, 1, [/open\s*\([^)]*['"]w['"]/, /\.write\s*\(\s*['"]Halo Dunia['"]/]);
+    tight(23, 3, [/\bwith\b/, /open\s*\([^)]*['"]r['"]/, /\.read\s*\(\s*\)/]);
+    tight(23, 4, [/\bwith\b/, /open\s*\(/, /\.readlines\s*\(\s*\)/]);
+    tight(23, 6, [/\bwith\b/, /open\s*\([^)]*['"]w['"]/, /\.writelines\s*\(\s*\[/]);
+    tight(23, 8, [/\bwith\s+open\s*\(/, /\bas\s+\w+\s*:/]);
+    tight(23, 9, [/\bwith\b/, /open\s*\(/, /\.readline\s*\(\s*\)/]);
+    tight(34, 4, [/json\.dump\s*\(\s*\w+\s*,\s*\w+/, /open\s*\(/]);
+    tight(34, 5, [/json\.load\s*\(\s*\w+\s*\)/, /open\s*\(/]);
+    tight(34, 8, [/json\.loads\s*\(/, /\btry\b/, /except\s+(json\.)?(JSONDecodeError|ValueError)/]);
+    tight(34, 9, [/json\.dumps?\s*\(/, /\{[^}]*:[^}]*\}/]);
+    tight(29, 7, [/=\s*[\[\(\{"'\d]/, /\bdel\s+\w+/, /\bprint\s*\(/]);
+    tight(31, 8, [/ThreadPoolExecutor/, /(perf_counter|timeit|time\.time)/, /\bdef\s+\w+/]);
+    tight(35, 1, [/\.bind\s*\(\s*\(/]);
+    tight(35, 3, [/\.connect\s*\(\s*\(/]);
+    tight(95, 9, [/(ssl\.)?SSLError/i, /\btry\b/i]);
+    tight(39, 4, [/logging\.basicConfig\s*\([^)]*filename\s*=/i]);
+    tight(48, 7, [/ast\.(parse|walk|NodeVisitor|NodeTransformer)/, /(\bdef\b|\bclass\b)/]);
+    tight(48, 8, [/ast\.(parse|walk|NodeVisitor)/, /(\beval\b|\bexec\b|Call|Name|id\s*==)/]);
+    tight(41, 3, [/__new__/, /\bis\b/, /\bprint\s*\(/]);
+    tight(41, 9, [/\bclass\b/, /\bassert\b/, /(__new__|\.build\s*\(|\bis\b|==)/]);
+    tight(42, 9, [/\bclass\b/, /\bassert\b[^\n]*==/]);
+    tight(43, 9, [/\bclass\b/, /\bassert\b[^\n]*==/]);
+    tight(47, 3, [/\bwith\s+\w+\s*\(\s*\)\s+as\s+\w+/, /(\.simpan|\.save|\.add)\s*\([\s\S]*(\.simpan|\.save|\.add)\s*\(/]);
+    tight(47, 5, [/__exit__/, /rollback/i, /(exc_type|exc\b)/]);
+    tight(47, 7, [/\bassert\b[^\n]*(==|in\b)/, /\bclass\b/]);
+    tight(59, 9, [/groupby\s*\(/, /DataFrame\s*\(/]);
+    tight(60, 9, [/\bdel\s+\w+/, /gc\.collect\s*\(/]);
+    tight(50, 9, [/BaseModel/, /["']\d+["']/]);
+    tight(51, 5, [/\.add\s*\(/, /\.commit\s*\(/, /(Session|sessionmaker)/]);
+    tight(51, 8, [/\.\w+\s*=\s*\S+/, /\.commit\s*\(/]);
+    tight(51, 9, [/\.delete\s*\(/, /\.commit\s*\(/]);
+    tight(55, 5, [/\bassert\b[^\n]*404/, /def\s+test_\w+/]);
+    tight(55, 6, [/headers\s*=\s*\{[^}]*Authorization[^}]*\}/i]);
+    tight(82, 8, [/(docker\/build-push-action|docker\s+build)/i], { text: true });
+    tight(83, 4, [/capture_exception\s*\(/, /\bexcept\b/]);
+    tight(86, 4, [/(sam\s+local\s+invoke|serverless\s+invoke\s+local)/i]);
+    tight(85, 4, [/aws\.ec2\.Instance\s*\(/, /instance_type\s*=/]);
+    tight(88, 8, [/kubectl\s+delete\s+(-f|deployment|svc|service)/i], { text: true });
+    tight(92, 8, [/timeit/, /import/, /\bprint\s*\(/]);
+    tight(99, 2, [/(client|test_client)\.post\s*\(/, /\bassert\b/]);
+    tight(99, 7, [/headers\s*=\s*\{[^}]*Authorization/i]);
+
+    // F2. Soal yang ambigu atau memperkenalkan hal yang tidak diminta
+    tight(33, 5, [/def\s+titik\s*\([^)]*x\s*:\s*float[^)]*y\s*:\s*float[^)]*\)\s*->\s*tuple/, /\bprint\s*\(/],
+        { task: "Buat fungsi 'titik(x: float, y: float) -> tuple' yang mengembalikan pasangan (x, y), lalu cetak titik(1.0, 2.0).", hint: "return (x, y)", expect: /\(1\.0,\s*2\.0\)/, check: "assert titik(3.0, 4.0) == (3.0, 4.0)" });
+    tight(24, 9, [/\byield\b/],
+        { task: "Buat fungsi generator 'fibonacci()' yang menghasilkan 6 angka pertama deret Fibonacci (1, 1, 2, 3, 5, 8) dengan yield, lalu cetak list(fibonacci()).", hint: "Simpan dua angka terakhir; tiap putaran yield lalu geser.", expect: /\[1, 1, 2, 3, 5, 8\]/ });
+    tight(72, 4, [/\[\s*['"]documents['"]\s*\]\s*\[\s*0\s*\]/, /\bprint\s*\(/],
+        { task: "Buat results = {'documents': [['teks A', 'teks B']]} (bentuk hasil query Chroma), lalu cetak dokumen paling relevan (elemen pertama dari daftar pertama).", hint: "results['documents'][0][0]", expect: /^\s*teks A\s*$/, check: "assert results['documents'][0][0] == 'teks A'", run: true });
+    [["pangkat_dua", "4", "16", "assert pangkat_dua(0) == 0 and pangkat_dua(-3) == 9"], ["tambah", "5, 5", "10", "assert tambah(-1, 1) == 0"],
+     ["luas_persegi", "3", "9", "assert luas_persegi(0) == 0"], ["panjang_kata", "'Test'", "4", "assert panjang_kata('') == 0"],
+     ["cek_positif", "10", "True", "assert cek_positif(-1) is False and cek_positif(0) is False"], ["kurang", "10, 4", "6", "assert kurang(0, 5) == -5"],
+     ["ubah_kapital", "'abc'", "'ABC'", "assert ubah_kapital('') == ''"], ["keliling_persegi", "5", "20", "assert keliling_persegi(0) == 0"],
+     ["kali_dua", "7", "14", "assert kali_dua(0) == 0 and kali_dua(-2) == -4"], ["sisa_bagi", "10, 3", "1", "assert sisa_bagi(9, 3) == 0"]]
+        .forEach(function (p, i) {
+            const t = T(27, i), name = p[0];
+            t.validate = function (c) { return new RegExp("def\\s+" + name + "\\s*\\(").test(c) && new RegExp("assert\\s+" + name + "\\s*\\(").test(c); };
+            t.check = "assert " + name + "(" + p[1] + ") == " + p[2] + "\n" + p[3];
+            t.hint = "assert " + name + "(" + p[1] + ") == " + p[2] + "  (panggil fungsimu di dalam assert)";
+        });
+
+    // F3. Celah penilaian yang sebelumnya terdokumentasi (beginner-data.js "gap") kini ditutup
+    T(5, 1).expect = /^\s*B\s*$/;
+    T(7, 5).check = "assert e == 0, 'energi e harus habis (0) setelah perulangan'";
+    tight(128, 0, [/\btotal\s*=\s*[^\n]*harga1[^\n]*harga2[^\n]*harga3/]);
+    T(128, 0).check = "assert harga1 == 12000 and harga2 == 8500 and harga3 == 4500 and total == harga1 + harga2 + harga3";
+    [[/3\.14\b/], [/1,500,000/], [/75\.8%/], [/\s{4}Python/], [/\s+Data\s+/], [/0005/], [/45\.68/], [/Kopi\s+\d+/], [/(^|\D)ff(\D|$)/i], [/1010/]]
+        .forEach(function (p, i) { T(12, i).expect = p[0]; });
+    T(9, 0).check = ANYV("isinstance(v, list) and len(v) == 4");
+    T(9, 1).check = ANYV("isinstance(v, list) and len(v) == 4 and v[0] == 99"); T(9, 1).expect = /99/;
+    T(9, 2).check = ANYV("isinstance(v, list) and len(v) == 3"); T(9, 2).expect = /(^|\D)3(\D|$)/;
+    T(9, 3).check = ANYV("isinstance(v, list) and len(v) == 4 and v[0] == 'Jakarta'"); T(9, 3).expect = /Jakarta/;
+    T(9, 4).check = ANYV("isinstance(v, list) and v == [10, 30, 40]"); T(9, 4).expect = /\[10, 30, 40\]/;
+    T(9, 5).check = ANYV("isinstance(v, list) and len(v) >= 2 and v == sorted(v)");
+    T(9, 6).expect = /\[[^\]]+,[^\]]+\]/;
+    T(9, 7).check = ANYV("isinstance(v, list) and len(v) >= 3");
+    T(9, 8).check = ANYV("isinstance(v, list) and len(v) >= 3 and all(isinstance(x, (int, float)) for x in v)"); T(9, 8).expect = /\d/;
+    T(9, 9).check = ANYV("isinstance(v, list) and len(v) == 3 and all(isinstance(x, str) for x in v)"); T(9, 9).expect = /\[[^\]]+,[^\]]+,[^\]]+\]/;
+    T(10, 0).check = ANYV("isinstance(v, set) and v == {1, 2, 3, 5}"); T(10, 0).expect = /\{[^}]+\}/;
+    T(10, 2).check = ANYV("isinstance(v, set) and v == {'merah', 'hijau', 'biru'}");
+    T(10, 3).check = ANYV("isinstance(v, tuple) and len(v) == 7");
+    T(10, 4).check = ANYV("isinstance(v, set) and v == {1, 2, 3, 4, 5}");
+    T(10, 6).check = ANYV("isinstance(v, set) and v == set('PROGRAM')");
+    T(10, 7).check = ANYV("isinstance(v, set) and v == {10, 30, 40}");
+    T(10, 8).check = ANYV("isinstance(v, tuple) and v == (0.5, 1.5, 2.5)"); T(10, 8).expect = /2\.5/;
+    T(101, 0).check = "assert Kucing('Tom').nama == 'Tom'";
+    T(101, 3).check = "_c = Counter()\n_c.tambah()\n_c.tambah()\nassert _c.nilai == 2, 'tambah() harus menaikkan nilai 1'";
+    T(101, 4).check = "_d = Dompet(1000)\n_d.setor(500)\nassert _d.saldo == 1500";
+    T(101, 6).check = "assert abs(Lingkaran(10).luas() - 314) < 0.01";
+    T(101, 9).check = "_k = Kalkulator()\nassert _k.tambah(2, 3) == 5 and _k.kali(2, 3) == 6";
+
+    /* ---------- G. PETUNJUK konseptual (tingkat 1) untuk topik yang paling sering membingungkan ---------- */
+    function hints(id, arr) { arr.forEach(function (h, i) { if (h && T(id, i)) T(id, i).hint0 = h; }); }
+    hints(6, [
+        "Daftar angka apa yang harus tercetak? Tulis dulu, lalu cari awal, akhir (tidak ikut), dan langkahnya.",
+        "Angka terakhir pada range tidak ikut dicetak: untuk berhenti di 5, batas akhirnya berapa?",
+        "Menghitung mundur berarti langkahnya negatif. Dari mana mulai dan di mana berhenti (tidak ikut)?",
+        "Angka kelipatan apa yang diminta, dan dari berapa sampai berapa? Langkah range = kelipatannya.",
+        "Berapa kali blok harus diulang? Apakah nilai variabel loop dipakai di dalam blok?",
+        "Angka ganjil dimulai dari 1; selisih antar angkanya berapa?",
+        "Bisakah string diulang langsung huruf demi huruf, tanpa range?",
+        "Apa yang dihitung dari i di tiap putaran? Cobalah menulis hasil untuk i = 1 dan i = 2 dulu.",
+        "Nilai i berubah dari berapa sampai berapa, dan apa yang dicetak di tiap putaran?",
+        "Teks yang sama dicetak berulang: berapa kali, dan apakah variabel loop dipakai?"
+    ]);
+    hints(7, [
+        "Nilai awalnya berapa, kapan kondisi berhenti benar, dan bagaimana nilai berubah agar sampai ke sana?",
+        "Variabel apa yang harus naik di tiap putaran supaya loop berhenti?",
+        "Setiap putaran nilai dikali berapa? Kapan nilai tidak lagi kurang dari batas?",
+        "Dari angka berapa mulai, dan naik berapa tiap putaran?",
+        "Perlu penghitung (counter). Berapa kali teks harus tercetak, dan kapan penghitung berhenti?",
+        "Energi harus berkurang tiap putaran. Kapan e tidak lagi lebih dari 0?",
+        "Siapkan variabel penampung total di luar loop. Apa yang ditambahkan ke total tiap putaran?",
+        "Mundur dengan selisih 2: dari angka berapa mulai dan di angka berapa berhenti?",
+        "Kelipatan 10 sampai 30: nilai awal, kondisi batas, dan pertambahannya?",
+        "Apa yang dicetak adalah kuadrat dari penghitung, bukan penghitung itu sendiri."
+    ]);
+    hints(22, [
+        "Siapa yang menerima n, dan siapa yang menerima x? Apa yang dikembalikan fungsi luar?",
+        "Variabel penghitung hidup di fungsi mana, dan keyword apa yang memungkinkan fungsi dalam mengubahnya?",
+        "Nilai tetap apa (kurs) yang harus diingat, dan nilai apa yang dikirim tiap kali dipakai?",
+        "Data rahasia disimpan di fungsi luar. Bagaimana fungsi dalam bisa membacanya tanpa menjadikannya terbuka?",
+        "Eksponen disimpan di fungsi luar, basisnya diterima fungsi dalam.",
+        "Daftar riwayat disimpan di fungsi luar; fungsi dalam menambahkan ke dalamnya. Perlu nonlocal?",
+        "Hitungan akses disimpan di fungsi luar; apa yang dilakukan fungsi dalam saat batas terlampaui?",
+        "Batas min dan max diingat fungsi luar; fungsi dalam memotong nilai agar masuk rentang.",
+        "Sapaan dasar diingat fungsi luar; fungsi dalam menerima nama.",
+        "Total kumulatif harus tetap ada antar pemanggilan. Di mana disimpan dan bagaimana diubah?"
+    ]);
+    hints(110, [
+        "Faktorial 1 berapa? Dan faktorial n dinyatakan dengan faktorial angka yang lebih kecil bagaimana?",
+        "Jumlah 1 sampai n sama dengan n ditambah jumlah 1 sampai angka yang lebih kecil. Kasus dasarnya?",
+        "Apa yang dicetak di tiap tingkat, dan kapan berhenti? Cetak dulu sebelum atau sesudah memanggil diri sendiri?",
+        "Dua kasus dasar (angka 0 dan 1). Selain itu, jumlahkan dua hasil sebelumnya.",
+        "Teks kosong dibalik hasilnya apa? Teks panjang dibalik = balik(sisanya) lalu huruf pertama.",
+        "Pangkat 0 hasilnya berapa? Pangkat n sama dengan basis dikali pangkat yang kurang satu."
+    ]);
+    hints(108, [
+        "Parameter mana yang boleh diberi nilai bawaan, dan di posisi mana ia harus ditulis?",
+        "Saat memanggil, bagaimana menyebut nama parameter agar urutan tidak penting?",
+        "Argumen mana yang dikirim dengan nama, dan apa efeknya pada urutan?",
+        "Fungsi harus mengubah variabel di luar. Keyword apa yang memberi tahu Python hal itu?",
+        "Dua variabel bernama sama berada di tempat berbeda. Mana yang dipakai print di dalam dan di luar fungsi?",
+        "Mengapa list kosong sebagai nilai bawaan berbahaya, dan nilai pengganti apa yang aman?"
+    ]);
+})();

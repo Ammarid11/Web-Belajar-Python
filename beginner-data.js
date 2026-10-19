@@ -154,3 +154,6 @@ const lvl128 = [
 ];
 
 module.exports = { 4: lvl4, 5: lvl5, 7: lvl7, 9: lvl9, 12: lvl12, 120: lvl120, 128: lvl128 };
+
+// Celah penilaian yang dulu terdokumentasi kini ditutup (lihat curriculum-perbaikan.js bagian F3): jadikan contoh salah biasa.
+Object.values(module.exports).forEach(arr => arr.forEach(d => { if (d && d.gap) { d.bad = (d.bad || []).concat(d.gap); delete d.gap; delete d.why; } }));
